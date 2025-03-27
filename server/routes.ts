@@ -8,7 +8,11 @@ import {
   insertOrderSchema, 
   insertPaymentSchema,
   insertKycSchema,
-  insertActivitySchema
+  insertActivitySchema,
+  insertProductSchema,
+  insertServiceSchema,
+  insertCountrySchema,
+  insertAiChatSchema
 } from "@shared/schema";
 import { ZodError } from "zod";
 import crypto from "crypto";
@@ -877,6 +881,269 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
     
     res.json({ message: "Broadcast sent successfully" });
+  }));
+
+  // Service Routes
+  router.get('/services', handleErrors(async (req: Request, res: Response) => {
+    const services = await storage.getActiveServices();
+    res.json(services);
+  }));
+  
+  router.get('/services/:id', handleErrors(async (req: Request, res: Response) => {
+    const serviceId = parseInt(req.params.id);
+    const service = await storage.getService(serviceId);
+    
+    if (!service || !service.isActive) {
+      return res.status(404).json({ message: "Service not found" });
+    }
+    
+    res.json(service);
+  }));
+  
+  // Country Routes
+  router.get('/countries', handleErrors(async (req: Request, res: Response) => {
+    const countries = await storage.getActiveCountries();
+    res.json(countries);
+  }));
+  
+  router.get('/countries/:id', handleErrors(async (req: Request, res: Response) => {
+    const countryId = parseInt(req.params.id);
+    const country = await storage.getCountry(countryId);
+    
+    if (!country || !country.isActive) {
+      return res.status(404).json({ message: "Country not found" });
+    }
+    
+    res.json(country);
+  }));
+  
+  // Product Routes (Marketplace)
+  router.get('/products', handleErrors(async (req: Request, res: Response) => {
+    const products = await storage.getApprovedProducts();
+    res.json(products);
+  }));
+  
+  router.get('/products/:id', handleErrors(async (req: Request, res: Response) => {
+    const productId = parseInt(req.params.id);
+    const product = await storage.getProduct(productId);
+    
+    if (!product || !product.isAdminApproved || product.status !== "active") {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    
+    res.json(product);
+  }));
+  
+  router.post('/products', authenticate, handleErrors(async (req: Request, res: Response) => {
+    const productData = insertProductSchema.parse({
+      ...req.body,
+      userId: req.userId
+    });
+    
+    const user = await storage.getUser(req.userId!);
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    
+    // If not admin, need KYC verification to upload products
+    if (!user.isAdmin && user.kycStatus !== "approved") {
+      return res.status(403).json({ message: "KYC verification required to upload products" });
+    }
+    
+    // Admin-specific properties will be set in the storage method
+    const isAdmin = user.isAdmin;
+    
+    const newProduct = await storage.createProduct(productData);
+    
+    // Create activity record
+    await storage.createActivity({
+      userId: user.id,
+      action: "Uploaded new product to marketplace",
+      status: user.isAdmin ? "Completed" : "Pending approval"
+    });
+    
+    res.status(201).json(newProduct);
+  }));
+  
+  router.get('/user/products', authenticate, handleErrors(async (req: Request, res: Response) => {
+    const products = await storage.getUserProducts(req.userId!);
+    res.json(products);
+  }));
+  
+  // Admin Product Management
+  router.get('/admin/products', authenticate, requireAdmin, handleErrors(async (req: Request, res: Response) => {
+    const pendingProducts = await storage.getPendingProducts();
+    res.json(pendingProducts);
+  }));
+  
+  router.patch('/admin/products/:id', authenticate, requireAdmin, handleErrors(async (req: Request, res: Response) => {
+    const productId = parseInt(req.params.id);
+    const product = await storage.getProduct(productId);
+    
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    
+    // Only allow specific fields to be updated
+    const allowedFields = ["isAdminApproved", "status", "price", "name", "description"];
+    const updates: Partial<typeof product> = {};
+    
+    for (const field of allowedFields) {
+      if (field in req.body) {
+        updates[field as keyof typeof product] = req.body[field];
+      }
+    }
+    
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({ message: "No valid fields to update" });
+    }
+    
+    const updatedProduct = await storage.updateProduct(productId, updates);
+    
+    if (!updatedProduct) {
+      return res.status(500).json({ message: "Failed to update product" });
+    }
+    
+    // Create activity for the product owner
+    await storage.createActivity({
+      userId: product.userId,
+      action: `Admin ${req.body.isAdminApproved ? "approved" : "updated"} your marketplace product`,
+      status: "Completed"
+    });
+    
+    res.json(updatedProduct);
+  }));
+  
+  // Admin Service Management
+  router.post('/admin/services', authenticate, requireAdmin, handleErrors(async (req: Request, res: Response) => {
+    const serviceData = insertServiceSchema.parse(req.body);
+    const newService = await storage.createService(serviceData);
+    res.status(201).json(newService);
+  }));
+  
+  router.get('/admin/services', authenticate, requireAdmin, handleErrors(async (req: Request, res: Response) => {
+    const services = await storage.getAllServices();
+    res.json(services);
+  }));
+  
+  router.patch('/admin/services/:id', authenticate, requireAdmin, handleErrors(async (req: Request, res: Response) => {
+    const serviceId = parseInt(req.params.id);
+    const service = await storage.getService(serviceId);
+    
+    if (!service) {
+      return res.status(404).json({ message: "Service not found" });
+    }
+    
+    const allowedFields = ["name", "slug", "description", "icon", "isActive"];
+    const updates: Partial<typeof service> = {};
+    
+    for (const field of allowedFields) {
+      if (field in req.body) {
+        updates[field as keyof typeof service] = req.body[field];
+      }
+    }
+    
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({ message: "No valid fields to update" });
+    }
+    
+    const updatedService = await storage.updateService(serviceId, updates);
+    
+    if (!updatedService) {
+      return res.status(500).json({ message: "Failed to update service" });
+    }
+    
+    res.json(updatedService);
+  }));
+  
+  // Admin Country Management
+  router.post('/admin/countries', authenticate, requireAdmin, handleErrors(async (req: Request, res: Response) => {
+    const countryData = insertCountrySchema.parse(req.body);
+    const newCountry = await storage.createCountry(countryData);
+    res.status(201).json(newCountry);
+  }));
+  
+  router.get('/admin/countries', authenticate, requireAdmin, handleErrors(async (req: Request, res: Response) => {
+    const countries = await storage.getAllCountries();
+    res.json(countries);
+  }));
+  
+  router.patch('/admin/countries/:id', authenticate, requireAdmin, handleErrors(async (req: Request, res: Response) => {
+    const countryId = parseInt(req.params.id);
+    const country = await storage.getCountry(countryId);
+    
+    if (!country) {
+      return res.status(404).json({ message: "Country not found" });
+    }
+    
+    const allowedFields = ["name", "code", "flag", "isActive"];
+    const updates: Partial<typeof country> = {};
+    
+    for (const field of allowedFields) {
+      if (field in req.body) {
+        updates[field as keyof typeof country] = req.body[field];
+      }
+    }
+    
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({ message: "No valid fields to update" });
+    }
+    
+    const updatedCountry = await storage.updateCountry(countryId, updates);
+    
+    if (!updatedCountry) {
+      return res.status(500).json({ message: "Failed to update country" });
+    }
+    
+    res.json(updatedCountry);
+  }));
+  
+  // AI Chat Routes
+  router.post('/ai-chat', authenticate, handleErrors(async (req: Request, res: Response) => {
+    const chatData = insertAiChatSchema.parse({
+      ...req.body,
+      userId: req.userId
+    });
+    
+    const user = await storage.getUser(req.userId!);
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    
+    // For a real implementation, this would call an AI service
+    // For now, we'll just echo back a predefined response
+    
+    // Create the chat record
+    const newChat = await storage.createAiChat(chatData);
+    
+    // Send a simple response
+    res.status(201).json({
+      ...newChat,
+      response: `Thank you for your message: "${chatData.message}". Our customer service AI is here to help you with any questions about our services. How can I assist you today?`
+    });
+  }));
+  
+  router.get('/ai-chat', authenticate, handleErrors(async (req: Request, res: Response) => {
+    const chats = await storage.getUserChats(req.userId!);
+    res.json(chats);
+  }));
+  
+  // Helper function to fix null createdAt values in sort functions
+  router.get('/utils/date-sort-helper', handleErrors(async (req: Request, res: Response) => {
+    const sortExample = (items: any[]) => {
+      return items.sort((a, b) => {
+        const aTime = a.createdAt ? a.createdAt.getTime() : 0;
+        const bTime = b.createdAt ? b.createdAt.getTime() : 0;
+        return bTime - aTime;
+      });
+    };
+    
+    res.json({
+      message: "Date sorting utility function example. Use this pattern to safely sort items with potentially null dates.",
+      code: sortExample.toString()
+    });
   }));
 
   // Register the API routes

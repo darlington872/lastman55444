@@ -5,7 +5,11 @@ import {
   Payment, InsertPayment,
   Kyc, InsertKyc,
   Activity, InsertActivity,
-  Setting
+  Setting,
+  Product, InsertProduct,
+  Service, InsertService,
+  Country, InsertCountry,
+  AiChat, InsertAiChat
 } from "@shared/schema";
 import { nanoid } from "nanoid";
 
@@ -56,6 +60,35 @@ export interface IStorage {
   getSetting(key: string): Promise<string | undefined>;
   setSetting(key: string, value: string): Promise<boolean>;
   getAllSettings(): Promise<Setting[]>;
+  
+  // Product methods
+  createProduct(product: InsertProduct): Promise<Product>;
+  getProduct(id: number): Promise<Product | undefined>;
+  getUserProducts(userId: number): Promise<Product[]>;
+  updateProduct(id: number, data: Partial<Product>): Promise<Product | undefined>;
+  deleteProduct(id: number): Promise<boolean>;
+  getApprovedProducts(): Promise<Product[]>;
+  getPendingProducts(): Promise<Product[]>;
+  
+  // Service methods
+  createService(service: InsertService): Promise<Service>;
+  getService(id: number): Promise<Service | undefined>;
+  getServiceBySlug(slug: string): Promise<Service | undefined>;
+  getAllServices(): Promise<Service[]>;
+  getActiveServices(): Promise<Service[]>;
+  updateService(id: number, data: Partial<Service>): Promise<Service | undefined>;
+  
+  // Country methods
+  createCountry(country: InsertCountry): Promise<Country>;
+  getCountry(id: number): Promise<Country | undefined>;
+  getCountryByCode(code: string): Promise<Country | undefined>;
+  getAllCountries(): Promise<Country[]>;
+  getActiveCountries(): Promise<Country[]>;
+  updateCountry(id: number, data: Partial<Country>): Promise<Country | undefined>;
+  
+  // AI Chat methods
+  createAiChat(chat: InsertAiChat): Promise<AiChat>;
+  getUserChats(userId: number): Promise<AiChat[]>;
 }
 
 export class MemStorage implements IStorage {
@@ -66,6 +99,10 @@ export class MemStorage implements IStorage {
   private kycRecords: Map<number, Kyc>;
   private activities: Map<number, Activity>;
   private settings: Map<string, string>;
+  private products: Map<number, Product>;
+  private services: Map<number, Service>;
+  private countries: Map<number, Country>;
+  private aiChats: Map<number, AiChat>;
   
   currentUserId: number;
   currentPhoneNumberId: number;
@@ -73,6 +110,10 @@ export class MemStorage implements IStorage {
   currentPaymentId: number;
   currentKycId: number;
   currentActivityId: number;
+  currentProductId: number;
+  currentServiceId: number;
+  currentCountryId: number;
+  currentAiChatId: number;
 
   constructor() {
     this.users = new Map();
@@ -82,6 +123,10 @@ export class MemStorage implements IStorage {
     this.kycRecords = new Map();
     this.activities = new Map();
     this.settings = new Map();
+    this.products = new Map();
+    this.services = new Map();
+    this.countries = new Map();
+    this.aiChats = new Map();
     
     this.currentUserId = 1;
     this.currentPhoneNumberId = 1;
@@ -89,9 +134,15 @@ export class MemStorage implements IStorage {
     this.currentPaymentId = 1;
     this.currentKycId = 1;
     this.currentActivityId = 1;
+    this.currentProductId = 1;
+    this.currentServiceId = 1;
+    this.currentCountryId = 1;
+    this.currentAiChatId = 1;
     
     // Initialize default settings
     this.initializeDefaultSettings();
+    this.initializeDefaultServices();
+    this.initializeDefaultCountries();
   }
 
   private initializeDefaultSettings(): void {
@@ -105,6 +156,156 @@ export class MemStorage implements IStorage {
     this.settings.set("SITE_DESCRIPTION", "WhatsApp Number Service");
     this.settings.set("CONTACT_EMAIL", "support@etherdoxshefzysms.com");
     this.settings.set("MAINTENANCE_MODE", "false");
+    this.settings.set("REFERRAL_REWARD", "100");
+    this.settings.set("CURRENCY", "₦"); // Naira symbol
+  }
+  
+  private initializeDefaultServices(): void {
+    // WhatsApp
+    this.services.set(this.currentServiceId++, {
+      id: 1,
+      name: "WhatsApp",
+      slug: "whatsapp",
+      description: "Get virtual WhatsApp numbers for messaging",
+      icon: "whatsapp",
+      isActive: true,
+      createdAt: new Date()
+    });
+    
+    // Telegram
+    this.services.set(this.currentServiceId++, {
+      id: 2,
+      name: "Telegram",
+      slug: "telegram",
+      description: "Create Telegram accounts with virtual numbers",
+      icon: "telegram",
+      isActive: true,
+      createdAt: new Date()
+    });
+    
+    // Signal
+    this.services.set(this.currentServiceId++, {
+      id: 3,
+      name: "Signal",
+      slug: "signal",
+      description: "Register on Signal with our virtual numbers",
+      icon: "message-circle",
+      isActive: true,
+      createdAt: new Date()
+    });
+    
+    // WeChat
+    this.services.set(this.currentServiceId++, {
+      id: 4,
+      name: "WeChat",
+      slug: "wechat",
+      description: "Create WeChat accounts with our numbers",
+      icon: "wechat",
+      isActive: true,
+      createdAt: new Date()
+    });
+  }
+  
+  private initializeDefaultCountries(): void {
+    // Nigeria
+    this.countries.set(this.currentCountryId++, {
+      id: 1,
+      name: "Nigeria",
+      code: "NG",
+      flag: "🇳🇬",
+      isActive: true,
+      createdAt: new Date()
+    });
+    
+    // United States
+    this.countries.set(this.currentCountryId++, {
+      id: 2,
+      name: "United States",
+      code: "US",
+      flag: "🇺🇸",
+      isActive: true,
+      createdAt: new Date()
+    });
+    
+    // United Kingdom
+    this.countries.set(this.currentCountryId++, {
+      id: 3,
+      name: "United Kingdom",
+      code: "GB",
+      flag: "🇬🇧",
+      isActive: true,
+      createdAt: new Date()
+    });
+    
+    // Canada
+    this.countries.set(this.currentCountryId++, {
+      id: 4,
+      name: "Canada",
+      code: "CA",
+      flag: "🇨🇦",
+      isActive: true,
+      createdAt: new Date()
+    });
+    
+    // Australia
+    this.countries.set(this.currentCountryId++, {
+      id: 5,
+      name: "Australia",
+      code: "AU",
+      flag: "🇦🇺",
+      isActive: true,
+      createdAt: new Date()
+    });
+    
+    // Germany
+    this.countries.set(this.currentCountryId++, {
+      id: 6,
+      name: "Germany",
+      code: "DE",
+      flag: "🇩🇪",
+      isActive: true,
+      createdAt: new Date()
+    });
+    
+    // France
+    this.countries.set(this.currentCountryId++, {
+      id: 7,
+      name: "France",
+      code: "FR",
+      flag: "🇫🇷",
+      isActive: true,
+      createdAt: new Date()
+    });
+    
+    // Brazil
+    this.countries.set(this.currentCountryId++, {
+      id: 8,
+      name: "Brazil",
+      code: "BR",
+      flag: "🇧🇷",
+      isActive: true,
+      createdAt: new Date()
+    });
+    
+    // India
+    this.countries.set(this.currentCountryId++, {
+      id: 9,
+      name: "India",
+      code: "IN",
+      flag: "🇮🇳",
+      isActive: true,
+      createdAt: new Date()
+    });
+    
+    // China
+    this.countries.set(this.currentCountryId++, {
+      id: 10,
+      name: "China",
+      code: "CN",
+      flag: "🇨🇳",
+      isActive: true,
+      createdAt: new Date()
+    });
   }
 
   // User methods
@@ -165,7 +366,8 @@ export class MemStorage implements IStorage {
       isBanned: false,
       kycStatus: "pending",
       balance: 0,
-      createdAt: new Date()
+      createdAt: new Date(),
+      referredBy: insertUser.referredBy || null
     };
     
     this.users.set(id, user);
@@ -243,7 +445,8 @@ export class MemStorage implements IStorage {
       id,
       ...order,
       status: "pending",
-      code: undefined,
+      code: null,
+      isReferralReward: order.isReferralReward || false,
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -289,6 +492,8 @@ export class MemStorage implements IStorage {
       id,
       ...payment,
       status: "pending",
+      orderId: payment.orderId || null,
+      reference: payment.reference || null,
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -407,7 +612,9 @@ export class MemStorage implements IStorage {
       .filter(activity => activity.userId === userId)
       .sort((a, b) => {
         // Sort by created date, newest first
-        return b.createdAt.getTime() - a.createdAt.getTime();
+        const aTime = a.createdAt ? a.createdAt.getTime() : 0;
+        const bTime = b.createdAt ? b.createdAt.getTime() : 0;
+        return bTime - aTime;
       });
   }
 
@@ -427,6 +634,178 @@ export class MemStorage implements IStorage {
       key,
       value
     }));
+  }
+  
+  // Product methods
+  async createProduct(product: InsertProduct): Promise<Product> {
+    const id = this.currentProductId++;
+    
+    // Check if user is admin
+    const user = await this.getUser(product.userId);
+    const isAdmin = user?.isAdmin || false;
+    
+    const newProduct: Product = {
+      id,
+      ...product,
+      isAdminApproved: isAdmin, // Auto-approve if admin
+      status: isAdmin ? "active" : "pending",
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    
+    this.products.set(id, newProduct);
+    return newProduct;
+  }
+  
+  async getProduct(id: number): Promise<Product | undefined> {
+    return this.products.get(id);
+  }
+  
+  async getUserProducts(userId: number): Promise<Product[]> {
+    return Array.from(this.products.values()).filter(
+      (product) => product.userId === userId
+    );
+  }
+  
+  async updateProduct(id: number, data: Partial<Product>): Promise<Product | undefined> {
+    const product = await this.getProduct(id);
+    if (!product) {
+      return undefined;
+    }
+    
+    const updatedProduct = { ...product, ...data, updatedAt: new Date() };
+    this.products.set(id, updatedProduct);
+    return updatedProduct;
+  }
+  
+  async deleteProduct(id: number): Promise<boolean> {
+    return this.products.delete(id);
+  }
+  
+  async getApprovedProducts(): Promise<Product[]> {
+    return Array.from(this.products.values()).filter(
+      (product) => product.isAdminApproved && product.status === "active"
+    );
+  }
+  
+  async getPendingProducts(): Promise<Product[]> {
+    return Array.from(this.products.values()).filter(
+      (product) => !product.isAdminApproved || product.status === "pending"
+    );
+  }
+  
+  // Service methods
+  async createService(service: InsertService): Promise<Service> {
+    const id = this.currentServiceId++;
+    const newService: Service = {
+      id,
+      ...service,
+      isActive: true,
+      createdAt: new Date()
+    };
+    
+    this.services.set(id, newService);
+    return newService;
+  }
+  
+  async getService(id: number): Promise<Service | undefined> {
+    return this.services.get(id);
+  }
+  
+  async getServiceBySlug(slug: string): Promise<Service | undefined> {
+    return Array.from(this.services.values()).find(
+      (service) => service.slug === slug
+    );
+  }
+  
+  async getAllServices(): Promise<Service[]> {
+    return Array.from(this.services.values());
+  }
+  
+  async getActiveServices(): Promise<Service[]> {
+    return Array.from(this.services.values()).filter(
+      (service) => service.isActive
+    );
+  }
+  
+  async updateService(id: number, data: Partial<Service>): Promise<Service | undefined> {
+    const service = await this.getService(id);
+    if (!service) {
+      return undefined;
+    }
+    
+    const updatedService = { ...service, ...data };
+    this.services.set(id, updatedService);
+    return updatedService;
+  }
+  
+  // Country methods
+  async createCountry(country: InsertCountry): Promise<Country> {
+    const id = this.currentCountryId++;
+    const newCountry: Country = {
+      id,
+      ...country,
+      isActive: true,
+      createdAt: new Date()
+    };
+    
+    this.countries.set(id, newCountry);
+    return newCountry;
+  }
+  
+  async getCountry(id: number): Promise<Country | undefined> {
+    return this.countries.get(id);
+  }
+  
+  async getCountryByCode(code: string): Promise<Country | undefined> {
+    return Array.from(this.countries.values()).find(
+      (country) => country.code === code
+    );
+  }
+  
+  async getAllCountries(): Promise<Country[]> {
+    return Array.from(this.countries.values());
+  }
+  
+  async getActiveCountries(): Promise<Country[]> {
+    return Array.from(this.countries.values()).filter(
+      (country) => country.isActive
+    );
+  }
+  
+  async updateCountry(id: number, data: Partial<Country>): Promise<Country | undefined> {
+    const country = await this.getCountry(id);
+    if (!country) {
+      return undefined;
+    }
+    
+    const updatedCountry = { ...country, ...data };
+    this.countries.set(id, updatedCountry);
+    return updatedCountry;
+  }
+  
+  // AI Chat methods
+  async createAiChat(chat: InsertAiChat): Promise<AiChat> {
+    const id = this.currentAiChatId++;
+    const newChat: AiChat = {
+      id,
+      ...chat,
+      createdAt: new Date()
+    };
+    
+    this.aiChats.set(id, newChat);
+    return newChat;
+  }
+  
+  async getUserChats(userId: number): Promise<AiChat[]> {
+    return Array.from(this.aiChats.values())
+      .filter(chat => chat.userId === userId)
+      .sort((a, b) => {
+        // Sort by created date, newest first
+        const aTime = a.createdAt ? a.createdAt.getTime() : 0;
+        const bTime = b.createdAt ? b.createdAt.getTime() : 0;
+        return bTime - aTime;
+      });
   }
 }
 

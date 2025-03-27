@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, timestamp, doublePrecision } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, doublePrecision, json } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -134,6 +134,76 @@ export const insertActivitySchema = createInsertSchema(activities).omit({
   createdAt: true
 });
 
+// Marketplace Products schema
+export const products = pgTable("products", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  price: doublePrecision("price").notNull(),
+  category: text("category").notNull(),
+  images: text("images").array().notNull(),
+  status: text("status").default("active").notNull(),
+  isAdminApproved: boolean("is_admin_approved").default(false).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertProductSchema = createInsertSchema(products).omit({
+  id: true,
+  isAdminApproved: true,
+  status: true,
+  createdAt: true,
+  updatedAt: true
+});
+
+// Services schema (WhatsApp, Telegram, etc.)
+export const services = pgTable("services", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  description: text("description").notNull(),
+  icon: text("icon").notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertServiceSchema = createInsertSchema(services).omit({
+  id: true,
+  isActive: true,
+  createdAt: true
+});
+
+// Countries schema
+export const countries = pgTable("countries", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  code: text("code").notNull().unique(),
+  flag: text("flag").notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertCountrySchema = createInsertSchema(countries).omit({
+  id: true,
+  isActive: true,
+  createdAt: true
+});
+
+// Customer Service AI Chats
+export const aiChats = pgTable("ai_chats", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull(),
+  message: text("message").notNull(),
+  response: text("response").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertAiChatSchema = createInsertSchema(aiChats).omit({
+  id: true,
+  createdAt: true
+});
+
 // Export types
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -154,3 +224,15 @@ export type Setting = typeof settings.$inferSelect;
 
 export type Activity = typeof activities.$inferSelect;
 export type InsertActivity = z.infer<typeof insertActivitySchema>;
+
+export type Product = typeof products.$inferSelect;
+export type InsertProduct = z.infer<typeof insertProductSchema>;
+
+export type Service = typeof services.$inferSelect;
+export type InsertService = z.infer<typeof insertServiceSchema>;
+
+export type Country = typeof countries.$inferSelect;
+export type InsertCountry = z.infer<typeof insertCountrySchema>;
+
+export type AiChat = typeof aiChats.$inferSelect;
+export type InsertAiChat = z.infer<typeof insertAiChatSchema>;
