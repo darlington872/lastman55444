@@ -36,6 +36,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   setupAuth(app);
   
   // Health check endpoint for Koyeb
+  router.get('/api/health', (req: Request, res: Response) => {
+    res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+  });
+  
+  // Alias the health check at the root path as well for local testing
   router.get('/health', (req: Request, res: Response) => {
     res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
   });

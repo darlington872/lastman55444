@@ -35,6 +35,8 @@ service:
     - key: KOYEB_HOST
       value: "true"
     - key: SESSION_SECRET
-      value: "ETHERDOXSHEFZYSMSSecureKey2025!"
+      value: ${SESSION_SECRET}
     - key: DATABASE_URL
-      value: "postgresql://demon:CK7n1R98DvUxYr-9uH15ng@foiled-parrot-5434.jxf.gcp-europe-west3.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full"
+      value: ${DATABASE_URL}
+    - key: BASE_URL
+      value: ${BASE_URL}

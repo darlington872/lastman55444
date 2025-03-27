@@ -33,8 +33,8 @@ async function comparePasswords(supplied: string, stored: string) {
 }
 
 // Create a database connection for sessions
-const dbUrl = process.env.DATABASE_URL || "postgresql://demon:CK7n1R98DvUxYr-9uH15ng@foiled-parrot-5434.jxf.gcp-europe-west3.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full";
-// For CockroachDB connection
+const dbUrl = process.env.DATABASE_URL;
+// Make sure DATABASE_URL is set in the environment variables
 
 export function setupAuth(app: Express) {
   let sessionStore;
