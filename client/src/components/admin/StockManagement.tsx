@@ -145,7 +145,7 @@ const StockManagement: React.FC = () => {
           number,
           country,
           price: parsedPrice,
-          serviceType: service,
+          service: service,
           notes
         });
       }
@@ -434,7 +434,7 @@ const StockManagement: React.FC = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm">
                         <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-md bg-indigo-900/40 text-indigo-300 border border-indigo-700/30">
-                          {pn.serviceType || "WhatsApp"}
+                          {pn.service || "WhatsApp"}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-purple-100">
@@ -490,7 +490,7 @@ const StockManagement: React.FC = () => {
                                 country: editingNumber.country,
                                 price: editingNumber.price,
                                 isAvailable: editingNumber.isAvailable,
-                                serviceType: editingNumber.serviceType
+                                service: editingNumber.service
                               })}
                               className="bg-purple-700 hover:bg-purple-600 text-white border-none"
                             >
