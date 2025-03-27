@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation, useRouter } from "wouter";
+import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/useAuth";
 
 interface ProtectedRouteProps {
@@ -7,14 +7,14 @@ interface ProtectedRouteProps {
 }
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const [, navigate] = useRouter();
+  const [, setLocation] = useLocation();
   const { user, isLoading } = useAuth();
 
   React.useEffect(() => {
     if (!isLoading && !user) {
-      navigate("/login", { replace: true });
+      setLocation("/login");
     }
-  }, [user, isLoading, navigate]);
+  }, [user, isLoading, setLocation]);
 
   if (isLoading) {
     return (
@@ -32,18 +32,18 @@ interface AdminRouteProps {
 }
 
 export const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
-  const [, navigate] = useRouter();
+  const [, setLocation] = useLocation();
   const { user, isLoading } = useAuth();
 
   React.useEffect(() => {
     if (!isLoading) {
       if (!user) {
-        navigate("/login", { replace: true });
+        setLocation("/login");
       } else if (!user.isAdmin) {
-        navigate("/dashboard", { replace: true });
+        setLocation("/dashboard");
       }
     }
-  }, [user, isLoading, navigate]);
+  }, [user, isLoading, setLocation]);
 
   if (isLoading) {
     return (
