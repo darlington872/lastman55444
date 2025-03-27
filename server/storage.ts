@@ -9,11 +9,25 @@ import {
   Product, InsertProduct,
   Service, InsertService,
   Country, InsertCountry,
-  AiChat, InsertAiChat
+  AiChat, InsertAiChat,
+  users,
+  phoneNumbers,
+  orders,
+  payments,
+  kyc,
+  activities,
+  settings,
+  products,
+  services,
+  countries,
+  aiChats
 } from "@shared/schema";
 import { nanoid } from "nanoid";
 import session from "express-session";
 import createMemoryStore from "memorystore";
+import connectPg from "connect-pg-simple";
+import { db, pool } from "./db";
+import { eq, desc, and, asc } from "drizzle-orm";
 
 export interface IStorage {
   // Session store for authentication
@@ -833,4 +847,7 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+import { DatabaseStorage } from "./databaseStorage";
+
+// Use DatabaseStorage implementation with CockroachDB
+export const storage = new DatabaseStorage();
