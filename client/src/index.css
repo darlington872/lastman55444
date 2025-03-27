@@ -77,7 +77,62 @@
   
   /* Override any white cards */
   .card {
-    @apply bg-card shadow-xl border-purple-900/40 !important;
+    @apply shadow-xl border-purple-900/40 !important;
+    background: linear-gradient(135deg, rgba(10, 10, 18, 0.95), rgba(45, 0, 90, 0.9)) !important;
+  }
+  
+  /* Add vibrant gradient cards */
+  .vibrant-card {
+    @apply shadow-xl border-purple-600/40 rounded-lg overflow-hidden !important;
+    background: linear-gradient(135deg, rgba(65, 0, 130, 0.9), rgba(10, 10, 18, 0.95)) !important;
+    animation: gradientShift 15s ease infinite;
+  }
+  
+  .vibrant-card-alt {
+    @apply shadow-xl border-blue-700/40 rounded-lg overflow-hidden !important;
+    background: linear-gradient(135deg, rgba(30, 0, 60, 0.9), rgba(90, 20, 180, 0.8)) !important;
+    animation: gradientShift 15s ease infinite;
+  }
+  
+  .glowing-card {
+    @apply shadow-2xl border-purple-500/20 rounded-lg overflow-hidden !important;
+    background: linear-gradient(135deg, rgba(25, 0, 50, 0.9), rgba(60, 0, 120, 0.8)) !important;
+    animation: pulse 3s ease infinite;
+    position: relative;
+  }
+  
+  .glowing-card::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    z-index: -1;
+    background: linear-gradient(45deg, #ff00cc, #3300ff, #8a00c2, #ff00dd);
+    background-size: 400% 400%;
+    border-radius: inherit;
+    animation: gradientBorder 10s ease infinite;
+    filter: blur(10px);
+    opacity: 0.5;
+  }
+  
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  @keyframes pulse {
+    0% { box-shadow: 0 0 10px rgba(138, 43, 226, 0.5); }
+    50% { box-shadow: 0 0 20px rgba(138, 43, 226, 0.8); }
+    100% { box-shadow: 0 0 10px rgba(138, 43, 226, 0.5); }
+  }
+  
+  @keyframes gradientBorder {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
   }
   
   /* Override form elements to ensure dark theme */
@@ -109,8 +164,87 @@
     background-image: linear-gradient(to right, hsl(270, 100%, 70%), hsl(270, 100%, 50%));
   }
   
+  .vibrant-gradient-text {
+    @apply text-transparent bg-clip-text;
+    background-image: linear-gradient(to right, #ff00cc, #3300ff, #8a00c2);
+    background-size: 200% auto;
+    animation: textShine 5s linear infinite;
+  }
+  
+  .neon-text {
+    @apply text-transparent bg-clip-text font-bold;
+    background-image: linear-gradient(to right, #f0f, #00f, #f0f);
+    background-size: 200% auto;
+    animation: textShine 3s linear infinite;
+    text-shadow: 0 0 5px rgba(255, 0, 255, 0.5), 
+                 0 0 10px rgba(255, 0, 255, 0.3), 
+                 0 0 15px rgba(255, 0, 255, 0.1);
+  }
+  
+  .rainbow-text {
+    @apply text-transparent bg-clip-text;
+    background-image: linear-gradient(to right, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080);
+    background-size: 1000% auto;
+    animation: rainbowShine 10s linear infinite;
+  }
+  
+  @keyframes textShine {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+  
+  @keyframes rainbowShine {
+    0% { background-position: 0% center; }
+    100% { background-position: 1000% center; }
+  }
+  
   .stats-circle {
     @apply relative rounded-full flex items-center justify-center;
     background: conic-gradient(from 0deg, hsl(270, 100%, 50%) var(--percentage, 75%), rgba(40, 0, 80, 0.2) 0);
+    box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+    position: relative;
+  }
+  
+  .stats-circle::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    bottom: -3px;
+    left: -3px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #ff00cc, #3300ff, #8a00c2, #ff00dd);
+    background-size: 400% 400%;
+    z-index: -1;
+    filter: blur(8px);
+    animation: gradientBorder 10s ease infinite;
+    opacity: 0.7;
+  }
+  
+  .stats-circle-vibrant {
+    @apply relative rounded-full flex items-center justify-center;
+    background: conic-gradient(from 0deg, 
+                #ff00cc var(--percentage, 25%), 
+                #3300ff var(--percentage, 25%), 
+                rgba(40, 0, 80, 0.2) var(--percentage-double, 50%));
+    box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+  }
+  
+  .stats-value {
+    @apply text-center font-bold;
+    background: linear-gradient(to right, #ff00cc, #3300ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: pulse 3s infinite;
+  }
+  
+  .floating {
+    animation: floating 3s ease-in-out infinite;
+  }
+  
+  @keyframes floating {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
   }
 }

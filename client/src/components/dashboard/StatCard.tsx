@@ -26,37 +26,53 @@ const StatCard: React.FC<StatCardProps> = ({
   progress,
   actionLink,
 }) => {
-  const colorClasses = {
+  const colorStyles = {
     primary: {
-      iconBg: "bg-primary-100 text-primary-800",
+      iconBg: "bg-gradient-to-br from-purple-600 to-indigo-700",
+      cardBg: "vibrant-card",
+      valueClass: "vibrant-gradient-text",
+      progressBg: "bg-gradient-to-r from-purple-500 to-indigo-600",
+      linkClass: "text-purple-400 hover:text-purple-300",
     },
     success: {
-      iconBg: "bg-success-100 text-success-500",
+      iconBg: "bg-gradient-to-br from-green-500 to-emerald-700",
+      cardBg: "vibrant-card-alt",
+      valueClass: "rainbow-text",
+      progressBg: "bg-gradient-to-r from-green-500 to-emerald-600",
+      linkClass: "text-emerald-400 hover:text-emerald-300",
     },
     warning: {
-      iconBg: "bg-warning-100 text-warning-500",
+      iconBg: "bg-gradient-to-br from-amber-500 to-orange-700",
+      cardBg: "glowing-card",
+      valueClass: "neon-text",
+      progressBg: "bg-gradient-to-r from-amber-500 to-orange-600",
+      linkClass: "text-amber-400 hover:text-amber-300", 
     },
     danger: {
-      iconBg: "bg-danger-100 text-danger-500",
+      iconBg: "bg-gradient-to-br from-red-500 to-pink-700",
+      cardBg: "vibrant-card",
+      valueClass: "vibrant-gradient-text",
+      progressBg: "bg-gradient-to-r from-red-500 to-pink-600",
+      linkClass: "text-red-400 hover:text-red-300",
     },
   };
 
-  const iconClasses = colorClasses[color]?.iconBg || colorClasses.primary.iconBg;
+  const style = colorStyles[color];
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div className={`${style.cardBg} p-6 relative overflow-hidden`}>
       <div className="flex items-center">
-        <div className={`p-3 rounded-full ${iconClasses}`}>{icon}</div>
+        <div className={`p-3 rounded-full text-white ${style.iconBg}`}>{icon}</div>
         <div className="ml-4">
-          <p className="text-sm text-gray-500 font-medium">{title}</p>
-          <p className="text-xl font-semibold text-gray-800">{value}</p>
+          <p className="text-sm text-gray-300 font-medium">{title}</p>
+          <p className={`text-xl font-bold ${style.valueClass}`}>{value}</p>
         </div>
       </div>
       {progress && (
         <div className="mt-4">
-          <div className="bg-gray-100 h-1 rounded-full">
+          <div className="bg-gray-800/50 h-2 rounded-full overflow-hidden">
             <div
-              className="bg-primary-500 h-1 rounded-full"
+              className={`${style.progressBg} h-2 rounded-full`}
               style={{
                 width: `${Math.min(
                   100,
@@ -65,22 +81,22 @@ const StatCard: React.FC<StatCardProps> = ({
               }}
             ></div>
           </div>
-          <p className="text-sm text-gray-500 mt-1">{progress.label}</p>
+          <p className="text-sm text-gray-300 mt-1">{progress.label}</p>
         </div>
       )}
       {subtitle && <div className="mt-4">
-        <p className="text-sm text-gray-500">{subtitle}</p>
+        <p className="text-sm text-gray-300">{subtitle}</p>
       </div>}
       {actionLink && (
         <div className="mt-4">
           <a
             href={actionLink.url}
-            className="text-sm text-primary-600 hover:text-primary-700"
+            className={`text-sm ${style.linkClass} flex items-center w-fit`}
           >
             {actionLink.text}{" "}
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-3 w-3 inline ml-1"
+              className="h-3 w-3 ml-1"
               viewBox="0 0 20 20"
               fill="currentColor"
             >

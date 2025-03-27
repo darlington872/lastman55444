@@ -96,16 +96,18 @@ export function EthervoxAI() {
         </div>
       </div>
       
-      <div className="flex items-start gap-2">
-        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-purple-700 to-indigo-900 flex items-center justify-center">
-          <Bot className="h-4 w-4 text-white" />
-        </div>
-        <div className="flex-1">
-          <div className="p-3 rounded-lg bg-gradient-to-r from-gray-900/60 to-purple-950/60 backdrop-blur-sm border border-purple-800/30 text-white">
-            {chat.response}
+      {chat.response && (
+        <div className="flex items-start gap-2">
+          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-purple-700 to-indigo-900 flex items-center justify-center">
+            <Bot className="h-4 w-4 text-white" />
+          </div>
+          <div className="flex-1">
+            <div className="p-3 rounded-lg bg-gradient-to-r from-gray-900/60 to-purple-950/60 backdrop-blur-sm border border-purple-800/30 text-white">
+              {chat.response}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
   
