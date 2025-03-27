@@ -14,7 +14,9 @@ import {
   Sparkles, 
   CircleDollarSign,
   Lock,
-  Smartphone
+  Smartphone,
+  Users,
+  Globe2
 } from "lucide-react";
 
 const RegisterPage: React.FC = () => {
@@ -28,12 +30,19 @@ const RegisterPage: React.FC = () => {
     }
   }, [user]);
 
-  // Fake platform benefits
+  // Platform benefits
   const benefits = [
-    { title: "Premium Numbers", description: "Access to exclusive WhatsApp numbers from 90+ countries", icon: Smartphone },
+    { title: "Premium Numbers", description: "Access to exclusive virtual numbers from 90+ countries", icon: Smartphone },
     { title: "Instant Activation", description: "Numbers are delivered and activated within minutes", icon: Zap },
     { title: "Earn With Referrals", description: "Get ₦100 for each user you refer to our platform", icon: CircleDollarSign },
     { title: "24/7 Support", description: "Get help anytime with our ETHERVOX AI assistant", icon: Headphones },
+  ];
+
+  // Platform stats for trust signals
+  const stats = [
+    { label: "Active Users", value: "12,451+", icon: Users },
+    { label: "Global Reach", value: "90+ Countries", icon: Globe2 },
+    { label: "Success Rate", value: "98%", icon: BadgeCheck },
   ];
 
   return (
@@ -42,8 +51,34 @@ const RegisterPage: React.FC = () => {
       
       <div className="flex-1 overflow-hidden bg-black">
         <div className="overflow-auto h-screen">
-          <div className="container mx-auto px-4 py-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div className="container mx-auto px-4 py-6">
+            {/* Site Name - First Element */}
+            <div className="text-center mb-8">
+              <h1 className="text-5xl lg:text-6xl font-extrabold mb-4 vibrant-gradient-text">
+                ETHERDOXSHEFZYSMS
+              </h1>
+              <p className="text-xl text-purple-300 mb-4">Premium virtual number marketplace with integrated rewards system</p>
+            </div>
+            
+            {/* Trust Signals - Second Element */}
+            <div className="glowing-card p-4 mb-10 max-w-4xl mx-auto">
+              <h3 className="text-xl font-bold mb-3 rainbow-text text-center">Platform Statistics</h3>
+              <div className="flex flex-wrap justify-center gap-6 mb-4">
+                {stats.map((stat, index) => (
+                  <div key={index} className="text-center">
+                    <div className="stats-circle-vibrant w-20 h-20 mx-auto mb-2" style={{ "--percentage": "95%" } as React.CSSProperties}>
+                      <div className="absolute inset-2 rounded-full bg-gray-900 flex items-center justify-center">
+                        <stat.icon className="h-6 w-6 text-white" />
+                      </div>
+                    </div>
+                    <h3 className="text-white font-bold stats-value text-lg">{stat.value}</h3>
+                    <p className="text-purple-300 text-sm">{stat.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
               {/* Register Form */}
               <div className="md:order-2">
                 <div className="max-w-md mx-auto">
@@ -54,10 +89,10 @@ const RegisterPage: React.FC = () => {
               {/* Hero Content */}
               <div className="md:order-1 space-y-6">
                 <div>
-                  <h1 className="text-4xl lg:text-5xl font-extrabold mb-4">
-                    <span className="neon-text">Join ETHERDOXSHEFZYSMS</span>
-                  </h1>
-                  <p className="text-xl text-purple-300 mb-8">Create your account and get instant access to premium virtual numbers with our reward program.</p>
+                  <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+                    <span className="neon-text">Join Our Platform</span>
+                  </h2>
+                  <p className="text-lg text-purple-300 mb-6">Create your account and get instant access to premium virtual numbers with our reward program.</p>
                 </div>
                 
                 {/* Benefits */}
@@ -75,40 +110,6 @@ const RegisterPage: React.FC = () => {
                       </div>
                     </div>
                   ))}
-                </div>
-                
-                {/* Trust Signals */}
-                <div className="glowing-card p-5 mt-6">
-                  <h3 className="text-xl font-bold mb-4 rainbow-text text-center">Why Users Trust Us</h3>
-                  
-                  <div className="flex flex-wrap justify-center gap-6 mb-4">
-                    <div className="text-center">
-                      <div className="stats-circle w-20 h-20 mx-auto mb-2" style={{ "--percentage": "98%" } as React.CSSProperties}>
-                        <div className="absolute inset-[3px] rounded-full bg-gray-900 flex items-center justify-center">
-                          <p className="text-lg font-bold text-white">98%</p>
-                        </div>
-                      </div>
-                      <p className="text-purple-300 text-sm">Success Rate</p>
-                    </div>
-                    
-                    <div className="text-center">
-                      <div className="stats-circle w-20 h-20 mx-auto mb-2" style={{ "--percentage": "100%" } as React.CSSProperties}>
-                        <div className="absolute inset-[3px] rounded-full bg-gray-900 flex items-center justify-center">
-                          <p className="text-lg font-bold text-white">100%</p>
-                        </div>
-                      </div>
-                      <p className="text-purple-300 text-sm">Secure</p>
-                    </div>
-                    
-                    <div className="text-center">
-                      <div className="stats-circle w-20 h-20 mx-auto mb-2" style={{ "--percentage": "90%" } as React.CSSProperties}>
-                        <div className="absolute inset-[3px] rounded-full bg-gray-900 flex items-center justify-center">
-                          <p className="text-lg font-bold text-white">24/7</p>
-                        </div>
-                      </div>
-                      <p className="text-purple-300 text-sm">Support</p>
-                    </div>
-                  </div>
                 </div>
                 
                 {/* Feature Badges */}
