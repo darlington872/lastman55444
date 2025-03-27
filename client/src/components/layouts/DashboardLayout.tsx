@@ -41,6 +41,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     };
   }, [mobileSidebarOpen, isMobile]);
 
+  // Toggle sidebar function with console log for debugging
+  const toggleSidebar = () => {
+    console.log("Toggle sidebar clicked. Current state:", mobileSidebarOpen);
+    setMobileSidebarOpen(prevState => !prevState);
+  };
+
   return (
     <div className="min-h-screen flex bg-black font-sans antialiased">
       {/* Backdrop overlay for mobile menu */}
@@ -62,8 +68,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         <div className="md:hidden bg-black border-b border-purple-600/40 p-4 flex items-center justify-between backdrop-blur-md bg-opacity-80 shadow-md sticky top-0 z-30">
           <div className="flex items-center">
             <button
-              onClick={() => setMobileSidebarOpen(true)}
-              className="text-white hover:text-purple-400 mr-3 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500/50 p-1 rounded-md"
+              onClick={toggleSidebar}
+              type="button"
+              aria-label="Toggle menu"
+              className="text-white hover:text-purple-400 mr-3 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500/50 p-2 rounded-md bg-purple-900/20"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
