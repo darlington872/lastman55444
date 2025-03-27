@@ -17,6 +17,7 @@ import AdminBroadcast from "@/pages/admin/broadcast";
 import AdminSettings from "@/pages/admin/settings";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ProtectedRoute, AdminRoute } from "@/components/auth/ProtectedRoute";
+import { EthervoxAI } from "@/components/ui/ethervox-ai";
 
 function Router() {
   return (
@@ -96,6 +97,7 @@ function App() {
       <AuthProvider>
         <Router />
         <Toaster />
+        <EthervoxAI />
       </AuthProvider>
     </QueryClientProvider>
   );

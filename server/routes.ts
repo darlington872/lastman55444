@@ -1090,10 +1090,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // AI Chat Routes
   router.post('/ai-chat', authenticate, handleErrors(async (req: Request, res: Response) => {
-    const chatData = insertAiChatSchema.parse({
-      ...req.body,
-      userId: req.userId
-    });
+    const { message } = req.body;
+    
+    if (!message) {
+      return res.status(400).json({ error: 'Message is required' });
+    }
     
     const user = await storage.getUser(req.userId!);
     
@@ -1101,17 +1102,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.status(404).json({ message: "User not found" });
     }
     
-    // For a real implementation, this would call an AI service
-    // For now, we'll just echo back a predefined response
+    // Generate AI response based on keywords in the message
+    let response = "I'm ETHERVOX AI, your virtual assistant. How can I help you today?";
+    const lowerMessage = message.toLowerCase();
     
-    // Create the chat record
-    const newChat = await storage.createAiChat(chatData);
+    // Match keywords to provide relevant responses
+    if (lowerMessage.includes('referral') || lowerMessage.includes('refer')) {
+      response = "Our referral program is simple! You earn ₦100 for each new user you refer. Just share your unique referral link from your dashboard. The earnings go directly to your referral wallet which you can withdraw at any time!";
+    } 
+    else if (lowerMessage.includes('payment') || lowerMessage.includes('pay') || lowerMessage.includes('transfer')) {
+      response = "We accept multiple payment methods: Bank transfer to account 8121320468 (Opay, Keno Darlington Avwunudiogba), wallet balance, and direct Opay transfers. After payment, your order will be processed immediately!";
+    } 
+    else if (lowerMessage.includes('whatsapp') || lowerMessage.includes('number')) {
+      response = "Our WhatsApp numbers are sourced from trusted providers and delivered instantly after payment confirmation. After purchase, you'll receive the number and activation code. Numbers can be used for WhatsApp, Telegram, Signal, WeChat and other messaging apps!";
+    } 
+    else if (lowerMessage.includes('kyc') || lowerMessage.includes('verify') || lowerMessage.includes('verification')) {
+      response = "KYC verification is required to unlock all platform features. Go to the KYC page from your dashboard, upload your ID (front and back) and a selfie. Our team reviews submissions within 24 hours. Approved users can access referral rewards and higher purchasing limits!";
+    } 
+    else if (lowerMessage.includes('problem') || lowerMessage.includes('issue') || lowerMessage.includes('help')) {
+      response = "I'm sorry you're experiencing issues! For technical support, please describe your problem in detail. For payment issues, contact us at support@etherdoxshefzysms.com or message our admin on WhatsApp at +234 708 850 1777.";
+    } 
+    else if (lowerMessage.includes('price') || lowerMessage.includes('cost') || lowerMessage.includes('expensive')) {
+      response = "Our number prices vary based on country and service type. Nigerian numbers start at ₦1,500, while US and UK numbers start at ₦3,500. Bulk discounts are available for purchases of 5 or more numbers. Check our store for current pricing and special offers!";
+    } 
+    else if (lowerMessage.includes('wallet') || lowerMessage.includes('balance') || lowerMessage.includes('withdraw')) {
+      response = "You have two wallet types: your main balance for purchases and your referral wallet for referral earnings. You can withdraw from your referral wallet once you reach ₦1,000. Withdrawals are processed within 24 hours to your specified bank account.";
+    } 
+    else if (lowerMessage.includes('country') || lowerMessage.includes('nigeria') || lowerMessage.includes('international')) {
+      response = "We offer numbers from multiple countries including Nigeria, Indonesia, United States, United Kingdom, Canada, Australia, Germany, France, Brazil, India, and China. Each country has different pricing and availability. Check our store for current inventory!";
+    } 
+    else if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+      response = "Hello! Welcome to ETHERDOXSHEFZYSMS. I'm ETHERVOX AI, your personal assistant. How may I help you today? Feel free to ask about our services, payment methods, or referral program!";
+    } 
+    else if (lowerMessage.includes('thank')) {
+      response = "You're welcome! I'm glad I could help. If you have any other questions, feel free to ask. We appreciate your business and trust in ETHERDOXSHEFZYSMS!";
+    }
     
-    // Send a simple response
-    res.status(201).json({
-      ...newChat,
-      response: `Thank you for your message: "${chatData.message}". Our customer service AI is here to help you with any questions about our services. How can I assist you today?`
+    // Create the chat record with the response
+    const newChat = await storage.createAiChat({
+      userId: req.userId!,
+      message,
+      response
     });
+    
+    // Send response
+    res.status(201).json(newChat);
   }));
   
   router.get('/ai-chat', authenticate, handleErrors(async (req: Request, res: Response) => {

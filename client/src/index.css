@@ -2,6 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom scrollbar styles */
+@layer utilities {
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgb(88, 28, 135);
+    border-radius: 4px;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: rgb(107, 33, 168);
+  }
+  
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(88, 28, 135) rgba(0, 0, 0, 0.2);
+  }
+  
+  .scrollbar-thumb-purple-800::-webkit-scrollbar-thumb {
+    background: rgb(107, 33, 168);
+  }
+  
+  .scrollbar-track-gray-900\/30::-webkit-scrollbar-track {
+    background: rgba(17, 24, 39, 0.3);
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 0%;
