@@ -3,20 +3,62 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 270 100% 95%;
+    --card: 0 0% 3%;
+    --card-foreground: 270 100% 95%;
+    --popover: 0 0% 3%;
+    --popover-foreground: 270 100% 95%;
+    --primary: 270 100% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 270 70% 10%;
+    --secondary-foreground: 270 100% 95%;
+    --muted: 270 70% 8%;
+    --muted-foreground: 270 60% 70%;
+    --accent: 270 70% 15%;
+    --accent-foreground: 270 100% 95%;
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 270 100% 95%;
+    --border: 270 60% 20%;
+    --input: 270 60% 20%;
+    --ring: 270 100% 50%;
+  }
+
   * {
     @apply border-border;
   }
 
   body {
     @apply font-sans antialiased text-foreground;
-    background: linear-gradient(135deg, hsl(270, 70%, 5%) 0%, hsl(270, 50%, 15%) 100%);
+    background: black;
     background-attachment: fixed;
+  }
+
+  /* Remove any white backgrounds that might be added by components */
+  div, section, main, header, footer, nav, aside {
+    background-color: transparent !important;
+  }
+  
+  /* Override any white cards */
+  .card {
+    @apply bg-card shadow-xl border-purple-900/40 !important;
+  }
+  
+  /* Override form elements to ensure dark theme */
+  input, textarea, select {
+    @apply bg-muted border-border !important;
+  }
+  
+  /* Override white dialogs */
+  [role="dialog"] {
+    @apply bg-black border border-purple-900/40 !important;
   }
 }
 
 @layer components {
   .glass-effect {
-    @apply bg-black/20 backdrop-blur-md border border-white/10 shadow-lg;
+    @apply bg-black backdrop-blur-md border border-purple-900/40 shadow-lg;
   }
   
   .glass-card {
@@ -29,11 +71,11 @@
   
   .purple-gradient-text {
     @apply text-transparent bg-clip-text;
-    background-image: linear-gradient(to right, #c471ed, #f64f59);
+    background-image: linear-gradient(to right, hsl(270, 100%, 70%), hsl(270, 100%, 50%));
   }
   
   .stats-circle {
     @apply relative rounded-full flex items-center justify-center;
-    background: conic-gradient(from 0deg, hsl(270, 100%, 50%) var(--percentage, 75%), transparent 0);
+    background: conic-gradient(from 0deg, hsl(270, 100%, 50%) var(--percentage, 75%), rgba(40, 0, 80, 0.2) 0);
   }
 }

@@ -312,10 +312,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
       action: orderData.isReferralReward 
         ? "Claimed free number with referrals" 
         : "Purchased WhatsApp number",
-      status: "Pending"
+      status: "Completed"
     });
     
-    res.status(201).json(newOrder);
+    // Generate WhatsApp redirect URL with the number and a preformatted message
+    const whatsappNumber = "+2347088501777"; // User requested WhatsApp number (formatted for URL)
+    const message = `Hello, I just purchased a virtual number ${phoneNumber.number} from ETHERDOXSHEFZYSMS. Please process my order. My order ID is ${newOrder.id}.`;
+    const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/\+/g, '').replace(/\s+/g, '')}?text=${encodeURIComponent(message)}`;
+    
+    // Return the order with WhatsApp redirect info
+    res.status(201).json({
+      ...newOrder,
+      whatsappRedirect: {
+        url: whatsappUrl,
+        number: whatsappNumber,
+        message: message
+      }
+    });
   }));
 
   router.get('/orders', authenticate, handleErrors(async (req: Request, res: Response) => {

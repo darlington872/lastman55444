@@ -230,9 +230,19 @@ export class MemStorage implements IStorage {
       createdAt: new Date()
     });
     
-    // United States
+    // Indonesia (Added as requested)
     this.countries.set(this.currentCountryId++, {
       id: 2,
+      name: "Indonesia",
+      code: "ID",
+      flag: "🇮🇩",
+      isActive: true,
+      createdAt: new Date()
+    });
+    
+    // United States
+    this.countries.set(this.currentCountryId++, {
+      id: 3,
       name: "United States",
       code: "US",
       flag: "🇺🇸",
@@ -242,7 +252,7 @@ export class MemStorage implements IStorage {
     
     // United Kingdom
     this.countries.set(this.currentCountryId++, {
-      id: 3,
+      id: 4,
       name: "United Kingdom",
       code: "GB",
       flag: "🇬🇧",
@@ -252,7 +262,7 @@ export class MemStorage implements IStorage {
     
     // Canada
     this.countries.set(this.currentCountryId++, {
-      id: 4,
+      id: 5,
       name: "Canada",
       code: "CA",
       flag: "🇨🇦",
@@ -262,7 +272,7 @@ export class MemStorage implements IStorage {
     
     // Australia
     this.countries.set(this.currentCountryId++, {
-      id: 5,
+      id: 6,
       name: "Australia",
       code: "AU",
       flag: "🇦🇺",
@@ -272,7 +282,7 @@ export class MemStorage implements IStorage {
     
     // Germany
     this.countries.set(this.currentCountryId++, {
-      id: 6,
+      id: 7,
       name: "Germany",
       code: "DE",
       flag: "🇩🇪",
