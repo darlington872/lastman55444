@@ -118,7 +118,7 @@ const StorePage: React.FC = () => {
             <div>
               <h2 className="text-lg font-medium text-gray-800">Your Balance</h2>
               <p className="text-3xl font-bold text-gray-800 my-2">
-                ${isUserLoading ? "..." : user?.balance.toFixed(2)}
+                ₦{isUserLoading ? "..." : user?.balance.toFixed(2)}
               </p>
               <p className="text-sm text-gray-500">Need more funds? Add to your balance</p>
             </div>
@@ -214,10 +214,10 @@ const StorePage: React.FC = () => {
             </DialogHeader>
             <div className="py-4">
               <p className="text-sm text-gray-700">
-                <span className="font-medium">Price:</span> ${selectedNumber.price.toFixed(2)}
+                <span className="font-medium">Price:</span> ₦{selectedNumber.price.toFixed(2)}
               </p>
               <p className="text-sm text-gray-700">
-                <span className="font-medium">Your balance:</span> ${user?.balance.toFixed(2)}
+                <span className="font-medium">Your balance:</span> ₦{user?.balance.toFixed(2)}
               </p>
               <p className="text-sm text-gray-700 mt-4">
                 This amount will be deducted from your account balance. After purchase, the admin will provide you with the WhatsApp number and verification code.
@@ -257,7 +257,7 @@ const StorePage: React.FC = () => {
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="amount">Amount ($)</Label>
+              <Label htmlFor="amount">Amount (₦)</Label>
               <Input
                 id="amount"
                 type="number"

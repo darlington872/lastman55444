@@ -251,7 +251,7 @@ const UserManagement: React.FC = () => {
                         {user.referralCount}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                        ${user.balance.toFixed(2)}
+                        ₦{user.balance.toFixed(2)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
@@ -436,7 +436,7 @@ const UserManagement: React.FC = () => {
             </DialogHeader>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="balance">Balance ($)</Label>
+                <Label htmlFor="balance">Balance (₦)</Label>
                 <Input
                   id="balance"
                   type="number"

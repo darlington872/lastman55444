@@ -168,7 +168,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, adminMode = false })
       {user && (
         <div className="mt-auto px-4 py-2">
           <div>
-            <div className="flex items-center px-4 py-2 rounded-md bg-black border border-purple-900/40">
+            <div className="flex items-center px-4 py-2 rounded-md bg-gradient-to-br from-black to-purple-950 border border-purple-900/40">
               <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
