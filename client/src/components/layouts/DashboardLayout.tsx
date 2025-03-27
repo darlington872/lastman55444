@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "@/components/ui/sidebar";
+import BottomNav from "@/components/ui/bottom-nav";
 import { useAuth } from "@/hooks/useAuth";
 
 interface DashboardLayoutProps {
@@ -52,11 +53,14 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
   return (
     <div className="min-h-screen flex bg-black font-sans antialiased">
-      <Sidebar 
-        isOpen={sidebarOpen} 
-        onClose={closeSidebar} 
-        adminMode={adminMode} 
-      />
+      {/* Use sidebar on larger screens */}
+      <div className="hidden md:block">
+        <Sidebar 
+          isOpen={sidebarOpen} 
+          onClose={closeSidebar} 
+          adminMode={adminMode} 
+        />
+      </div>
       
       <div className="flex-1 overflow-hidden">
         {/* Mobile Header */}
@@ -95,7 +99,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           )}
         </div>
 
-        {/* Content Area */}
+        {/* Content Area - Added bottom padding on mobile for the bottom nav */}
         <div className="overflow-auto h-screen md:h-auto pb-24 pt-0 md:pt-6 px-3 md:px-6 bg-black text-white">
           <div className="py-4 md:py-6">
             <div className="flex flex-wrap justify-between items-center mb-6">
@@ -106,10 +110,22 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 </span>
               )}
             </div>
-            <div className="space-y-6">
+            <div className="space-y-6 pb-16 md:pb-0">
               {children}
             </div>
           </div>
+        </div>
+        
+        {/* Bottom Navigation for Mobile */}
+        <BottomNav />
+        
+        {/* Sidebar for mobile - only shown when toggled */}
+        <div className="md:hidden">
+          <Sidebar 
+            isOpen={sidebarOpen} 
+            onClose={closeSidebar} 
+            adminMode={adminMode} 
+          />
         </div>
       </div>
     </div>
