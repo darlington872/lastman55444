@@ -27,10 +27,13 @@ const StockManagement: React.FC = () => {
   
   const [country, setCountry] = useState("");
   const [price, setPrice] = useState("");
+  const [service, setService] = useState("WhatsApp");
   const [numbers, setNumbers] = useState("");
+  const [stockCount, setStockCount] = useState("1");
   const [notes, setNotes] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingNumber, setEditingNumber] = useState<PhoneNumber | null>(null);
+  const [bulkMode, setBulkMode] = useState(false);
 
   // Count available numbers by country
   const countryStats = React.useMemo(() => {
@@ -82,11 +85,47 @@ const StockManagement: React.FC = () => {
       return;
     }
 
-    // Split numbers by line
-    const phoneNumbersList = numbers
-      .split("\n")
-      .map(n => n.trim())
-      .filter(n => n.length > 0);
+    let phoneNumbersList: string[] = [];
+    
+    if (bulkMode) {
+      // Handle bulk mode
+      const baseNumber = numbers.trim();
+      const count = parseInt(stockCount);
+      
+      if (!baseNumber.match(/^\+?[0-9]+$/)) {
+        toast({
+          title: "Invalid Base Number",
+          description: "Please enter a valid phone number with country code",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      if (isNaN(count) || count <= 0 || count > 100) {
+        toast({
+          title: "Invalid Count",
+          description: "Please enter a valid count between 1 and 100",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // Extract the numerical part to increment
+      const baseDigits = baseNumber.replace(/\D/g, '');
+      const countryCode = baseNumber.replace(baseDigits, '');
+      
+      // Generate sequential numbers
+      for (let i = 0; i < count; i++) {
+        const incrementedDigits = (parseInt(baseDigits) + i).toString().padStart(baseDigits.length, '0');
+        phoneNumbersList.push(`${countryCode}${incrementedDigits}`);
+      }
+    } else {
+      // Regular mode - split numbers by line
+      phoneNumbersList = numbers
+        .split("\n")
+        .map(n => n.trim())
+        .filter(n => n.length > 0);
+    }
 
     if (phoneNumbersList.length === 0) {
       toast({
@@ -106,6 +145,8 @@ const StockManagement: React.FC = () => {
           number,
           country,
           price: parsedPrice,
+          serviceType: service,
+          notes
         });
       }
       
@@ -114,13 +155,16 @@ const StockManagement: React.FC = () => {
       setPrice("");
       setNumbers("");
       setNotes("");
+      if (bulkMode) {
+        setStockCount("1");
+      }
       
       // Invalidate and refetch the phone numbers query
       queryClient.invalidateQueries({ queryKey: ['/api/admin/phone-numbers'] });
       
       toast({
         title: "Numbers Added",
-        description: `Successfully added ${phoneNumbersList.length} phone numbers to inventory`,
+        description: `Successfully added ${phoneNumbersList.length} phone numbers to inventory`
       });
     } catch (error) {
       toast({
@@ -199,10 +243,10 @@ const StockManagement: React.FC = () => {
     <>
       {/* Stock Overview */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <Card>
-          <CardContent className="p-6">
+        <Card className="bg-black border border-purple-600/30 backdrop-blur-md shadow-lg overflow-hidden">
+          <CardContent className="p-6 bg-gradient-to-br from-black via-purple-950/20 to-black">
             <div className="flex items-center">
-              <div className="p-3 rounded-full bg-warning-100 text-warning-500">
+              <div className="p-3 rounded-full bg-purple-800/30 text-purple-300 border border-purple-600/20 shadow-inner">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6"
@@ -219,8 +263,8 @@ const StockManagement: React.FC = () => {
                 </svg>
               </div>
               <div className="ml-4">
-                <p className="text-sm text-gray-500 font-medium">Total Stock</p>
-                <p className="text-xl font-semibold text-gray-800">
+                <p className="text-sm text-purple-300 font-medium">Total Stock</p>
+                <p className="text-xl font-bold vibrant-gradient-text">
                   {isLoading ? "Loading..." : totalAvailable}
                 </p>
               </div>
@@ -228,10 +272,10 @@ const StockManagement: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-6">
+        <Card className="bg-black border border-indigo-600/30 backdrop-blur-md shadow-lg overflow-hidden">
+          <CardContent className="p-6 bg-gradient-to-br from-black via-indigo-950/20 to-black">
             <div className="flex items-center">
-              <div className="p-3 rounded-full bg-success-100 text-success-500">
+              <div className="p-3 rounded-full bg-indigo-800/30 text-indigo-300 border border-indigo-600/20 shadow-inner">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6"
@@ -248,8 +292,8 @@ const StockManagement: React.FC = () => {
                 </svg>
               </div>
               <div className="ml-4">
-                <p className="text-sm text-gray-500 font-medium">Numbers Sold</p>
-                <p className="text-xl font-semibold text-gray-800">
+                <p className="text-sm text-indigo-300 font-medium">Numbers Sold</p>
+                <p className="text-xl font-bold vibrant-gradient-text">
                   {isLoading ? "Loading..." : totalSold}
                 </p>
               </div>
@@ -257,10 +301,10 @@ const StockManagement: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-6">
+        <Card className="bg-black border border-fuchsia-600/30 backdrop-blur-md shadow-lg overflow-hidden">
+          <CardContent className="p-6 bg-gradient-to-br from-black via-fuchsia-950/20 to-black">
             <div className="flex items-center">
-              <div className="p-3 rounded-full bg-primary-100 text-primary-800">
+              <div className="p-3 rounded-full bg-fuchsia-800/30 text-fuchsia-300 border border-fuchsia-600/20 shadow-inner">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6"
@@ -277,8 +321,8 @@ const StockManagement: React.FC = () => {
                 </svg>
               </div>
               <div className="ml-4">
-                <p className="text-sm text-gray-500 font-medium">Countries</p>
-                <p className="text-xl font-semibold text-gray-800">
+                <p className="text-sm text-fuchsia-300 font-medium">Countries</p>
+                <p className="text-xl font-bold vibrant-gradient-text">
                   {isLoading ? "Loading..." : Object.keys(countryStats).length}
                 </p>
               </div>
@@ -288,15 +332,15 @@ const StockManagement: React.FC = () => {
       </div>
 
       {/* Stock Inventory */}
-      <Card className="mb-6">
-        <CardHeader className="px-6 py-4 border-b border-gray-200">
-          <CardTitle className="text-lg font-medium text-gray-800">Current Inventory</CardTitle>
+      <Card className="mb-6 bg-black border border-purple-600/30 backdrop-blur-md shadow-lg overflow-hidden">
+        <CardHeader className="px-6 py-4 border-b border-purple-600/30 bg-gradient-to-r from-purple-900/40 to-black">
+          <CardTitle className="text-lg font-medium text-white">Current Inventory</CardTitle>
         </CardHeader>
-        <CardContent className="px-6 py-4">
+        <CardContent className="p-0 bg-gradient-to-b from-black to-purple-950/10">
           {isLoading ? (
             <div className="flex justify-center py-8">
               <svg
-                className="animate-spin h-8 w-8 text-primary-500"
+                className="animate-spin h-8 w-8 text-purple-500"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -318,52 +362,58 @@ const StockManagement: React.FC = () => {
             </div>
           ) : !phoneNumbers || phoneNumbers.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-gray-500">No phone numbers in inventory yet</p>
+              <p className="text-gray-400">No phone numbers in inventory yet</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full">
+                <thead className="bg-gray-900/60 border-b border-purple-600/20">
                   <tr>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-purple-300 uppercase tracking-wider"
                     >
                       Country
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-purple-300 uppercase tracking-wider"
                     >
                       Number
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-purple-300 uppercase tracking-wider"
+                    >
+                      Service
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-purple-300 uppercase tracking-wider"
                     >
                       Price
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-purple-300 uppercase tracking-wider"
                     >
                       Status
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-purple-300 uppercase tracking-wider"
                     >
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-black divide-y divide-purple-900/20">
                   {phoneNumbers.map((pn) => (
-                    <tr key={pn.id}>
+                    <tr key={pn.id} className="hover:bg-purple-900/10">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
-                          <i className={`${getCountryIcon(pn.country)} text-gray-500 mr-2`}></i>
-                          <div className="text-sm font-medium text-gray-900">
+                          <i className={`${getCountryIcon(pn.country)} text-purple-400 mr-2`}></i>
+                          <div className="text-sm font-medium text-purple-100">
                             {editingNumber?.id === pn.id ? (
                               <Input
                                 value={editingNumber.country}
@@ -371,7 +421,7 @@ const StockManagement: React.FC = () => {
                                   ...editingNumber,
                                   country: e.target.value
                                 })}
-                                className="w-40"
+                                className="w-40 bg-gray-900 border-purple-600/30 text-white"
                               />
                             ) : (
                               pn.country
@@ -379,10 +429,15 @@ const StockManagement: React.FC = () => {
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-purple-100">
                         {pn.number}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
+                        <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-md bg-indigo-900/40 text-indigo-300 border border-indigo-700/30">
+                          {pn.serviceType || "WhatsApp"}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-purple-100">
                         {editingNumber?.id === pn.id ? (
                           <Input
                             type="number"
@@ -391,10 +446,10 @@ const StockManagement: React.FC = () => {
                               ...editingNumber,
                               price: parseFloat(e.target.value)
                             })}
-                            className="w-24"
+                            className="w-24 bg-gray-900 border-purple-600/30 text-white"
                           />
                         ) : (
-                          `$${pn.price.toFixed(2)}`
+                          `₦${pn.price.toFixed(2)}`
                         )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -406,20 +461,20 @@ const StockManagement: React.FC = () => {
                               isAvailable: value === "true"
                             })}
                           >
-                            <SelectTrigger className="w-32">
+                            <SelectTrigger className="w-32 bg-gray-900 border-purple-600/30 text-white">
                               <SelectValue />
                             </SelectTrigger>
-                            <SelectContent>
+                            <SelectContent className="bg-gray-900 text-white border-purple-600/30">
                               <SelectItem value="true">In Stock</SelectItem>
                               <SelectItem value="false">Out of Stock</SelectItem>
                             </SelectContent>
                           </Select>
                         ) : (
                           <span
-                            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-md ${
                               pn.isAvailable
-                                ? "bg-green-100 text-green-800"
-                                : "bg-red-100 text-red-800"
+                                ? "bg-green-900/40 text-green-300 border border-green-700/30"
+                                : "bg-red-900/40 text-red-300 border border-red-700/30"
                             }`}
                           >
                             {pn.isAvailable ? "In Stock" : "Out of Stock"}
@@ -434,8 +489,10 @@ const StockManagement: React.FC = () => {
                               onClick={() => handleUpdatePhoneNumber(pn.id, {
                                 country: editingNumber.country,
                                 price: editingNumber.price,
-                                isAvailable: editingNumber.isAvailable
+                                isAvailable: editingNumber.isAvailable,
+                                serviceType: editingNumber.serviceType
                               })}
+                              className="bg-purple-700 hover:bg-purple-600 text-white border-none"
                             >
                               Save
                             </Button>
@@ -443,6 +500,7 @@ const StockManagement: React.FC = () => {
                               size="sm" 
                               variant="outline" 
                               onClick={() => setEditingNumber(null)}
+                              className="border-purple-600/50 text-purple-300 hover:bg-purple-900/30"
                             >
                               Cancel
                             </Button>
@@ -453,6 +511,7 @@ const StockManagement: React.FC = () => {
                               size="sm" 
                               variant="outline" 
                               onClick={() => setEditingNumber(pn)}
+                              className="border-purple-600/50 text-purple-300 hover:bg-purple-900/30"
                             >
                               Edit
                             </Button>
@@ -460,6 +519,7 @@ const StockManagement: React.FC = () => {
                               size="sm" 
                               variant="destructive" 
                               onClick={() => handleDeletePhoneNumber(pn.id)}
+                              className="bg-red-900/80 hover:bg-red-800 text-white border-none"
                             >
                               Remove
                             </Button>
@@ -476,38 +536,93 @@ const StockManagement: React.FC = () => {
       </Card>
 
       {/* Add New Numbers Form */}
-      <Card>
-        <CardHeader className="px-6 py-4 border-b border-gray-200">
-          <CardTitle className="text-lg font-medium text-gray-800">Add New Numbers</CardTitle>
+      <Card className="bg-black/95 border border-purple-600/30 backdrop-blur-md shadow-lg overflow-hidden">
+        <CardHeader className="px-6 py-4 border-b border-purple-600/30 bg-gradient-to-r from-purple-900/40 to-black">
+          <div className="flex justify-between items-center">
+            <CardTitle className="text-lg font-medium text-white">Add New Numbers</CardTitle>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-300">Bulk Mode</span>
+              <div 
+                onClick={() => setBulkMode(!bulkMode)}
+                className={`w-10 h-5 flex items-center ${bulkMode ? 'bg-purple-600' : 'bg-gray-600'} rounded-full px-1 cursor-pointer transition-colors duration-300`}
+              >
+                <div className={`bg-white w-3 h-3 rounded-full transform transition-transform duration-300 ${bulkMode ? 'translate-x-5' : ''}`}></div>
+              </div>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent className="p-6">
+        <CardContent className="p-6 bg-gradient-to-b from-black to-purple-950/20">
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <Label htmlFor="country">Country</Label>
+                <Label htmlFor="country" className="text-gray-200">Country</Label>
                 <Select
                   value={country}
                   onValueChange={setCountry}
                 >
-                  <SelectTrigger id="country" className="w-full">
+                  <SelectTrigger id="country" className="w-full bg-gray-900 border-purple-600/30 text-white">
                     <SelectValue placeholder="Select country" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-gray-900 text-white border-purple-600/30">
                     <SelectItem value="United States">United States</SelectItem>
                     <SelectItem value="United Kingdom">United Kingdom</SelectItem>
                     <SelectItem value="Canada">Canada</SelectItem>
                     <SelectItem value="Australia">Australia</SelectItem>
                     <SelectItem value="Germany">Germany</SelectItem>
                     <SelectItem value="South Africa">South Africa</SelectItem>
+                    <SelectItem value="Nigeria">Nigeria</SelectItem>
+                    <SelectItem value="Ghana">Ghana</SelectItem>
+                    <SelectItem value="Kenya">Kenya</SelectItem>
+                    <SelectItem value="India">India</SelectItem>
+                    <SelectItem value="France">France</SelectItem>
+                    <SelectItem value="Spain">Spain</SelectItem>
+                    <SelectItem value="Italy">Italy</SelectItem>
+                    <SelectItem value="Japan">Japan</SelectItem>
+                    <SelectItem value="China">China</SelectItem>
+                    <SelectItem value="Brazil">Brazil</SelectItem>
+                    <SelectItem value="Mexico">Mexico</SelectItem>
+                    <SelectItem value="Russia">Russia</SelectItem>
+                    <SelectItem value="Indonesia">Indonesia</SelectItem>
+                    <SelectItem value="Pakistan">Pakistan</SelectItem>
+                    <SelectItem value="Bangladesh">Bangladesh</SelectItem>
+                    <SelectItem value="Philippines">Philippines</SelectItem>
+                    <SelectItem value="Vietnam">Vietnam</SelectItem>
+                    <SelectItem value="Turkey">Turkey</SelectItem>
+                    <SelectItem value="Egypt">Egypt</SelectItem>
+                    <SelectItem value="South Korea">South Korea</SelectItem>
+                    <SelectItem value="Thailand">Thailand</SelectItem>
+                    <SelectItem value="Argentina">Argentina</SelectItem>
+                    <SelectItem value="Colombia">Colombia</SelectItem>
+                    <SelectItem value="Malaysia">Malaysia</SelectItem>
+                    <SelectItem value="Saudi Arabia">Saudi Arabia</SelectItem>
+                    <SelectItem value="Singapore">Singapore</SelectItem>
+                    <SelectItem value="United Arab Emirates">United Arab Emirates</SelectItem>
+                    <SelectItem value="Cameroon">Cameroon</SelectItem>
+                    <SelectItem value="Uganda">Uganda</SelectItem>
+                    <SelectItem value="Tanzania">Tanzania</SelectItem>
+                    <SelectItem value="Zambia">Zambia</SelectItem>
+                    <SelectItem value="Zimbabwe">Zimbabwe</SelectItem>
+                    <SelectItem value="Morocco">Morocco</SelectItem>
+                    <SelectItem value="Algeria">Algeria</SelectItem>
+                    <SelectItem value="Tunisia">Tunisia</SelectItem>
+                    <SelectItem value="Libya">Libya</SelectItem>
+                    <SelectItem value="Ethiopia">Ethiopia</SelectItem>
+                    <SelectItem value="Somalia">Somalia</SelectItem>
+                    <SelectItem value="Sudan">Sudan</SelectItem>
+                    <SelectItem value="Angola">Angola</SelectItem>
+                    <SelectItem value="Mozambique">Mozambique</SelectItem>
+                    <SelectItem value="Namibia">Namibia</SelectItem>
+                    <SelectItem value="Botswana">Botswana</SelectItem>
+                    <SelectItem value="Côte d'Ivoire">Côte d'Ivoire</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div>
-                <Label htmlFor="price">Price (USD)</Label>
+                <Label htmlFor="price" className="text-gray-200">Price (₦)</Label>
                 <div className="mt-1 relative rounded-md">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <span className="text-gray-500 sm:text-sm">$</span>
+                    <span className="text-purple-300 sm:text-sm">₦</span>
                   </div>
                   <Input
                     id="price"
@@ -515,35 +630,82 @@ const StockManagement: React.FC = () => {
                     step="0.01"
                     min="0"
                     placeholder="0.00"
-                    className="pl-7"
+                    className="pl-7 bg-gray-900 border-purple-600/30 text-white"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
                   />
                 </div>
               </div>
             </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <Label htmlFor="service-type" className="text-gray-200">Service Type</Label>
+                <Select
+                  value={service}
+                  onValueChange={setService}
+                >
+                  <SelectTrigger id="service-type" className="w-full bg-gray-900 border-purple-600/30 text-white">
+                    <SelectValue placeholder="Select service" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-gray-900 text-white border-purple-600/30">
+                    <SelectItem value="WhatsApp">WhatsApp</SelectItem>
+                    <SelectItem value="Telegram">Telegram</SelectItem>
+                    <SelectItem value="Signal">Signal</SelectItem>
+                    <SelectItem value="WeChat">WeChat</SelectItem>
+                    <SelectItem value="Viber">Viber</SelectItem>
+                    <SelectItem value="Line">Line</SelectItem>
+                    <SelectItem value="KakaoTalk">KakaoTalk</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              {bulkMode && (
+                <div>
+                  <Label htmlFor="stock-count" className="text-gray-200">Total in Stock</Label>
+                  <Input
+                    id="stock-count"
+                    type="number"
+                    min="1"
+                    placeholder="Number of items to add"
+                    className="bg-gray-900 border-purple-600/30 text-white"
+                    value={stockCount}
+                    onChange={(e) => setStockCount(e.target.value)}
+                  />
+                  <p className="mt-1 text-sm text-purple-300">
+                    This will create multiple entries with sequential numbers
+                  </p>
+                </div>
+              )}
+            </div>
 
             <div>
-              <Label htmlFor="phone-numbers">Phone Numbers (One per line)</Label>
+              <Label htmlFor="phone-numbers" className="text-gray-200">
+                {bulkMode ? "Base Phone Number" : "Phone Numbers (One per line)"}
+              </Label>
               <Textarea
                 id="phone-numbers"
-                rows={6}
-                placeholder="+1234567890&#10;+0987654321"
+                rows={bulkMode ? 2 : 6}
+                placeholder={bulkMode ? "+1234567890" : "+1234567890\n+0987654321"}
                 value={numbers}
                 onChange={(e) => setNumbers(e.target.value)}
+                className="bg-gray-900 border-purple-600/30 text-white"
               />
-              <p className="mt-1 text-sm text-gray-500">
-                Enter each number on a new line. Include country code.
+              <p className="mt-1 text-sm text-purple-300">
+                {bulkMode ? 
+                  "Enter a base number. System will generate sequential numbers." : 
+                  "Enter each number on a new line. Include country code."}
               </p>
             </div>
 
             <div>
-              <Label htmlFor="notes">Notes (Optional)</Label>
+              <Label htmlFor="notes" className="text-gray-200">Notes (Optional)</Label>
               <Input
                 id="notes"
                 placeholder="Any additional information about these numbers"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
+                className="bg-gray-900 border-purple-600/30 text-white"
               />
             </div>
 
@@ -551,8 +713,9 @@ const StockManagement: React.FC = () => {
               <Button
                 onClick={handleAddNumbers}
                 disabled={isSubmitting || !country || !price || !numbers}
+                className="bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-600 hover:to-indigo-600 text-white border-none"
               >
-                {isSubmitting ? "Adding..." : "Add to Inventory"}
+                {isSubmitting ? "Adding..." : bulkMode ? `Add ${stockCount} Numbers` : "Add to Inventory"}
               </Button>
             </div>
           </div>

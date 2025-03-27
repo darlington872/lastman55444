@@ -18,10 +18,19 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, adminMode = false })
 
   return (
     <div
-      className={`bg-gradient-to-br from-black to-purple-950 text-white w-64 py-4 flex flex-col transition-all duration-300 transform fixed md:static inset-y-0 left-0 z-50 md:translate-x-0 shadow-lg border-r border-purple-600/40 ${
+      className={`bg-black text-white w-64 py-4 flex flex-col transition-all duration-300 transform fixed md:static inset-y-0 left-0 z-50 md:translate-x-0 shadow-xl border-r border-purple-600/40 backdrop-blur-md bg-opacity-80 ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
+      {/* Glassmorphic effect elements */}
+      <div className="absolute -top-32 -right-32 w-64 h-64 bg-purple-600/10 rounded-full blur-3xl"></div>
+      <div className="absolute top-1/3 -left-24 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl"></div>
+      <div className="absolute -bottom-32 -right-32 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
+      <div className="absolute top-20 right-0 w-24 h-24 bg-pink-500/5 rounded-full blur-2xl"></div>
+      <div className="absolute bottom-20 left-10 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl"></div>
+      
+      {/* Content with relative position to be above the effects */}
+      <div className="relative z-10 flex-1 flex flex-col h-full overflow-y-auto">
       <div className="flex items-center justify-center px-4 mb-8">
         <h1 className="text-lg font-bold">EtherDoxShefZySMS</h1>
         <button
@@ -168,8 +177,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, adminMode = false })
       {user && (
         <div className="mt-auto px-4 py-2">
           <div>
-            <div className="flex items-center px-4 py-2 rounded-md bg-gradient-to-br from-black to-purple-950 border border-purple-900/40">
-              <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center">
+            <div className="flex items-center px-4 py-2 rounded-md backdrop-blur-sm bg-gradient-to-br from-purple-900/20 to-black/40 border border-purple-600/30 shadow-inner">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-purple-800 flex items-center justify-center shadow-lg">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-4 w-4 text-white"
@@ -184,13 +193,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, adminMode = false })
                 </svg>
               </div>
               <div className="ml-2">
-                <p className="text-sm font-medium">{user.fullName}</p>
-                <p className="text-xs text-gray-300">Balance: ₦{user.balance.toFixed(2)}</p>
+                <p className="text-sm font-medium vibrant-gradient-text">{user.fullName}</p>
+                <p className="text-xs text-purple-300">Balance: <span className="rainbow-text font-bold">₦{user.balance.toFixed(2)}</span></p>
               </div>
             </div>
             <button
               onClick={logout}
-              className="text-sm text-center block w-full mt-2 text-gray-400 hover:text-purple-400 transition-colors duration-200"
+              className="text-sm text-center block w-full mt-2 text-purple-400 hover:text-purple-300 transition-colors duration-200 backdrop-blur-sm py-1 rounded-md bg-purple-800/10 border border-purple-800/20 hover:bg-purple-800/20"
             >
               Logout{" "}
               <svg
@@ -209,6 +218,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, adminMode = false })
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 };

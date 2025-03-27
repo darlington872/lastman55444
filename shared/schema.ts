@@ -32,21 +32,39 @@ export const insertUserSchema = createInsertSchema(users).omit({
   createdAt: true
 });
 
+// Service types for messaging apps
+export const serviceTypes = [
+  "WhatsApp",
+  "Telegram",
+  "Signal",
+  "WeChat",
+  "Facebook",
+  "Viber",
+  "Line"
+] as const;
+
 // Phone Number schema
 export const phoneNumbers = pgTable("phone_numbers", {
   id: serial("id").primaryKey(),
   number: text("number").notNull().unique(),
   country: text("country").notNull(),
+  service: text("service").notNull().default("WhatsApp"),
   price: doublePrecision("price").notNull(),
   isAvailable: boolean("is_available").default(true).notNull(),
+  stockCount: integer("stock_count").default(1).notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const insertPhoneNumberSchema = createInsertSchema(phoneNumbers).omit({
-  id: true,
-  isAvailable: true,
-  createdAt: true
-});
+export const insertPhoneNumberSchema = createInsertSchema(phoneNumbers)
+  .omit({
+    id: true,
+    isAvailable: true,
+    createdAt: true
+  })
+  .extend({
+    service: z.enum(serviceTypes),
+    stockCount: z.number().int().min(1).optional(),
+  });
 
 // Order schema
 export const orders = pgTable("orders", {
