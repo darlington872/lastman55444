@@ -47,15 +47,14 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     setMobileSidebarOpen(prevState => !prevState);
   };
 
+  // Log state changes for debugging
+  useEffect(() => {
+    console.log("DashboardLayout sidebar state updated:", mobileSidebarOpen);
+  }, [mobileSidebarOpen]);
+
   return (
     <div className="min-h-screen flex bg-black font-sans antialiased">
-      {/* Backdrop overlay for mobile menu */}
-      {mobileSidebarOpen && isMobile && (
-        <div 
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40" 
-          onClick={() => setMobileSidebarOpen(false)}
-        />
-      )}
+      {/* Removed backdrop overlay - now handled in the Sidebar component */}
     
       <Sidebar 
         isOpen={mobileSidebarOpen} 
