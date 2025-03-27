@@ -1,6 +1,7 @@
 import React from "react";
 import { PhoneNumber } from "@shared/schema";
 import { Button } from "@/components/ui/button";
+import { Globe, Globe2, ShoppingCart, AlertTriangle } from "lucide-react";
 
 interface PhoneNumberCardProps {
   phoneNumber: PhoneNumber;
@@ -14,54 +15,62 @@ const PhoneNumberCard: React.FC<PhoneNumberCardProps> = ({
   disabled = false,
 }) => {
   const getCountryIcon = (country: string) => {
-    const lowerCountry = country.toLowerCase();
-    
-    if (lowerCountry.includes("united states") || lowerCountry === "usa" || lowerCountry === "us") {
-      return "fas fa-globe-americas";
-    } else if (lowerCountry.includes("united kingdom") || lowerCountry === "uk" || lowerCountry === "gb") {
-      return "fas fa-globe-europe";
-    } else if (lowerCountry.includes("canada") || lowerCountry === "ca") {
-      return "fas fa-globe-americas";
-    } else if (lowerCountry.includes("australia") || lowerCountry === "au") {
-      return "fas fa-globe-asia";
-    } else if (lowerCountry.includes("germany") || lowerCountry === "de") {
-      return "fas fa-globe-europe";
-    } else if (lowerCountry.includes("south africa") || lowerCountry === "za") {
-      return "fas fa-globe-africa";
-    }
-    
-    return "fas fa-globe";
+    return <Globe2 className="h-5 w-5" />;
   };
 
   return (
-    <div className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+    <div className="vibrant-card p-5 relative overflow-hidden transition-all duration-300 hover:scale-102 hover:shadow-purple-500/10 hover:shadow-lg">
       <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center">
-          <i className={`${getCountryIcon(phoneNumber.country)} text-gray-500 mr-2`}></i>
-          <span className="font-medium">{phoneNumber.country}</span>
+        <div className="flex items-center gap-2">
+          <div className="bg-gradient-to-br from-purple-600 to-indigo-800 p-2 rounded-lg text-white">
+            {getCountryIcon(phoneNumber.country)}
+          </div>
+          <span className="font-medium text-white">{phoneNumber.country}</span>
         </div>
         <span
-          className={`text-sm ${
+          className={`text-xs font-bold ${
             phoneNumber.isAvailable
-              ? "bg-green-100 text-green-800"
-              : "bg-red-100 text-red-800"
-          } py-1 px-2 rounded-full`}
+              ? "bg-gradient-to-r from-green-500/80 to-emerald-600/80 text-white"
+              : "bg-gradient-to-r from-red-500/80 to-pink-600/80 text-white"
+          } py-1 px-3 rounded-full`}
         >
           {phoneNumber.isAvailable ? "In Stock" : "Out of Stock"}
         </span>
       </div>
-      <div className="text-sm text-gray-500 mb-3">WhatsApp verified number</div>
+      
+      <div className="text-sm text-purple-300 mb-4 mt-2 border-t border-purple-900/20 pt-2">
+        WhatsApp verified number
+      </div>
+      
       <div className="flex items-center justify-between">
-        <div className="text-lg font-bold text-gray-800">${phoneNumber.price.toFixed(2)}</div>
+        <div className="text-xl font-bold vibrant-gradient-text">₦{phoneNumber.price.toFixed(2)}</div>
         <Button
           size="sm"
+          variant={phoneNumber.isAvailable && !disabled ? "default" : "secondary"}
           disabled={!phoneNumber.isAvailable || disabled}
           onClick={() => onBuy(phoneNumber)}
-          className={!phoneNumber.isAvailable || disabled ? "bg-gray-300 text-gray-500 cursor-not-allowed" : ""}
+          className={phoneNumber.isAvailable && !disabled 
+            ? "bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 text-white" 
+            : "bg-gray-800 text-gray-400 cursor-not-allowed"
+          }
         >
-          {phoneNumber.isAvailable ? "Buy Now" : "Out of Stock"}
+          {phoneNumber.isAvailable ? (
+            <div className="flex items-center gap-1">
+              <ShoppingCart className="h-4 w-4 mr-1" />
+              Buy Now
+            </div>
+          ) : (
+            <div className="flex items-center gap-1">
+              <AlertTriangle className="h-4 w-4 mr-1" />
+              Out of Stock
+            </div>
+          )}
         </Button>
       </div>
+      
+      {/* Decorative element */}
+      <div className="absolute -top-10 -right-10 w-20 h-20 bg-purple-500/10 rounded-full blur-xl"></div>
+      <div className="absolute -bottom-4 -left-4 w-12 h-12 bg-indigo-500/10 rounded-full blur-lg"></div>
     </div>
   );
 };

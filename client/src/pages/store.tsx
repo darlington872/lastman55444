@@ -112,69 +112,113 @@ const StorePage: React.FC = () => {
   return (
     <DashboardLayout title="Buy WhatsApp Numbers">
       {/* Balance Info */}
-      <Card className="mb-6">
-        <CardContent className="p-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between">
-            <div>
-              <h2 className="text-lg font-medium text-gray-800">Your Balance</h2>
-              <p className="text-3xl font-bold text-gray-800 my-2">
-                ₦{isUserLoading ? "..." : user?.balance.toFixed(2)}
-              </p>
-              <p className="text-sm text-gray-500">Need more funds? Add to your balance</p>
-            </div>
-            <div className="mt-4 md:mt-0">
-              <Button onClick={() => setShowAddFundsDialog(true)}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 mr-1"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Add Funds
-              </Button>
-            </div>
+      <div className="vibrant-card-alt mb-6 p-6 relative overflow-hidden">
+        <div className="flex flex-col md:flex-row md:items-center justify-between relative z-10">
+          <div>
+            <h2 className="text-lg font-bold text-white flex items-center gap-2">
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+                className="h-5 w-5 text-purple-400"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              Your Current Balance
+            </h2>
+            <p className="text-4xl font-bold my-3 neon-text">
+              ₦{isUserLoading ? "..." : user?.balance.toFixed(2)}
+            </p>
+            <p className="text-sm text-purple-300">Need more funds? Add to your balance</p>
           </div>
-        </CardContent>
-      </Card>
+          <div className="mt-4 md:mt-0">
+            <Button 
+              onClick={() => setShowAddFundsDialog(true)}
+              className="bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 text-white border-none"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 mr-1"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Add Funds
+            </Button>
+          </div>
+        </div>
+        
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl"></div>
+        <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-indigo-500/10 rounded-full blur-xl"></div>
+      </div>
       
       {/* Available Numbers */}
-      <Card className="mb-6">
-        <CardHeader className="px-6 py-4 border-b border-gray-200">
-          <CardTitle className="text-lg font-medium text-gray-800">Available Numbers</CardTitle>
-        </CardHeader>
-        <CardContent className="p-6">
+      <div className="vibrant-card mb-6 overflow-hidden">
+        <div className="px-6 py-4 border-b border-purple-900/20 flex items-center justify-between">
+          <h2 className="text-lg font-bold vibrant-gradient-text flex items-center gap-2">
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              className="h-5 w-5"
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            >
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+            Available Numbers
+          </h2>
+        </div>
+        <div className="p-6">
           {isPhoneNumbersLoading ? (
-            <div className="flex justify-center py-8">
-              <svg
-                className="animate-spin h-8 w-8 text-primary-500"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
+            <div className="flex justify-center py-10">
+              <div className="w-12 h-12 relative">
+                <div className="absolute inset-0 rounded-full border-t-2 border-r-2 border-purple-500 animate-spin"></div>
+                <div className="absolute inset-3 rounded-full border-t-2 border-r-2 border-pink-500 animate-spin"></div>
+                <div className="absolute inset-6 rounded-full border-t-2 border-r-2 border-indigo-500 animate-spin"></div>
+              </div>
             </div>
           ) : !phoneNumbers || phoneNumbers.length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-gray-500">No phone numbers available at the moment. Please check back later.</p>
+            <div className="text-center py-10 px-4">
+              <div className="w-16 h-16 mx-auto mb-4 bg-purple-900/20 rounded-full flex items-center justify-center">
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="h-8 w-8 text-purple-400"
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                >
+                  <rect x="2" y="4" width="20" height="16" rx="2" />
+                  <path d="M7 8h.01" />
+                  <path d="M12 8h.01" />
+                  <path d="M17 8h.01" />
+                  <path d="M7 12h.01" />
+                  <path d="M12 12h.01" />
+                  <path d="M17 12h.01" />
+                  <path d="M7 16h.01" />
+                  <path d="M12 16h.01" />
+                  <path d="M17 16h.01" />
+                </svg>
+              </div>
+              <p className="text-purple-300">No phone numbers available</p>
+              <p className="text-sm text-purple-400/70 mt-2">Please check back later or contact admin</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -188,8 +232,8 @@ const StorePage: React.FC = () => {
               ))}
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
       
       {/* Order History */}
       <OrderTable
@@ -205,36 +249,53 @@ const StorePage: React.FC = () => {
             if (!open) setSelectedNumber(null);
           }}
         >
-          <DialogContent>
+          <DialogContent className="bg-black border border-purple-800/30 text-white">
             <DialogHeader>
-              <DialogTitle>Confirm Purchase</DialogTitle>
-              <DialogDescription>
+              <DialogTitle className="vibrant-gradient-text text-xl">Confirm Purchase</DialogTitle>
+              <DialogDescription className="text-purple-300">
                 You are about to purchase a WhatsApp number from {selectedNumber.country}.
               </DialogDescription>
             </DialogHeader>
-            <div className="py-4">
-              <p className="text-sm text-gray-700">
-                <span className="font-medium">Price:</span> ₦{selectedNumber.price.toFixed(2)}
-              </p>
-              <p className="text-sm text-gray-700">
-                <span className="font-medium">Your balance:</span> ₦{user?.balance.toFixed(2)}
-              </p>
-              <p className="text-sm text-gray-700 mt-4">
-                This amount will be deducted from your account balance. After purchase, the admin will provide you with the WhatsApp number and verification code.
-              </p>
+            <div className="py-6 border-t border-b border-purple-900/20 my-2">
+              <div className="flex flex-col space-y-3">
+                <div className="flex justify-between items-center py-1 px-3 bg-purple-900/20 rounded-lg">
+                  <span className="text-sm text-purple-300">Price:</span>
+                  <span className="text-lg font-bold rainbow-text">₦{selectedNumber.price.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between items-center py-1 px-3 bg-purple-900/20 rounded-lg">
+                  <span className="text-sm text-purple-300">Your Balance:</span>
+                  <span className="text-lg font-bold vibrant-gradient-text">₦{user?.balance.toFixed(2)}</span>
+                </div>
+              </div>
+              
+              <div className="mt-4 p-3 rounded-lg border border-purple-500/20 bg-purple-900/10">
+                <p className="text-sm text-purple-200">
+                  This amount will be deducted from your account balance. After purchase, the admin will provide you with the WhatsApp number and verification code.
+                </p>
+              </div>
             </div>
             <DialogFooter>
               <Button
                 variant="outline"
                 onClick={() => setSelectedNumber(null)}
+                className="border-purple-500/30 text-purple-400 hover:bg-purple-900/20 hover:text-purple-300"
               >
                 Cancel
               </Button>
               <Button
                 onClick={confirmPurchase}
                 disabled={isPurchasePending}
+                className="bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 text-white border-none"
               >
-                {isPurchasePending ? "Processing..." : "Confirm Purchase"}
+                {isPurchasePending ? (
+                  <div className="flex items-center gap-2">
+                    <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Processing...
+                  </div>
+                ) : "Confirm Purchase"}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -248,16 +309,16 @@ const StorePage: React.FC = () => {
           if (!open) setShowAddFundsDialog(false);
         }}
       >
-        <DialogContent>
+        <DialogContent className="bg-black border border-purple-800/30 text-white">
           <DialogHeader>
-            <DialogTitle>Add Funds</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="vibrant-gradient-text text-xl">Add Funds</DialogTitle>
+            <DialogDescription className="text-purple-300">
               Add funds to your account to purchase WhatsApp numbers.
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-4 py-4">
+          <div className="space-y-5 py-4 border-t border-purple-900/20 my-2">
             <div className="space-y-2">
-              <Label htmlFor="amount">Amount (₦)</Label>
+              <Label htmlFor="amount" className="text-purple-200">Amount (₦)</Label>
               <Input
                 id="amount"
                 type="number"
@@ -266,41 +327,50 @@ const StorePage: React.FC = () => {
                 step="0.01"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
+                className="border-purple-800/30 bg-purple-900/10 text-white placeholder:text-purple-500/70 focus:ring-purple-500/50"
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="payment-method">Payment Method</Label>
+              <Label htmlFor="payment-method" className="text-purple-200">Payment Method</Label>
               <Select
                 value={paymentMethod}
                 onValueChange={setPaymentMethod}
               >
-                <SelectTrigger id="payment-method">
+                <SelectTrigger 
+                  id="payment-method"
+                  className="border-purple-800/30 bg-purple-900/10 text-white"
+                >
                   <SelectValue placeholder="Select payment method" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="local_transfer">Local Bank Transfer</SelectItem>
-                  <SelectItem value="opay">Opay</SelectItem>
-                  <SelectItem value="keno">Keno</SelectItem>
+                <SelectContent className="bg-gray-900 border border-purple-800/30 text-white">
+                  <SelectItem value="local_transfer" className="focus:bg-purple-900/20">Local Bank Transfer</SelectItem>
+                  <SelectItem value="opay" className="focus:bg-purple-900/20">Opay</SelectItem>
+                  <SelectItem value="keno" className="focus:bg-purple-900/20">Keno</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="reference">Payment Reference (Optional)</Label>
+              <Label htmlFor="reference" className="text-purple-200">Payment Reference (Optional)</Label>
               <Input
                 id="reference"
                 placeholder="Transaction ID or reference"
                 value={paymentReference}
                 onChange={(e) => setPaymentReference(e.target.value)}
+                className="border-purple-800/30 bg-purple-900/10 text-white placeholder:text-purple-500/70 focus:ring-purple-500/50"
               />
             </div>
             
-            <div className="pt-2">
-              <p className="text-sm text-gray-700">
-                <span className="font-medium">Payment Account:</span> 8121320468
+            <div className="p-3 rounded-lg border border-purple-500/20 bg-purple-900/10">
+              <p className="text-sm text-purple-200 flex items-center gap-2">
+                <span className="font-medium neon-text">Payment Account:</span> 
+                <span className="rainbow-text font-bold">8121320468</span>
               </p>
-              <p className="text-sm text-gray-700 mt-2">
+              <p className="text-sm text-purple-300 mt-2">
+                <span className="text-white font-medium">Bank username:</span> Keno Darlington Avwunudiogba
+              </p>
+              <p className="text-xs text-purple-400/70 mt-3">
                 After making your payment, submit this form. The admin will verify your payment and add the funds to your account.
               </p>
             </div>
@@ -309,14 +379,24 @@ const StorePage: React.FC = () => {
             <Button
               variant="outline"
               onClick={() => setShowAddFundsDialog(false)}
+              className="border-purple-500/30 text-purple-400 hover:bg-purple-900/20 hover:text-purple-300"
             >
               Cancel
             </Button>
             <Button
               onClick={handleAddFunds}
               disabled={isPaymentPending || !amount || !paymentMethod}
+              className="bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 text-white border-none"
             >
-              {isPaymentPending ? "Processing..." : "Submit Payment"}
+              {isPaymentPending ? (
+                <div className="flex items-center gap-2">
+                  <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Processing...
+                </div>
+              ) : "Submit Payment"}
             </Button>
           </DialogFooter>
         </DialogContent>

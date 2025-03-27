@@ -1,6 +1,7 @@
 import React from "react";
 import { Order, PhoneNumber } from "@shared/schema";
 import { format } from "date-fns";
+import { ShoppingBag, Clock, DollarSign, Smartphone, CalendarDays } from "lucide-react";
 
 interface OrderTableProps {
   orders: (Order & { phoneNumber?: PhoneNumber })[];
@@ -11,103 +12,101 @@ const OrderTable: React.FC<OrderTableProps> = ({ orders, isLoading }) => {
   const getStatusBadgeClass = (status: string) => {
     const statusLower = status.toLowerCase();
     if (statusLower === "completed") {
-      return "bg-success-100 text-success-800";
+      return "bg-gradient-to-r from-green-500/80 to-emerald-600/80 text-white";
     } else if (statusLower === "pending") {
-      return "bg-warning-100 text-warning-800";
+      return "bg-gradient-to-r from-amber-500/80 to-orange-600/80 text-white";
     } else if (statusLower === "rejected" || statusLower === "failed") {
-      return "bg-danger-100 text-danger-800";
+      return "bg-gradient-to-r from-red-500/80 to-pink-600/80 text-white";
     }
-    return "bg-gray-100 text-gray-800";
+    return "bg-gradient-to-r from-purple-500/80 to-indigo-600/80 text-white";
   };
 
   return (
-    <div className="bg-white rounded-lg shadow">
-      <div className="px-6 py-4 border-b border-gray-200">
-        <h2 className="text-lg font-medium text-gray-800">Order History</h2>
+    <div className="vibrant-card overflow-hidden">
+      <div className="px-6 py-4 border-b border-purple-900/20 flex items-center justify-between">
+        <h2 className="text-lg font-bold vibrant-gradient-text flex items-center gap-2">
+          <ShoppingBag className="h-5 w-5" />
+          Order History
+        </h2>
       </div>
-      <div className="px-6 py-4">
+      <div className="px-4 py-4">
         {isLoading ? (
-          <div className="flex justify-center py-8">
-            <svg
-              className="animate-spin h-8 w-8 text-primary-500"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
-            </svg>
+          <div className="flex justify-center py-10">
+            <div className="w-12 h-12 relative">
+              <div className="absolute inset-0 rounded-full border-t-2 border-r-2 border-purple-500 animate-spin"></div>
+              <div className="absolute inset-3 rounded-full border-t-2 border-r-2 border-pink-500 animate-spin"></div>
+              <div className="absolute inset-6 rounded-full border-t-2 border-r-2 border-indigo-500 animate-spin"></div>
+            </div>
           </div>
         ) : orders.length === 0 ? (
-          <div className="text-center py-8">
-            <p className="text-gray-500">No orders yet</p>
+          <div className="text-center py-10 px-4">
+            <div className="w-16 h-16 mx-auto mb-4 bg-purple-900/20 rounded-full flex items-center justify-center">
+              <ShoppingBag className="h-8 w-8 text-purple-400" />
+            </div>
+            <p className="text-purple-300">No orders placed yet</p>
+            <p className="text-sm text-purple-400/70 mt-2">Your order history will appear here after purchasing</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-purple-900/20">
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-6 py-3 text-left text-xs font-medium text-purple-300 uppercase tracking-wider"
                   >
                     Order ID
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-6 py-3 text-left text-xs font-medium text-purple-300 uppercase tracking-wider"
                   >
                     Date
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-6 py-3 text-left text-xs font-medium text-purple-300 uppercase tracking-wider"
                   >
                     Country
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-6 py-3 text-left text-xs font-medium text-purple-300 uppercase tracking-wider"
                   >
                     Price
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-6 py-3 text-left text-xs font-medium text-purple-300 uppercase tracking-wider"
                   >
                     Status
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {orders.map((order) => (
-                  <tr key={order.id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <tbody className="divide-y divide-purple-900/10">
+                {orders.map((order, index) => (
+                  <tr 
+                    key={order.id}
+                    className="hover:bg-purple-900/10 transition-colors duration-150"
+                    style={{ animationDelay: `${index * 0.05}s` }}
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                       #{order.id.toString().padStart(5, "0")}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {format(new Date(order.createdAt), "yyyy-MM-dd")}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                      {order.createdAt 
+                        ? format(new Date(order.createdAt), "MMM dd, yyyy")
+                        : format(new Date(), "MMM dd, yyyy")}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-white font-medium">
                       {order.phoneNumber?.country || "N/A"}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                      ${order.totalAmount.toFixed(2)}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold rainbow-text">
+                      ₦{order.totalAmount.toFixed(2)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
                       <span
-                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadgeClass(
+                        className={`px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full ${getStatusBadgeClass(
                           order.status
                         )}`}
                       >
