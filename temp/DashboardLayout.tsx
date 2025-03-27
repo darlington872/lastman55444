@@ -14,7 +14,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   adminMode = false
 }) => {
   const { user } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   // Handle screen size changes for responsive design
@@ -22,7 +22,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
       if (window.innerWidth >= 768) {
-        setSidebarOpen(false);
+        setMobileSidebarOpen(false);
       }
     };
 
@@ -34,32 +34,36 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   // Prevent body scroll when mobile sidebar is open
   useEffect(() => {
     if (isMobile) {
-      document.body.style.overflow = sidebarOpen ? 'hidden' : 'auto';
+      document.body.style.overflow = mobileSidebarOpen ? 'hidden' : 'auto';
     }
     return () => {
       document.body.style.overflow = 'auto';
     };
-  }, [sidebarOpen, isMobile]);
+  }, [mobileSidebarOpen, isMobile]);
 
+  // Toggle sidebar function with console log for debugging
   const toggleSidebar = () => {
-    console.log("Toggling sidebar, current state:", sidebarOpen);
-    setSidebarOpen(!sidebarOpen);
+    console.log("Toggle sidebar clicked. Current state:", mobileSidebarOpen);
+    setMobileSidebarOpen(prevState => !prevState);
   };
 
-  const closeSidebar = () => {
-    setSidebarOpen(false);
-  };
+  // Log state changes for debugging
+  useEffect(() => {
+    console.log("DashboardLayout sidebar state updated:", mobileSidebarOpen);
+  }, [mobileSidebarOpen]);
 
   return (
     <div className="min-h-screen flex bg-black font-sans antialiased">
+      {/* Removed backdrop overlay - now handled in the Sidebar component */}
+    
       <Sidebar 
-        isOpen={sidebarOpen} 
-        onClose={closeSidebar} 
+        isOpen={mobileSidebarOpen} 
+        onClose={() => setMobileSidebarOpen(false)} 
         adminMode={adminMode} 
       />
       
       <div className="flex-1 overflow-hidden">
-        {/* Mobile Header */}
+        {/* Mobile Header - Enhanced */}
         <div className="md:hidden bg-black border-b border-purple-600/40 p-4 flex items-center justify-between backdrop-blur-md bg-opacity-80 shadow-md sticky top-0 z-30">
           <div className="flex items-center">
             <button
@@ -95,7 +99,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           )}
         </div>
 
-        {/* Content Area */}
+        {/* Content Area - Enhanced */}
         <div className="overflow-auto h-screen md:h-auto pb-24 pt-0 md:pt-6 px-3 md:px-6 bg-black text-white">
           <div className="py-4 md:py-6">
             <div className="flex flex-wrap justify-between items-center mb-6">

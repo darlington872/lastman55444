@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -12,11 +12,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, adminMode = false })
   const { user, logout } = useAuth();
   const [location, navigate] = useLocation();
 
-  // Debug sidebar state
-  useEffect(() => {
-    console.log("Sidebar received isOpen state:", isOpen);
-  }, [isOpen]);
-
   const isActive = (path: string) => {
     return location === path;
   };
@@ -27,6 +22,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, adminMode = false })
     onClose(); // Close sidebar when navigating
   };
 
+  console.log("Sidebar isOpen state:", isOpen);
+  
   return (
     <>
       {/* Backdrop overlay for mobile - only shows when sidebar is open */}
