@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation } from "wouter";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/hooks/useAuth";
 
 const BottomNav: React.FC = () => {
   const { user } = useAuth();
