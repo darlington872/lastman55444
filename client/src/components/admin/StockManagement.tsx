@@ -114,6 +114,12 @@ const StockManagement: React.FC = () => {
       const baseDigits = baseNumber.replace(/\D/g, '');
       const countryCode = baseNumber.replace(baseDigits, '');
       
+      // Show generation notification
+      toast({
+        title: "Generating Numbers",
+        description: `Creating ${count} sequential numbers starting from ${baseNumber}`,
+      });
+      
       // Generate sequential numbers
       for (let i = 0; i < count; i++) {
         const incrementedDigits = (parseInt(baseDigits) + i).toString().padStart(baseDigits.length, '0');
@@ -540,14 +546,22 @@ const StockManagement: React.FC = () => {
         <CardHeader className="px-6 py-4 border-b border-purple-600/30 bg-gradient-to-r from-purple-900/40 to-black">
           <div className="flex justify-between items-center">
             <CardTitle className="text-lg font-medium text-white">Add New Numbers</CardTitle>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <span className="text-sm text-gray-300">Bulk Mode</span>
-              <div 
+              <button 
+                type="button"
                 onClick={() => setBulkMode(!bulkMode)}
-                className={`w-10 h-5 flex items-center ${bulkMode ? 'bg-purple-600' : 'bg-gray-600'} rounded-full px-1 cursor-pointer transition-colors duration-300`}
+                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${bulkMode ? 'bg-gradient-to-r from-purple-600 to-fuchsia-500' : 'bg-gray-800'}`}
+                aria-pressed={bulkMode}
               >
-                <div className={`bg-white w-3 h-3 rounded-full transform transition-transform duration-300 ${bulkMode ? 'translate-x-5' : ''}`}></div>
-              </div>
+                <span className="sr-only">Toggle bulk mode</span>
+                <span 
+                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${bulkMode ? 'translate-x-5' : 'translate-x-0'}`}
+                />
+              </button>
+              <span className={`text-xs ${bulkMode ? 'text-fuchsia-300 font-bold' : 'text-gray-400'}`}>
+                {bulkMode ? 'ON' : 'OFF'}
+              </span>
             </div>
           </div>
         </CardHeader>
