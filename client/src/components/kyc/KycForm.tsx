@@ -103,11 +103,15 @@ const KycForm: React.FC = () => {
           name="fullName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Full Legal Name</FormLabel>
+              <FormLabel className="text-purple-300">Full Legal Name</FormLabel>
               <FormControl>
-                <Input placeholder="As shown on your ID" {...field} />
+                <Input 
+                  placeholder="As shown on your ID" 
+                  {...field} 
+                  className="border-purple-800/30 bg-purple-900/10 text-white placeholder:text-purple-500/70 focus:ring-purple-500/50"
+                />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-pink-400" />
             </FormItem>
           )}
         />
@@ -117,11 +121,15 @@ const KycForm: React.FC = () => {
           name="address"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Address</FormLabel>
+              <FormLabel className="text-purple-300">Address</FormLabel>
               <FormControl>
-                <Input placeholder="Your current address" {...field} />
+                <Input 
+                  placeholder="Your current address" 
+                  {...field} 
+                  className="border-purple-800/30 bg-purple-900/10 text-white placeholder:text-purple-500/70 focus:ring-purple-500/50"
+                />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-pink-400" />
             </FormItem>
           )}
         />
@@ -132,11 +140,14 @@ const KycForm: React.FC = () => {
             name="city"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>City</FormLabel>
+                <FormLabel className="text-purple-300">City</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input 
+                    {...field} 
+                    className="border-purple-800/30 bg-purple-900/10 text-white placeholder:text-purple-500/70 focus:ring-purple-500/50"
+                  />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-pink-400" />
               </FormItem>
             )}
           />
@@ -146,11 +157,14 @@ const KycForm: React.FC = () => {
             name="postalCode"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Postal Code</FormLabel>
+                <FormLabel className="text-purple-300">Postal Code</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input 
+                    {...field} 
+                    className="border-purple-800/30 bg-purple-900/10 text-white placeholder:text-purple-500/70 focus:ring-purple-500/50"
+                  />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-pink-400" />
               </FormItem>
             )}
           />
@@ -161,29 +175,29 @@ const KycForm: React.FC = () => {
           name="country"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Country</FormLabel>
+              <FormLabel className="text-purple-300">Country</FormLabel>
               <Select
                 onValueChange={field.onChange}
                 defaultValue={field.value}
               >
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="border-purple-800/30 bg-purple-900/10 text-white">
                     <SelectValue placeholder="Select country" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent>
-                  <SelectItem value="us">United States</SelectItem>
-                  <SelectItem value="gb">United Kingdom</SelectItem>
-                  <SelectItem value="ca">Canada</SelectItem>
-                  <SelectItem value="au">Australia</SelectItem>
-                  <SelectItem value="de">Germany</SelectItem>
-                  <SelectItem value="fr">France</SelectItem>
-                  <SelectItem value="ng">Nigeria</SelectItem>
-                  <SelectItem value="za">South Africa</SelectItem>
-                  <SelectItem value="in">India</SelectItem>
+                <SelectContent className="bg-gray-900 border border-purple-800/30 text-white">
+                  <SelectItem value="us" className="focus:bg-purple-900/20">United States</SelectItem>
+                  <SelectItem value="gb" className="focus:bg-purple-900/20">United Kingdom</SelectItem>
+                  <SelectItem value="ca" className="focus:bg-purple-900/20">Canada</SelectItem>
+                  <SelectItem value="au" className="focus:bg-purple-900/20">Australia</SelectItem>
+                  <SelectItem value="de" className="focus:bg-purple-900/20">Germany</SelectItem>
+                  <SelectItem value="fr" className="focus:bg-purple-900/20">France</SelectItem>
+                  <SelectItem value="ng" className="focus:bg-purple-900/20">Nigeria</SelectItem>
+                  <SelectItem value="za" className="focus:bg-purple-900/20">South Africa</SelectItem>
+                  <SelectItem value="in" className="focus:bg-purple-900/20">India</SelectItem>
                 </SelectContent>
               </Select>
-              <FormMessage />
+              <FormMessage className="text-pink-400" />
             </FormItem>
           )}
         />
@@ -193,23 +207,23 @@ const KycForm: React.FC = () => {
           name="idType"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>ID Document Type</FormLabel>
+              <FormLabel className="text-purple-300">ID Document Type</FormLabel>
               <Select
                 onValueChange={field.onChange}
                 defaultValue={field.value}
               >
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="border-purple-800/30 bg-purple-900/10 text-white">
                     <SelectValue placeholder="Select document type" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent>
-                  <SelectItem value="passport">Passport</SelectItem>
-                  <SelectItem value="driving_license">Driving License</SelectItem>
-                  <SelectItem value="id_card">National ID Card</SelectItem>
+                <SelectContent className="bg-gray-900 border border-purple-800/30 text-white">
+                  <SelectItem value="passport" className="focus:bg-purple-900/20">Passport</SelectItem>
+                  <SelectItem value="driving_license" className="focus:bg-purple-900/20">Driving License</SelectItem>
+                  <SelectItem value="id_card" className="focus:bg-purple-900/20">National ID Card</SelectItem>
                 </SelectContent>
               </Select>
-              <FormMessage />
+              <FormMessage className="text-pink-400" />
             </FormItem>
           )}
         />
@@ -219,14 +233,14 @@ const KycForm: React.FC = () => {
           name="idFront"
           render={({ field: { value, onChange, ...field } }) => (
             <FormItem>
-              <FormLabel>ID Document (Front)</FormLabel>
-              <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+              <FormLabel className="text-purple-300">ID Document (Front)</FormLabel>
+              <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border border-purple-800/30 border-dashed rounded-md bg-purple-900/10">
                 {idFrontPreview ? (
                   <div className="text-center">
                     <img
                       src={idFrontPreview}
                       alt="ID Front"
-                      className="mx-auto h-32 object-cover mb-2"
+                      className="mx-auto h-36 object-cover mb-3 rounded-md border border-purple-500/20"
                     />
                     <Button
                       type="button"
@@ -236,14 +250,15 @@ const KycForm: React.FC = () => {
                         setIdFrontPreview(null);
                         onChange("");
                       }}
+                      className="border-purple-500/30 text-purple-400 hover:bg-purple-900/20 hover:text-purple-300"
                     >
                       Remove
                     </Button>
                   </div>
                 ) : (
-                  <div className="space-y-1 text-center">
+                  <div className="space-y-2 text-center">
                     <svg
-                      className="mx-auto h-12 w-12 text-gray-400"
+                      className="mx-auto h-12 w-12 text-purple-500/50"
                       stroke="currentColor"
                       fill="none"
                       viewBox="0 0 48 48"
@@ -256,15 +271,14 @@ const KycForm: React.FC = () => {
                         strokeLinejoin="round"
                       />
                     </svg>
-                    <div className="flex text-sm text-gray-600">
+                    <div className="flex text-sm text-purple-300 justify-center">
                       <label
                         htmlFor="id-front"
-                        className="relative cursor-pointer bg-white rounded-md font-medium text-primary-600 hover:text-primary-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500"
+                        className="relative cursor-pointer rounded-md font-medium text-purple-400 hover:text-purple-300 focus-within:outline-none"
                       >
-                        <span>Upload file</span>
+                        <span className="underline decoration-dotted">Upload file</span>
                         <input
                           id="id-front"
-                          name="id-front"
                           type="file"
                           className="sr-only"
                           accept="image/*"
@@ -274,11 +288,11 @@ const KycForm: React.FC = () => {
                       </label>
                       <p className="pl-1">or drag and drop</p>
                     </div>
-                    <p className="text-xs text-gray-500">PNG, JPG, PDF up to 5MB</p>
+                    <p className="text-xs text-purple-400/70">PNG, JPG, PDF up to 5MB</p>
                   </div>
                 )}
               </div>
-              <FormMessage />
+              <FormMessage className="text-pink-400" />
             </FormItem>
           )}
         />
@@ -288,14 +302,14 @@ const KycForm: React.FC = () => {
           name="idBack"
           render={({ field: { value, onChange, ...field } }) => (
             <FormItem>
-              <FormLabel>ID Document (Back)</FormLabel>
-              <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+              <FormLabel className="text-purple-300">ID Document (Back)</FormLabel>
+              <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border border-purple-800/30 border-dashed rounded-md bg-purple-900/10">
                 {idBackPreview ? (
                   <div className="text-center">
                     <img
                       src={idBackPreview}
                       alt="ID Back"
-                      className="mx-auto h-32 object-cover mb-2"
+                      className="mx-auto h-36 object-cover mb-3 rounded-md border border-purple-500/20"
                     />
                     <Button
                       type="button"
@@ -305,14 +319,15 @@ const KycForm: React.FC = () => {
                         setIdBackPreview(null);
                         onChange("");
                       }}
+                      className="border-purple-500/30 text-purple-400 hover:bg-purple-900/20 hover:text-purple-300"
                     >
                       Remove
                     </Button>
                   </div>
                 ) : (
-                  <div className="space-y-1 text-center">
+                  <div className="space-y-2 text-center">
                     <svg
-                      className="mx-auto h-12 w-12 text-gray-400"
+                      className="mx-auto h-12 w-12 text-purple-500/50"
                       stroke="currentColor"
                       fill="none"
                       viewBox="0 0 48 48"
@@ -325,15 +340,14 @@ const KycForm: React.FC = () => {
                         strokeLinejoin="round"
                       />
                     </svg>
-                    <div className="flex text-sm text-gray-600">
+                    <div className="flex text-sm text-purple-300 justify-center">
                       <label
                         htmlFor="id-back"
-                        className="relative cursor-pointer bg-white rounded-md font-medium text-primary-600 hover:text-primary-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500"
+                        className="relative cursor-pointer rounded-md font-medium text-purple-400 hover:text-purple-300 focus-within:outline-none"
                       >
-                        <span>Upload file</span>
+                        <span className="underline decoration-dotted">Upload file</span>
                         <input
                           id="id-back"
-                          name="id-back"
                           type="file"
                           className="sr-only"
                           accept="image/*"
@@ -343,11 +357,11 @@ const KycForm: React.FC = () => {
                       </label>
                       <p className="pl-1">or drag and drop</p>
                     </div>
-                    <p className="text-xs text-gray-500">PNG, JPG, PDF up to 5MB</p>
+                    <p className="text-xs text-purple-400/70">PNG, JPG, PDF up to 5MB</p>
                   </div>
                 )}
               </div>
-              <FormMessage />
+              <FormMessage className="text-pink-400" />
             </FormItem>
           )}
         />
@@ -357,14 +371,14 @@ const KycForm: React.FC = () => {
           name="selfie"
           render={({ field: { value, onChange, ...field } }) => (
             <FormItem>
-              <FormLabel>Selfie with ID</FormLabel>
-              <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+              <FormLabel className="text-purple-300">Selfie with ID</FormLabel>
+              <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border border-purple-800/30 border-dashed rounded-md bg-purple-900/10">
                 {selfiePreview ? (
                   <div className="text-center">
                     <img
                       src={selfiePreview}
                       alt="Selfie"
-                      className="mx-auto h-32 object-cover mb-2"
+                      className="mx-auto h-36 object-cover mb-3 rounded-md border border-purple-500/20"
                     />
                     <Button
                       type="button"
@@ -374,14 +388,15 @@ const KycForm: React.FC = () => {
                         setSelfiePreview(null);
                         onChange("");
                       }}
+                      className="border-purple-500/30 text-purple-400 hover:bg-purple-900/20 hover:text-purple-300"
                     >
                       Remove
                     </Button>
                   </div>
                 ) : (
-                  <div className="space-y-1 text-center">
+                  <div className="space-y-2 text-center">
                     <svg
-                      className="mx-auto h-12 w-12 text-gray-400"
+                      className="mx-auto h-12 w-12 text-purple-500/50"
                       stroke="currentColor"
                       fill="none"
                       viewBox="0 0 48 48"
@@ -394,15 +409,14 @@ const KycForm: React.FC = () => {
                         strokeLinejoin="round"
                       />
                     </svg>
-                    <div className="flex text-sm text-gray-600">
+                    <div className="flex text-sm text-purple-300 justify-center">
                       <label
-                        htmlFor="selfie"
-                        className="relative cursor-pointer bg-white rounded-md font-medium text-primary-600 hover:text-primary-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500"
+                        htmlFor="selfie-input"
+                        className="relative cursor-pointer rounded-md font-medium text-purple-400 hover:text-purple-300 focus-within:outline-none"
                       >
-                        <span>Upload file</span>
+                        <span className="underline decoration-dotted">Upload file</span>
                         <input
-                          id="selfie"
-                          name="selfie"
+                          id="selfie-input"
                           type="file"
                           className="sr-only"
                           accept="image/*"
@@ -412,11 +426,11 @@ const KycForm: React.FC = () => {
                       </label>
                       <p className="pl-1">or drag and drop</p>
                     </div>
-                    <p className="text-xs text-gray-500">PNG, JPG up to 5MB</p>
+                    <p className="text-xs text-purple-400/70">PNG, JPG up to 5MB</p>
                   </div>
                 )}
               </div>
-              <FormMessage />
+              <FormMessage className="text-pink-400" />
             </FormItem>
           )}
         />
@@ -425,25 +439,39 @@ const KycForm: React.FC = () => {
           control={form.control}
           name="agree"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md">
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md p-3 border border-purple-800/20 bg-purple-900/10">
               <FormControl>
                 <Checkbox
                   checked={field.value}
                   onCheckedChange={field.onChange}
+                  className="border-purple-500 data-[state=checked]:bg-purple-500 data-[state=checked]:text-white"
                 />
               </FormControl>
               <div className="space-y-1 leading-none">
-                <FormLabel>
+                <FormLabel className="text-purple-300">
                   I confirm that the information provided is accurate and authentic
                 </FormLabel>
-                <FormMessage />
+                <FormMessage className="text-pink-400" />
               </div>
             </FormItem>
           )}
         />
 
-        <Button type="submit" className="w-full" disabled={isPending}>
-          {isPending ? "Submitting..." : "Submit Verification"}
+        <Button 
+          type="submit" 
+          className="w-full mt-4 bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 text-white border-none h-12 text-lg font-bold" 
+          disabled={isPending}
+        >
+          {isPending ? (
+            <div className="flex items-center justify-center gap-2">
+              <div className="w-5 h-5 relative animate-spin">
+                <div className="absolute inset-0 rounded-full border-2 border-t-transparent border-r-transparent border-white"></div>
+              </div>
+              <span>Processing...</span>
+            </div>
+          ) : (
+            <span>Submit Verification</span>
+          )}
         </Button>
       </form>
     </Form>
