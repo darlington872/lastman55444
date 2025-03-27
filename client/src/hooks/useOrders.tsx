@@ -50,12 +50,15 @@ export const usePurchasePhoneNumber = () => {
         totalAmount: 0, // This will be calculated on server
         isReferralReward: false
       });
-      return response.json();
+      const data = await response.json();
+      return data; // Return full response including whatsappRedirect if present
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast({
         title: "Purchase Successful",
-        description: "You have successfully purchased a WhatsApp number.",
+        description: data.whatsappRedirect 
+          ? "You have successfully purchased a WhatsApp number. Redirecting to WhatsApp..."
+          : "You have successfully purchased a WhatsApp number.",
       });
       // Invalidate queries to refresh data
       queryClient.invalidateQueries({ queryKey: ["/api/user/profile"] });
