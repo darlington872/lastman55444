@@ -10,7 +10,7 @@ import { Link } from "wouter";
 import { useAdminOrders } from "@/hooks/useOrders";
 import { useAdminPayments } from "@/hooks/usePayments";
 import { useAdminPhoneNumbers } from "@/hooks/usePhoneNumbers";
-import { useAdminKyc } from "@/hooks/useKyc";
+import { useAdminKyc, useUpdateKyc } from "@/hooks/useKyc";
 
 interface StatCardProps {
   title: string;
@@ -29,23 +29,23 @@ const StatCard: React.FC<StatCardProps> = ({
   linkHref,
   linkText,
 }) => (
-  <Card>
+  <Card className="bg-black border border-purple-900/20">
     <CardContent className="p-6">
       <div className="flex items-center">
-        <div className="p-3 rounded-full bg-primary-100 text-primary-800">
+        <div className="p-3 rounded-full bg-purple-900/30 text-purple-400">
           {icon}
         </div>
         <div className="ml-4">
-          <p className="text-sm text-gray-500 font-medium">{title}</p>
-          <p className="text-xl font-semibold text-gray-800">{value}</p>
+          <p className="text-sm text-purple-300 font-medium">{title}</p>
+          <p className="text-xl font-semibold text-white">{value}</p>
         </div>
       </div>
       <div className="mt-4">
-        <p className="text-sm text-gray-500">{subtext}</p>
+        <p className="text-sm text-purple-300/80">{subtext}</p>
         {linkHref && linkText && (
           <Link href={linkHref}>
-            <a className="text-sm text-primary-600 hover:text-primary-700">
-              {linkText}{" "}
+            <a className="text-sm text-purple-400 hover:text-purple-300 flex items-center mt-1">
+              {linkText}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-3 w-3 inline ml-1"
@@ -71,6 +71,7 @@ const AdminDashboard: React.FC = () => {
   const { data: pendingPayments, isLoading: paymentsLoading } = useAdminPayments(true);
   const { data: phoneNumbers, isLoading: phoneNumbersLoading } = useAdminPhoneNumbers();
   const { data: pendingKyc, isLoading: kycLoading } = useAdminKyc(true);
+  const updateKycMutation = useUpdateKyc();
 
   const isLoading = ordersLoading || paymentsLoading || phoneNumbersLoading || kycLoading;
 
@@ -88,7 +89,11 @@ const AdminDashboard: React.FC = () => {
 
   // Recent orders calculation
   const recentOrders = [...(orders || [])]
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .sort((a, b) => {
+      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return dateB - dateA;
+    })
     .slice(0, 5);
 
   return (
@@ -191,18 +196,18 @@ const AdminDashboard: React.FC = () => {
       </div>
 
       {/* Recent Orders */}
-      <Card className="mb-6">
-        <CardHeader className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-          <CardTitle className="text-lg font-medium text-gray-800">Recent Orders</CardTitle>
+      <Card className="mb-6 bg-black border border-purple-900/20">
+        <CardHeader className="px-6 py-4 border-b border-purple-900/40 flex justify-between items-center">
+          <CardTitle className="text-lg font-medium bg-gradient-to-r from-purple-600 to-indigo-400 text-transparent bg-clip-text">Recent Orders</CardTitle>
           <Link href="/admin/orders">
-            <a className="text-sm text-primary-600 hover:text-primary-700">View all</a>
+            <a className="text-sm text-purple-400 hover:text-purple-500">View all</a>
           </Link>
         </CardHeader>
         <CardContent className="px-6 py-4">
           {isLoading ? (
             <div className="flex justify-center py-8">
               <svg
-                className="animate-spin h-8 w-8 text-primary-500"
+                className="animate-spin h-8 w-8 text-purple-500"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -224,74 +229,74 @@ const AdminDashboard: React.FC = () => {
             </div>
           ) : recentOrders.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-gray-500">No orders yet</p>
+              <p className="text-purple-400">No orders yet</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full divide-y divide-purple-900/20">
+                <thead className="bg-black/80">
                   <tr>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-purple-300 uppercase tracking-wider"
                     >
                       Order ID
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-purple-300 uppercase tracking-wider"
                     >
                       User ID
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-purple-300 uppercase tracking-wider"
                     >
                       Date
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-purple-300 uppercase tracking-wider"
                     >
                       Status
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-purple-300 uppercase tracking-wider"
                     >
                       Action
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-black divide-y divide-purple-900/20">
                   {recentOrders.map((order) => (
                     <tr key={order.id}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-purple-400">
                         #{order.id}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">
+                        <div className="text-sm font-medium text-white">
                           User #{order.userId}
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {new Date(order.createdAt).toLocaleDateString()}
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-purple-300">
+                        {order.createdAt ? new Date(order.createdAt).toLocaleDateString() : 'N/A'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
                           className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                             order.status === "completed"
-                              ? "bg-green-100 text-green-800"
+                              ? "bg-green-900/40 text-green-400 border border-green-500/20"
                               : order.status === "pending"
-                              ? "bg-yellow-100 text-yellow-800"
-                              : "bg-red-100 text-red-800"
+                              ? "bg-yellow-900/40 text-yellow-400 border border-yellow-500/20"
+                              : "bg-red-900/40 text-red-400 border border-red-500/20"
                           }`}
                         >
                           {order.status}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <Button variant="link" size="sm">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
+                        <Button variant="link" size="sm" className="text-purple-400 hover:text-purple-300">
                           Process
                         </Button>
                       </td>
@@ -305,18 +310,18 @@ const AdminDashboard: React.FC = () => {
       </Card>
 
       {/* Pending KYC */}
-      <Card>
-        <CardHeader className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-          <CardTitle className="text-lg font-medium text-gray-800">Pending KYC Verifications</CardTitle>
+      <Card className="bg-black border border-purple-900/20">
+        <CardHeader className="px-6 py-4 border-b border-purple-900/40 flex justify-between items-center">
+          <CardTitle className="text-lg font-medium bg-gradient-to-r from-purple-600 to-indigo-400 text-transparent bg-clip-text">Pending KYC Verifications</CardTitle>
           <Link href="/admin/kyc">
-            <a className="text-sm text-primary-600 hover:text-primary-700">View all</a>
+            <a className="text-sm text-purple-400 hover:text-purple-500">View all</a>
           </Link>
         </CardHeader>
         <CardContent className="px-6 py-4">
           {isLoading ? (
             <div className="flex justify-center py-8">
               <svg
-                className="animate-spin h-8 w-8 text-primary-500"
+                className="animate-spin h-8 w-8 text-purple-500"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -338,60 +343,70 @@ const AdminDashboard: React.FC = () => {
             </div>
           ) : !pendingKyc || pendingKyc.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-gray-500">No pending KYC verifications</p>
+              <p className="text-purple-400">No pending KYC verifications</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full divide-y divide-purple-900/20">
+                <thead className="bg-black/80">
                   <tr>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-purple-300 uppercase tracking-wider"
                     >
                       User ID
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-purple-300 uppercase tracking-wider"
                     >
                       Full Name
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-purple-300 uppercase tracking-wider"
                     >
                       Submission Date
                     </th>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-purple-300 uppercase tracking-wider"
                     >
                       Action
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-black divide-y divide-purple-900/20">
                   {pendingKyc.slice(0, 5).map((kyc) => (
                     <tr key={kyc.id}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-purple-400">
                         #{kyc.userId}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">
+                        <div className="text-sm font-medium text-white">
                           {kyc.fullName}
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {new Date(kyc.createdAt).toLocaleDateString()}
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-purple-300">
+                        {kyc.createdAt ? new Date(kyc.createdAt).toLocaleDateString() : 'N/A'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm">
                         <div className="flex space-x-2">
-                          <Button size="sm" className="bg-green-500 hover:bg-green-600">
-                            Approve
+                          <Button 
+                            size="sm" 
+                            className="bg-green-900 text-green-400 border border-green-500/30 hover:bg-green-800 hover:text-green-300"
+                            onClick={() => updateKycMutation.mutate({ kycId: kyc.id, status: "approved" })}
+                            disabled={updateKycMutation.isPending}
+                          >
+                            {updateKycMutation.isPending ? 'Processing...' : 'Approve'}
                           </Button>
-                          <Button size="sm" variant="destructive">
-                            Reject
+                          <Button 
+                            size="sm" 
+                            className="bg-red-900 text-red-400 border border-red-500/30 hover:bg-red-800 hover:text-red-300"
+                            onClick={() => updateKycMutation.mutate({ kycId: kyc.id, status: "rejected" })}
+                            disabled={updateKycMutation.isPending}
+                          >
+                            {updateKycMutation.isPending ? 'Processing...' : 'Reject'}
                           </Button>
                         </div>
                       </td>
