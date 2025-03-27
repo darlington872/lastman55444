@@ -34,3 +34,5 @@ service:
   environment_variables:
     - key: KOYEB_HOST
       value: "true"
+    - key: SESSION_SECRET
+      value: "ETHERDOXSHEFZYSMSSecureKey2025!"
