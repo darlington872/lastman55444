@@ -12,8 +12,13 @@ import {
   AiChat, InsertAiChat
 } from "@shared/schema";
 import { nanoid } from "nanoid";
+import session from "express-session";
+import createMemoryStore from "memorystore";
 
 export interface IStorage {
+  // Session store for authentication
+  sessionStore: session.Store;
+  
   // User methods
   getUser(id: number): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
@@ -104,6 +109,9 @@ export class MemStorage implements IStorage {
   private countries: Map<number, Country>;
   private aiChats: Map<number, AiChat>;
   
+  // Session store for authentication
+  sessionStore: session.Store;
+  
   currentUserId: number;
   currentPhoneNumberId: number;
   currentOrderId: number;
@@ -116,6 +124,11 @@ export class MemStorage implements IStorage {
   currentAiChatId: number;
 
   constructor() {
+    // Initialize memory store for session
+    const MemoryStore = createMemoryStore(session);
+    this.sessionStore = new MemoryStore({
+      checkPeriod: 86400000, // prune expired entries every 24h
+    });
     this.users = new Map();
     this.phoneNumbers = new Map();
     this.orders = new Map();
@@ -366,6 +379,7 @@ export class MemStorage implements IStorage {
       isBanned: false,
       kycStatus: "pending",
       balance: 0,
+      referralWalletBalance: 0, // Adding referral wallet balance
       createdAt: new Date(),
       referredBy: insertUser.referredBy || null
     };

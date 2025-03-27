@@ -14,6 +14,7 @@ import {
   insertCountrySchema,
   insertAiChatSchema
 } from "@shared/schema";
+import { setupAuth } from "./auth";
 import { ZodError } from "zod";
 import crypto from "crypto";
 import { nanoid } from "nanoid";
@@ -31,56 +32,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const router = express.Router();
   const httpServer = createServer(app);
   
+  // Set up authentication with Passport
+  setupAuth(app);
+  
   // Health check endpoint for Koyeb
   router.get('/health', (req: Request, res: Response) => {
     res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
   });
 
-  // Simple authentication middleware
-  const authenticate = async (req: Request, res: Response, next: Function) => {
-    // In a real app, use JWT or session-based auth
-    // For this implementation, we'll use a simple token stored in a header
-    const authToken = req.headers.authorization?.split(' ')[1];
-    
-    if (!authToken) {
+  // Authentication middleware using Passport.js
+  const authenticate = (req: Request, res: Response, next: Function) => {
+    if (!req.isAuthenticated()) {
       return res.status(401).json({ message: "Authentication required" });
     }
     
-    try {
-      // In a real app, verify JWT signature. Here we just parse the token
-      const tokenParts = authToken.split(':');
-      
-      if (tokenParts.length !== 2) {
-        return res.status(401).json({ message: "Invalid authentication token" });
-      }
-      
-      const [userId, userHash] = tokenParts;
-      const user = await storage.getUser(parseInt(userId));
-      
-      if (!user) {
-        return res.status(401).json({ message: "User not found" });
-      }
-      
-      // Very simple "signature" validation
-      const expectedHash = crypto
-        .createHash('sha256')
-        .update(`${user.id}:${user.email}:${user.password.substring(0, 10)}`)
-        .digest('hex')
-        .substring(0, 10);
-      
-      if (userHash !== expectedHash) {
-        return res.status(401).json({ message: "Invalid authentication token" });
-      }
-      
-      // Add user info to request
-      req.userId = user.id;
-      req.isAdmin = user.isAdmin;
-      
-      next();
-    } catch (error) {
-      console.error("Auth error:", error);
-      return res.status(401).json({ message: "Invalid authentication token" });
-    }
+    // Add user info to request object for compatibility with existing code
+    req.userId = req.user.id;
+    req.isAdmin = req.user.isAdmin;
+    
+    next();
   };
 
   // Admin middleware
@@ -626,7 +596,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     
     // Sort by creation date, newest first
     allOrders.sort((a, b) => {
-      return b.createdAt.getTime() - a.createdAt.getTime();
+      const aTime = a.createdAt ? a.createdAt.getTime() : 0;
+      const bTime = b.createdAt ? b.createdAt.getTime() : 0;
+      return bTime - aTime;
     });
     
     res.json(allOrders);
@@ -705,7 +677,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     
     // Sort by creation date, newest first
     allPayments.sort((a, b) => {
-      return b.createdAt.getTime() - a.createdAt.getTime();
+      const aTime = a.createdAt ? a.createdAt.getTime() : 0;
+      const bTime = b.createdAt ? b.createdAt.getTime() : 0;
+      return bTime - aTime;
     });
     
     res.json(allPayments);
@@ -782,7 +756,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     
     // Sort by creation date, newest first
     kycRecords.sort((a, b) => {
-      return b.createdAt.getTime() - a.createdAt.getTime();
+      const aTime = a.createdAt ? a.createdAt.getTime() : 0;
+      const bTime = b.createdAt ? b.createdAt.getTime() : 0;
+      return bTime - aTime;
     });
     
     res.json(kycRecords);

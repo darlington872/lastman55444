@@ -10,6 +10,7 @@ export const users = pgTable("users", {
   password: text("password").notNull(),
   fullName: text("full_name").notNull(),
   balance: doublePrecision("balance").default(0).notNull(),
+  referralWalletBalance: doublePrecision("referral_wallet_balance").default(0).notNull(),
   referralCode: text("referral_code").notNull().unique(),
   referredBy: text("referred_by"),
   referralCount: integer("referral_count").default(0).notNull(),
@@ -27,6 +28,7 @@ export const insertUserSchema = createInsertSchema(users).omit({
   isVerified: true,
   isBanned: true,
   balance: true,
+  referralWalletBalance: true,
   createdAt: true
 });
 
