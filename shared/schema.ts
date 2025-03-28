@@ -24,12 +24,13 @@ export const users = pgTable("users", {
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
   referralCount: true,
-  isAdmin: true,
   isVerified: true,
   isBanned: true,
   balance: true,
   referralWalletBalance: true,
   createdAt: true
+}).extend({
+  isAdmin: z.boolean().optional().default(false)
 });
 
 // Service types for messaging apps

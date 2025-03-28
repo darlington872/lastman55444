@@ -48,15 +48,15 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="py-10 max-w-md mx-auto">
-      <div className="text-center mb-10">
-        <h1 className="text-3xl font-bold text-gray-800">Welcome Back</h1>
-        <p className="mt-3 text-gray-600">Sign in to access your account</p>
+    <div className="py-6 max-w-md mx-auto">
+      <div className="text-center mb-6">
+        <h1 className="text-3xl font-bold text-white">Welcome Back</h1>
+        <p className="mt-2 text-purple-300">Sign in to access your account</p>
       </div>
 
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="bg-black/60 backdrop-blur-md border border-purple-500/30 rounded-lg shadow-lg p-6">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
             <FormField
               control={form.control}
               name="email"
@@ -98,7 +98,7 @@ const Login: React.FC = () => {
                     />
                     <label
                       htmlFor="rememberMe"
-                      className="text-sm text-gray-700 cursor-pointer"
+                      className="text-sm text-purple-300 cursor-pointer"
                     >
                       Remember me
                     </label>
@@ -107,7 +107,7 @@ const Login: React.FC = () => {
               />
 
               <div className="text-sm">
-                <Link href="/forgot-password" className="text-primary-600 hover:text-primary-500">
+                <Link href="/forgot-password" className="text-purple-400 hover:text-purple-300">
                   Forgot password?
                 </Link>
               </div>
@@ -126,17 +126,17 @@ const Login: React.FC = () => {
         <div className="mt-6">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
+              <div className="w-full border-t border-purple-500/30"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">
+              <span className="px-2 bg-black/60 text-purple-300">
                 Don't have an account?
               </span>
             </div>
           </div>
 
           <div className="mt-6">
-            <Link href="/register" className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+            <Link href="/register" className="w-full inline-flex justify-center py-2 px-4 border border-purple-500/30 rounded-md shadow-sm bg-black/60 text-sm font-medium text-purple-300 hover:bg-purple-900/20 focus:outline-none">
               Register now
             </Link>
           </div>
