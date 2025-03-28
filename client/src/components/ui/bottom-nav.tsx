@@ -25,8 +25,8 @@ const BottomNav: React.FC<BottomNavProps> = ({ adminMode = false }) => {
     }
   };
 
-  // Show admin menu only for admins
-  const showAdminMenu = user?.isAdmin && adminMode;
+  // Show admin menu for admin users
+  const showAdminMenu = user?.isAdmin;
 
   return (
     <div className="fixed bottom-0 left-0 z-50 w-full h-16 bg-black border-t border-purple-600/40 backdrop-blur-md bg-opacity-80">
@@ -164,73 +164,82 @@ const BottomNav: React.FC<BottomNavProps> = ({ adminMode = false }) => {
         </button>
 
         {/* More Menu (Admin or Profile) */}
-        <button
-          type="button"
-          onClick={() => showAdminMenu ? handleNavigation("/admin") : handleNavigation("/kyc")}
-          className={`inline-flex flex-col items-center justify-center px-5 hover:bg-black group ${
-            (showAdminMenu && isActive("/admin")) || (!showAdminMenu && isActive("/kyc"))
-              ? "bg-gradient-to-t from-purple-900/60 to-black border-t-2 border-purple-600"
-              : ""
-          }`}
-        >
-          {showAdminMenu ? (
-            <>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className={`w-6 h-6 mb-1 ${
-                  isActive("/admin")
-                    ? "text-red-400"
-                    : "text-gray-400 group-hover:text-white"
-                }`}
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span
-                className={`text-xs ${
-                  isActive("/admin")
-                    ? "text-red-400"
-                    : "text-gray-400 group-hover:text-white"
-                }`}
-              >
-                Admin
-              </span>
-            </>
-          ) : (
-            <>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className={`w-6 h-6 mb-1 ${
-                  isActive("/kyc")
-                    ? "text-purple-400"
-                    : "text-gray-400 group-hover:text-white"
-                }`}
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 2a1 1 0 00-1 1v1a1 1 0 002 0V3a1 1 0 00-1-1zM4 4h3a3 3 0 006 0h3a2 2 0 012 2v9a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2zm2.5 7a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm2.45 4a2.5 2.5 0 10-4.9 0h4.9zM12 9a1 1 0 100 2h3a1 1 0 100-2h-3zm-1 4a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span
-                className={`text-xs ${
-                  isActive("/kyc")
-                    ? "text-purple-400"
-                    : "text-gray-400 group-hover:text-white"
-                }`}
-              >
-                Profile
-              </span>
-            </>
-          )}
-        </button>
+        {showAdminMenu ? (
+          <button
+            type="button"
+            onClick={() => handleNavigation("/admin")}
+            className={`inline-flex flex-col items-center justify-center px-5 hover:bg-black group ${
+              isActive("/admin") || isActive("/admin/stock") || isActive("/admin/users") || 
+              isActive("/admin/payments") || isActive("/admin/broadcast") || isActive("/admin/settings")
+                ? "bg-gradient-to-t from-red-900/60 to-black border-t-2 border-red-500"
+                : ""
+            }`}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={`w-6 h-6 mb-1 ${
+                isActive("/admin") || isActive("/admin/stock") || isActive("/admin/users") || 
+                isActive("/admin/payments") || isActive("/admin/broadcast") || isActive("/admin/settings")
+                  ? "text-red-400"
+                  : "text-red-500 group-hover:text-red-400"
+              }`}
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <span
+              className={`text-xs ${
+                isActive("/admin") || isActive("/admin/stock") || isActive("/admin/users") || 
+                isActive("/admin/payments") || isActive("/admin/broadcast") || isActive("/admin/settings")
+                  ? "text-red-400"
+                  : "text-red-500 group-hover:text-red-400"
+              }`}
+            >
+              Admin
+            </span>
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => handleNavigation("/kyc")}
+            className={`inline-flex flex-col items-center justify-center px-5 hover:bg-black group ${
+              isActive("/kyc")
+                ? "bg-gradient-to-t from-purple-900/60 to-black border-t-2 border-purple-600"
+                : ""
+            }`}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={`w-6 h-6 mb-1 ${
+                isActive("/kyc")
+                  ? "text-purple-400"
+                  : "text-gray-400 group-hover:text-white"
+              }`}
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 2a1 1 0 00-1 1v1a1 1 0 002 0V3a1 1 0 00-1-1zM4 4h3a3 3 0 006 0h3a2 2 0 012 2v9a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2zm2.5 7a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm2.45 4a2.5 2.5 0 10-4.9 0h4.9zM12 9a1 1 0 100 2h3a1 1 0 100-2h-3zm-1 4a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <span
+              className={`text-xs ${
+                isActive("/kyc")
+                  ? "text-purple-400"
+                  : "text-gray-400 group-hover:text-white"
+              }`}
+            >
+              Profile
+            </span>
+          </button>
+        )}
 
         {/* Admin Menu Popup - Only shown when needed */}
         {showAdminMenu && isActive("/admin") && (
