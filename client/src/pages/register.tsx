@@ -3,7 +3,6 @@ import { Link, useLocation } from "wouter";
 import { useAuth } from "@/hooks/useAuth";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import Sidebar from "@/components/ui/sidebar";
 import Register from "@/components/auth/Register";
 import { 
   Zap, 
@@ -108,123 +107,117 @@ const RegisterPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex font-sans antialiased">
-      {/* Sidebar is no longer rendered directly here */}
-      
-      <div className="flex-1 overflow-hidden bg-black">
-        <div className="overflow-auto h-screen">
-          <div className="container mx-auto px-4 py-6">
-            {/* Site Name - First Element */}
-            <div className="text-center mb-8">
-              <div className="logo-container">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-0 vibrant-gradient-text leading-tight">
-                  ETHERVOX
-                </h1>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-purple-400 mb-4">SMS</h2>
-              </div>
-              <p className="text-lg sm:text-xl text-purple-300 mb-4">Premium virtual number marketplace with integrated rewards system</p>
-            </div>
-            
-            {/* Trust Signals - Second Element */}
-            <div className="glowing-card p-4 mb-10 max-w-4xl mx-auto">
-              <h3 className="text-xl font-bold mb-3 rainbow-text text-center">Platform Statistics</h3>
-              <div className="flex flex-wrap justify-center gap-6 mb-4">
-                {stats.map((stat, index) => (
-                  <div key={index} className="text-center">
-                    <div 
-                      className="stats-circle-vibrant w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2" 
-                      style={{ 
-                        "--percentage": stat.label === "Active Users" ? "85%" : 
-                                        stat.label === "Global Reach" ? "90%" : "95%"
-                      } as React.CSSProperties}
-                    >
-                      <div className="absolute inset-2 rounded-full bg-gray-900 flex items-center justify-center">
-                        <stat.icon className="h-5 w-5 text-white" />
-                      </div>
-                    </div>
-                    <h3 className="text-white font-bold stats-value text-lg live-counter">{stat.value}</h3>
-                    <p className="text-purple-300 text-sm">{stat.label}</p>
+    <div className="min-h-screen bg-black font-sans antialiased">
+      <div className="container mx-auto px-4 py-6">
+        {/* Site Name - First Element */}
+        <div className="text-center mb-8">
+          <div className="logo-container">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-0 vibrant-gradient-text leading-tight">
+              ETHERVOX
+            </h1>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-purple-400 mb-4">SMS</h2>
+          </div>
+          <p className="text-lg sm:text-xl text-purple-300 mb-4">Premium virtual number marketplace with integrated rewards system</p>
+        </div>
+        
+        {/* Trust Signals - Second Element */}
+        <div className="glowing-card p-4 mb-10 max-w-4xl mx-auto">
+          <h3 className="text-xl font-bold mb-3 rainbow-text text-center">Platform Statistics</h3>
+          <div className="flex flex-wrap justify-center gap-6 mb-4">
+            {stats.map((stat, index) => (
+              <div key={index} className="text-center">
+                <div 
+                  className="stats-circle-vibrant w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2" 
+                  style={{ 
+                    "--percentage": stat.label === "Active Users" ? "85%" : 
+                                    stat.label === "Global Reach" ? "90%" : "95%"
+                  } as React.CSSProperties}
+                >
+                  <div className="absolute inset-2 rounded-full bg-gray-900 flex items-center justify-center">
+                    <stat.icon className="h-5 w-5 text-white" />
                   </div>
-                ))}
+                </div>
+                <h3 className="text-white font-bold stats-value text-lg live-counter">{stat.value}</h3>
+                <p className="text-purple-300 text-sm">{stat.label}</p>
               </div>
+            ))}
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+          {/* Register Form */}
+          <div className="md:order-2">
+            <div className="max-w-md mx-auto">
+              <Register />
+            </div>
+          </div>
+          
+          {/* Hero Content */}
+          <div className="md:order-1 space-y-6">
+            <div>
+              <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+                <span className="neon-text">Join Our Platform</span>
+              </h2>
+              <p className="text-lg text-purple-300 mb-6">Create your account and get instant access to premium virtual numbers with our reward program.</p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-              {/* Register Form */}
-              <div className="md:order-2">
-                <div className="max-w-md mx-auto">
-                  <Register />
+            {/* Benefits */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {benefits.map((benefit, index) => (
+                <div key={index} className="vibrant-card p-4 floating" style={{ animationDelay: `${index * 0.2}s` }}>
+                  <div className="flex gap-3 items-start">
+                    <div className="bg-gradient-to-br from-purple-600 to-indigo-800 p-2 rounded-lg">
+                      <benefit.icon className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-white mb-1">{benefit.title}</h3>
+                      <p className="text-gray-300 text-sm">{benefit.description}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            {/* Feature Badges */}
+            <div className="flex flex-wrap gap-3 mt-4">
+              <span className="bg-purple-900/30 text-purple-300 text-xs font-medium px-3 py-1 rounded-full border border-purple-500/30 flex items-center gap-1">
+                <ShieldCheck className="h-3 w-3" /> Privacy Protected
+              </span>
+              <span className="bg-blue-900/30 text-blue-300 text-xs font-medium px-3 py-1 rounded-full border border-blue-500/30 flex items-center gap-1">
+                <Sparkles className="h-3 w-3" /> Premium Quality
+              </span>
+              <span className="bg-indigo-900/30 text-indigo-300 text-xs font-medium px-3 py-1 rounded-full border border-indigo-500/30 flex items-center gap-1">
+                <Lock className="h-3 w-3" /> Encrypted Data
+              </span>
+              <span className="bg-fuchsia-900/30 text-fuchsia-300 text-xs font-medium px-3 py-1 rounded-full border border-fuchsia-500/30 flex items-center gap-1">
+                <TrendingUp className="h-3 w-3" /> Growing Fast
+              </span>
+            </div>
+            
+            {/* Premium Features Section */}
+            <div className="mt-12 glowing-card p-6">
+              <h3 className="text-2xl font-bold mb-4 text-center">
+                <span className="neon-text">Premium SMS Platform</span>
+              </h3>
+              <div className="flex flex-col sm:flex-row items-center justify-center mb-6 text-center">
+                <MessageCircle className="w-10 h-10 sm:w-12 sm:h-12 text-green-500 mb-2 sm:mb-0 sm:mr-3" />
+                <div className="text-center">
+                  <p className="text-lg sm:text-xl text-white mb-1">Join Our Network of</p>
+                  <p className="text-2xl sm:text-3xl font-bold vibrant-gradient-text live-counter" style={{ minWidth: '115px', display: 'inline-block' }}>1,200,000+</p>
+                  <p className="text-lg sm:text-xl text-white">Active Platform Users</p>
                 </div>
               </div>
               
-              {/* Hero Content */}
-              <div className="md:order-1 space-y-6">
-                <div>
-                  <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-                    <span className="neon-text">Join Our Platform</span>
-                  </h2>
-                  <p className="text-lg text-purple-300 mb-6">Create your account and get instant access to premium virtual numbers with our reward program.</p>
-                </div>
-                
-                {/* Benefits */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {benefits.map((benefit, index) => (
-                    <div key={index} className="vibrant-card p-4 floating" style={{ animationDelay: `${index * 0.2}s` }}>
-                      <div className="flex gap-3 items-start">
-                        <div className="bg-gradient-to-br from-purple-600 to-indigo-800 p-2 rounded-lg">
-                          <benefit.icon className="h-6 w-6 text-white" />
-                        </div>
-                        <div>
-                          <h3 className="font-bold text-white mb-1">{benefit.title}</h3>
-                          <p className="text-gray-300 text-sm">{benefit.description}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                
-                {/* Feature Badges */}
-                <div className="flex flex-wrap gap-3 mt-4">
-                  <span className="bg-purple-900/30 text-purple-300 text-xs font-medium px-3 py-1 rounded-full border border-purple-500/30 flex items-center gap-1">
-                    <ShieldCheck className="h-3 w-3" /> Privacy Protected
-                  </span>
-                  <span className="bg-blue-900/30 text-blue-300 text-xs font-medium px-3 py-1 rounded-full border border-blue-500/30 flex items-center gap-1">
-                    <Sparkles className="h-3 w-3" /> Premium Quality
-                  </span>
-                  <span className="bg-indigo-900/30 text-indigo-300 text-xs font-medium px-3 py-1 rounded-full border border-indigo-500/30 flex items-center gap-1">
-                    <Lock className="h-3 w-3" /> Encrypted Data
-                  </span>
-                  <span className="bg-fuchsia-900/30 text-fuchsia-300 text-xs font-medium px-3 py-1 rounded-full border border-fuchsia-500/30 flex items-center gap-1">
-                    <TrendingUp className="h-3 w-3" /> Growing Fast
-                  </span>
-                </div>
-                
-                {/* Premium Features Section */}
-                <div className="mt-12 glowing-card p-6">
-                  <h3 className="text-2xl font-bold mb-4 text-center">
-                    <span className="neon-text">Premium SMS Platform</span>
-                  </h3>
-                  <div className="flex flex-col sm:flex-row items-center justify-center mb-6 text-center">
-                    <MessageCircle className="w-10 h-10 sm:w-12 sm:h-12 text-green-500 mb-2 sm:mb-0 sm:mr-3" />
-                    <div className="text-center">
-                      <p className="text-lg sm:text-xl text-white mb-1">Join Our Network of</p>
-                      <p className="text-2xl sm:text-3xl font-bold vibrant-gradient-text live-counter" style={{ minWidth: '115px', display: 'inline-block' }}>1,200,000+</p>
-                      <p className="text-lg sm:text-xl text-white">Active Platform Users</p>
-                    </div>
+              <div className="space-y-4 mb-6">
+                <p className="text-purple-200 text-center">Connect with our global SMS marketplace for your business and personal needs.</p>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-purple-900/20 p-3 rounded-lg border border-purple-500/20 text-center">
+                    <p className="text-white text-sm mb-1">Business Verified</p>
+                    <p className="text-lg font-bold text-green-400 live-counter">98.7%</p>
                   </div>
-                  
-                  <div className="space-y-4 mb-6">
-                    <p className="text-purple-200 text-center">Connect with our global SMS marketplace for your business and personal needs.</p>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="bg-purple-900/20 p-3 rounded-lg border border-purple-500/20 text-center">
-                        <p className="text-white text-sm mb-1">Business Verified</p>
-                        <p className="text-lg font-bold text-green-400 live-counter">98.7%</p>
-                      </div>
-                      <div className="bg-purple-900/20 p-3 rounded-lg border border-purple-500/20 text-center">
-                        <p className="text-white text-sm mb-1">Delivery Success</p>
-                        <p className="text-lg font-bold text-green-400 live-counter">99.3%</p>
-                      </div>
-                    </div>
+                  <div className="bg-purple-900/20 p-3 rounded-lg border border-purple-500/20 text-center">
+                    <p className="text-white text-sm mb-1">Delivery Success</p>
+                    <p className="text-lg font-bold text-green-400 live-counter">99.3%</p>
                   </div>
                 </div>
               </div>
