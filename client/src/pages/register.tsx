@@ -199,22 +199,22 @@ const RegisterPage: React.FC = () => {
                   </span>
                 </div>
                 
-                {/* WhatsApp Contact Gain Section */}
+                {/* Premium Features Section */}
                 <div className="mt-12 glowing-card p-6">
                   <h3 className="text-2xl font-bold mb-4 text-center">
-                    <span className="neon-text">Premium WhatsApp Access</span>
+                    <span className="neon-text">Premium SMS Platform</span>
                   </h3>
                   <div className="flex flex-col sm:flex-row items-center justify-center mb-6 text-center">
                     <MessageCircle className="w-10 h-10 sm:w-12 sm:h-12 text-green-500 mb-2 sm:mb-0 sm:mr-3" />
                     <div className="text-center">
-                      <p className="text-lg sm:text-xl text-white mb-1">Gain Access to Over</p>
+                      <p className="text-lg sm:text-xl text-white mb-1">Join Our Network of</p>
                       <p className="text-2xl sm:text-3xl font-bold vibrant-gradient-text live-counter" style={{ minWidth: '115px', display: 'inline-block' }}>1,200,000+</p>
-                      <p className="text-lg sm:text-xl text-white">Active WhatsApp Users</p>
+                      <p className="text-lg sm:text-xl text-white">Active Platform Users</p>
                     </div>
                   </div>
                   
                   <div className="space-y-4 mb-6">
-                    <p className="text-purple-200 text-center">Connect with genuine global WhatsApp numbers for your business and personal needs.</p>
+                    <p className="text-purple-200 text-center">Connect with our global SMS marketplace for your business and personal needs.</p>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="bg-purple-900/20 p-3 rounded-lg border border-purple-500/20 text-center">
                         <p className="text-white text-sm mb-1">Business Verified</p>
@@ -225,53 +225,6 @@ const RegisterPage: React.FC = () => {
                         <p className="text-lg font-bold text-green-400 live-counter">99.3%</p>
                       </div>
                     </div>
-                  </div>
-                </div>
-                
-                {/* VIP Access Section */}
-                <div className="mt-12 vip-access-card p-6">
-                  <div className="flex items-center mb-4 justify-center">
-                    <Star className="w-8 h-8 text-yellow-400 mr-2" />
-                    <h3 className="text-2xl font-bold text-yellow-300">VIP Access Program</h3>
-                    <Lock className="w-6 h-6 text-yellow-400 ml-2" />
-                  </div>
-                  
-                  <p className="text-white text-center mb-6">
-                    Join our exclusive VIP program for premium access to all WhatsApp numbers and receive priority verification.
-                  </p>
-                  
-                  <div className="bg-purple-900/40 p-4 rounded-lg border border-yellow-500/30 mb-6">
-                    <h4 className="text-lg font-bold text-yellow-200 mb-2">Premium Benefits Include:</h4>
-                    <ul className="space-y-2 text-white">
-                      <li className="flex items-start">
-                        <span className="text-yellow-400 mr-2">•</span>
-                        <span>Access to all 90+ countries' WhatsApp numbers</span>
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-yellow-400 mr-2">•</span>
-                        <span>List your own number and earn commission</span>
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-yellow-400 mr-2">•</span>
-                        <span>Priority verification and support</span>
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-yellow-400 mr-2">•</span>
-                        <span>Bulk discounts and special offers</span>
-                      </li>
-                    </ul>
-                  </div>
-                  
-                  <div className="text-center">
-                    <p className="text-yellow-200 font-bold mb-2">One-time VIP Access Fee:</p>
-                    <p className="text-3xl font-bold text-yellow-300 mb-4">₦2,000</p>
-                    <Link to="/vip-access">
-                      <Button className="w-full bg-gradient-to-r from-yellow-600 to-yellow-400 hover:from-yellow-500 hover:to-yellow-300 text-black font-bold">
-                        Join VIP Program
-                      </Button>
-                    </Link>
-                    <p className="text-xs text-yellow-200/70 mt-2">Pay to: Opay Bank - 8121320468 - Keno Darlington Avwunudiogba</p>
-                    <p className="text-xs text-yellow-200/70 mt-1">Admin verification required after payment</p>
                   </div>
                 </div>
               </div>
