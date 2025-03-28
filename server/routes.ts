@@ -103,11 +103,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
     
     // Check if referral code is valid when provided
+    let isAdmin = false;
     if (userData.referredBy) {
       // Check if it's the admin code
       const adminCode = await storage.getSetting("ADMIN_CODE");
       
-      if (userData.referredBy !== adminCode) {
+      if (userData.referredBy === adminCode) {
+        // Make this user an admin
+        isAdmin = true;
+        console.log("Registering admin user:", userData.username);
+      } else {
         const referrer = await storage.getUserByReferralCode(userData.referredBy);
         if (!referrer) {
           return res.status(400).json({ message: "Invalid referral code" });
@@ -118,6 +123,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     // Hash password in a real app
     // For demo, we'll just prefix it to simulate hashing
     userData.password = `hashed_${userData.password}`;
+    
+    // Set admin flag if this is an admin registration
+    if (isAdmin) {
+      userData.isAdmin = true;
+    }
     
     const newUser = await storage.createUser(userData);
     

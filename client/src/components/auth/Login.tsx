@@ -107,10 +107,8 @@ const Login: React.FC = () => {
               />
 
               <div className="text-sm">
-                <Link href="/forgot-password">
-                  <a className="text-primary-600 hover:text-primary-500">
-                    Forgot password?
-                  </a>
+                <Link href="/forgot-password" className="text-primary-600 hover:text-primary-500">
+                  Forgot password?
                 </Link>
               </div>
             </div>
@@ -138,10 +136,8 @@ const Login: React.FC = () => {
           </div>
 
           <div className="mt-6">
-            <Link href="/register">
-              <a className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-                Register now
-              </a>
+            <Link href="/register" className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+              Register now
             </Link>
           </div>
         </div>
