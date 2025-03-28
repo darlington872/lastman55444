@@ -9,6 +9,7 @@ import Dashboard from "@/pages/dashboard";
 import Referrals from "@/pages/referrals";
 import Store from "@/pages/store";
 import Kyc from "@/pages/kyc";
+import VIPAccess from "@/pages/vip-access";
 import AdminDashboard from "@/pages/admin/index";
 import AdminStock from "@/pages/admin/stock";
 import AdminUsers from "@/pages/admin/users";
@@ -25,6 +26,7 @@ function Router() {
       {/* Auth routes */}
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
+      <Route path="/vip-access" component={VIPAccess} />
       
       {/* Protected user routes */}
       <Route path="/">
