@@ -14,15 +14,18 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   adminMode = false
 }) => {
   const { user } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   // Handle screen size changes for responsive design
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-      if (window.innerWidth >= 768) {
-        setSidebarOpen(true); // Keep sidebar open on desktop
+      const isMobileScreen = window.innerWidth < 768;
+      setIsMobile(isMobileScreen);
+      
+      // Only auto-open on desktop, don't auto-close on mobile
+      if (!isMobileScreen) {
+        setSidebarOpen(true);
       }
     };
 
@@ -61,7 +64,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         adminMode={adminMode} 
       />
       
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden">
         {/* Mobile Header with menu button only */}
         <div className="md:hidden bg-black border-b border-purple-600/40 p-4 flex items-center justify-between backdrop-blur-md bg-opacity-80 shadow-md sticky top-0 z-30">
           <div className="flex items-center">
@@ -82,7 +85,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
+                  d={sidebarOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
                 />
               </svg>
             </button>
@@ -98,8 +101,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           )}
         </div>
 
-        {/* Content Area - Removed bottom padding since there's no bottom nav */}
-        <div className="overflow-auto h-screen md:h-auto pt-0 md:pt-6 px-3 md:px-6 bg-black text-white">
+        {/* Content Area */}
+        <div className="flex-1 overflow-y-auto pt-0 md:pt-6 px-3 md:px-6 bg-black text-white">
           <div className="py-4 md:py-6">
             <div className="flex flex-wrap justify-between items-center mb-6">
               <h1 className="text-xl md:text-2xl font-bold vibrant-gradient-text my-2">{title}</h1>

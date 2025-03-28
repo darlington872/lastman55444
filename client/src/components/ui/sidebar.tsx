@@ -25,10 +25,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, adminMode = false })
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  useEffect(() => {
-    console.log("Sidebar received isOpen state:", isOpen);
-  }, [isOpen]);
-
   const isActive = (path: string) => {
     return location === path;
   };
@@ -387,8 +383,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, adminMode = false })
                   )}
                 </div>
                 <button
-                  onClick={logout}
-                  className={`text-sm text-center block w-full mt-2 text-purple-400 hover:text-purple-300 transition-colors duration-200 backdrop-blur-sm py-1 rounded-md bg-purple-800/10 border border-purple-800/20 hover:bg-purple-800/20 ${collapsed ? "px-0" : ""}`}
+                  onClick={() => {
+                    if (isMobile) {
+                      onClose(); // Close sidebar before logging out on mobile
+                    }
+                    logout();
+                  }}
+                  className={`text-sm text-center block w-full mt-2 text-purple-400 hover:text-purple-300 transition-colors duration-200 backdrop-blur-sm py-2 rounded-md bg-purple-800/10 border border-purple-800/20 hover:bg-purple-800/20 ${collapsed ? "px-0" : ""}`}
                   title="Logout"
                 >
                   {collapsed ? (
