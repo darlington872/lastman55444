@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "@/components/ui/sidebar";
-import BottomNav from "@/components/ui/bottom-nav";
 import { useAuth } from "@/hooks/useAuth";
 
 interface DashboardLayoutProps {
@@ -23,7 +22,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
       if (window.innerWidth >= 768) {
-        setSidebarOpen(false);
+        setSidebarOpen(true); // Keep sidebar open on desktop
       }
     };
 
@@ -48,22 +47,24 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   };
 
   const closeSidebar = () => {
-    setSidebarOpen(false);
+    if (isMobile) {
+      setSidebarOpen(false);
+    }
   };
 
   return (
     <div className="min-h-screen flex bg-black font-sans antialiased">
-      {/* Use sidebar on larger screens */}
-      <div className="hidden md:block">
+      {/* Sidebar - always visible on desktop, toggled on mobile */}
+      {(!isMobile || (isMobile && sidebarOpen)) && (
         <Sidebar 
-          isOpen={sidebarOpen} 
+          isOpen={true} 
           onClose={closeSidebar} 
           adminMode={adminMode} 
         />
-      </div>
+      )}
       
       <div className="flex-1 overflow-hidden">
-        {/* Mobile Header */}
+        {/* Mobile Header with menu button only */}
         <div className="md:hidden bg-black border-b border-purple-600/40 p-4 flex items-center justify-between backdrop-blur-md bg-opacity-80 shadow-md sticky top-0 z-30">
           <div className="flex items-center">
             <button
@@ -99,8 +100,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           )}
         </div>
 
-        {/* Content Area - Added bottom padding on mobile for the bottom nav */}
-        <div className="overflow-auto h-screen md:h-auto pb-24 pt-0 md:pt-6 px-3 md:px-6 bg-black text-white">
+        {/* Content Area - Removed bottom padding since there's no bottom nav */}
+        <div className="overflow-auto h-screen md:h-auto pt-0 md:pt-6 px-3 md:px-6 bg-black text-white">
           <div className="py-4 md:py-6">
             <div className="flex flex-wrap justify-between items-center mb-6">
               <h1 className="text-xl md:text-2xl font-bold vibrant-gradient-text my-2">{title}</h1>
@@ -110,22 +111,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 </span>
               )}
             </div>
-            <div className="space-y-6 pb-16 md:pb-0">
+            <div className="space-y-6 pb-8">
               {children}
             </div>
           </div>
-        </div>
-        
-        {/* Bottom Navigation for Mobile */}
-        <BottomNav />
-        
-        {/* Sidebar for mobile - only shown when toggled */}
-        <div className="md:hidden">
-          <Sidebar 
-            isOpen={sidebarOpen} 
-            onClose={closeSidebar} 
-            adminMode={adminMode} 
-          />
         </div>
       </div>
     </div>

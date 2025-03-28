@@ -39,9 +39,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, adminMode = false })
       
       {/* Sidebar */}
       <div
-        className={`bg-black text-white w-64 py-4 flex flex-col transition-all duration-300 transform fixed md:static inset-y-0 left-0 z-50 md:translate-x-0 shadow-xl border-r border-purple-600/40 backdrop-blur-md bg-opacity-80 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`bg-black text-white w-64 py-4 flex flex-col transition-all duration-300 transform fixed md:relative inset-y-0 left-0 z-50 shadow-xl border-r border-purple-600/40 backdrop-blur-md bg-opacity-80 translate-x-0`}
         style={{ height: '100vh' }}
       >
         {/* Glassmorphic effect elements */}
@@ -117,6 +115,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, adminMode = false })
                     <path fillRule="evenodd" d="M10 2a1 1 0 00-1 1v1a1 1 0 002 0V3a1 1 0 00-1-1zM4 4h3a3 3 0 006 0h3a2 2 0 012 2v9a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2zm2.5 7a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm2.45 4a2.5 2.5 0 10-4.9 0h4.9zM12 9a1 1 0 100 2h3a1 1 0 100-2h-3zm-1 4a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z" clipRule="evenodd" />
                   </svg>
                   <span>KYC Verification</span>
+                </div>
+                <div
+                  onClick={() => handleNavigation("/vip-access")}
+                  className={`flex items-center px-4 py-3 text-white cursor-pointer ${isActive("/vip-access") ? "bg-gradient-to-r from-yellow-900/60 to-black border-l-4 border-yellow-500" : "hover:bg-gradient-to-r hover:from-yellow-900/40 hover:to-black hover:border-l-4 hover:border-yellow-500"} transition-all`}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                  <span>VIP Access</span>
                 </div>
               </nav>
               
