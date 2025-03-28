@@ -55,7 +55,7 @@ const RegisterPage: React.FC = () => {
             {/* Site Name - First Element */}
             <div className="text-center mb-8">
               <h1 className="text-5xl lg:text-6xl font-extrabold mb-4 vibrant-gradient-text">
-                ETHERDOXSHEFZYSMS
+                ETHERVOXSMS
               </h1>
               <p className="text-xl text-purple-300 mb-4">Premium virtual number marketplace with integrated rewards system</p>
             </div>

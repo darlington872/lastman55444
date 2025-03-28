@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/hooks/useAuth";
 import { Card } from "@/components/ui/card";
@@ -14,7 +14,10 @@ import {
   Sparkles, 
   BriefcaseBusiness,
   Smartphone,
-  Shuffle
+  Shuffle,
+  Lock,
+  Star,
+  MessageCircle
 } from "lucide-react";
 
 const LoginPage: React.FC = () => {
@@ -28,21 +31,72 @@ const LoginPage: React.FC = () => {
     }
   }, [user]);
 
-  // Platform stats
-  const stats = [
-    { label: "Active Users", value: "12,451", icon: Users, percent: 75 },
-    { label: "Virtual Numbers", value: "58,300", icon: Smartphone, percent: 85 },
-    { label: "Markets Served", value: "91", icon: Globe2, percent: 90 },
-    { label: "Trusted Vendors", value: "1,580", icon: BadgeCheck, percent: 80 },
-  ];
+  // Platform stats with initial values
+  const [stats, setStats] = useState([
+    { label: "Active Users", value: "12,451", initialValue: 12451, icon: Users, percent: 75 },
+    { label: "Virtual Numbers", value: "58,300", initialValue: 58300, icon: Smartphone, percent: 85 },
+    { label: "Markets Served", value: "91", initialValue: 91, icon: Globe2, percent: 90 },
+    { label: "Trusted Vendors", value: "1,580", initialValue: 1580, icon: BadgeCheck, percent: 80 },
+  ]);
   
-  // Market stats
-  const marketStats = [
-    { label: "Daily Transactions", value: "1,209", trend: "+12.5%" },
-    { label: "Monthly Revenue", value: "₦29.5M", trend: "+8.2%" },
-    { label: "Referral Payouts", value: "₦2.12M", trend: "+4.3%" },
-    { label: "New Signups (24h)", value: "294", trend: "+15.8%" },
-  ];
+  // Market stats with initial values
+  const [marketStats, setMarketStats] = useState([
+    { label: "Daily Transactions", value: "1,209", initialValue: 1209, trend: "+12.5%" },
+    { label: "Monthly Revenue", value: "₦29.5M", initialValue: 29.5, trend: "+8.2%" },
+    { label: "Referral Payouts", value: "₦2.12M", initialValue: 2.12, trend: "+4.3%" },
+    { label: "New Signups (24h)", value: "294", initialValue: 294, trend: "+15.8%" },
+  ]);
+
+  // Update stats at regular intervals
+  useEffect(() => {
+    const updateStats = () => {
+      // Update platform stats
+      setStats(prevStats => 
+        prevStats.map(stat => {
+          // Random increment between 1-5
+          const increment = Math.floor(Math.random() * 5) + 1;
+          const newValue = stat.initialValue + increment;
+          
+          return {
+            ...stat,
+            initialValue: newValue,
+            value: new Intl.NumberFormat('en-US').format(newValue)
+          };
+        })
+      );
+
+      // Update market stats
+      setMarketStats(prevStats => 
+        prevStats.map((stat, index) => {
+          let newValue;
+          let formattedValue;
+          
+          if (index === 1 || index === 2) {
+            // For currency values (in millions)
+            const increment = (Math.random() * 0.03).toFixed(2);
+            newValue = parseFloat((stat.initialValue + parseFloat(increment)).toFixed(2));
+            formattedValue = `₦${newValue}M`;
+          } else {
+            // For count values
+            const increment = Math.floor(Math.random() * 3) + 1;
+            newValue = stat.initialValue + increment;
+            formattedValue = new Intl.NumberFormat('en-US').format(newValue);
+          }
+          
+          return {
+            ...stat,
+            initialValue: newValue,
+            value: formattedValue
+          };
+        })
+      );
+    };
+
+    // Update every 3 seconds
+    const intervalId = setInterval(updateStats, 3000);
+    
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <div className="min-h-screen flex font-sans antialiased">
@@ -54,7 +108,7 @@ const LoginPage: React.FC = () => {
             {/* Site Name and Stats - First Elements */}
             <div className="text-center mb-8">
               <h1 className="text-5xl lg:text-6xl font-extrabold mb-4 vibrant-gradient-text">
-                ETHERDOXSHEFZYSMS
+                ETHERVOXSMS
               </h1>
               <p className="text-xl text-purple-300 mb-4">The premium virtual number marketplace with integrated rewards system</p>
             </div>
@@ -69,7 +123,7 @@ const LoginPage: React.FC = () => {
                       <span className="text-gray-300 text-sm">{stat.label}</span>
                       <span className="text-green-400 text-xs font-semibold">{stat.trend}</span>
                     </div>
-                    <p className="text-xl font-bold vibrant-gradient-text">{stat.value}</p>
+                    <p className="text-xl font-bold vibrant-gradient-text live-counter">{stat.value}</p>
                   </div>
                 ))}
               </div>
@@ -108,7 +162,7 @@ const LoginPage: React.FC = () => {
                           <stat.icon className="h-5 w-5 text-white" />
                         </div>
                       </div>
-                      <h3 className="text-white font-bold stats-value text-lg">{stat.value}</h3>
+                      <h3 className="text-white font-bold stats-value text-lg live-counter">{stat.value}</h3>
                       <p className="text-purple-300 text-xs">{stat.label}</p>
                     </div>
                   ))}
@@ -128,6 +182,80 @@ const LoginPage: React.FC = () => {
                   <span className="bg-fuchsia-900/30 text-fuchsia-300 text-xs font-medium px-3 py-1 rounded-full border border-fuchsia-500/30 flex items-center gap-1">
                     <Shuffle className="h-3 w-3" /> Instant Delivery
                   </span>
+                </div>
+              </div>
+              {/* WhatsApp Contact Gain Section */}
+              <div className="mt-12 glowing-card p-6">
+                <h3 className="text-2xl font-bold mb-4 text-center">
+                  <span className="neon-text">Premium WhatsApp Access</span>
+                </h3>
+                <div className="flex items-center justify-center mb-6">
+                  <MessageCircle className="w-12 h-12 text-green-500 mr-3" />
+                  <div className="text-center">
+                    <p className="text-xl text-white mb-1">Gain Access to Over</p>
+                    <p className="text-3xl font-bold vibrant-gradient-text live-counter">1,200,000+</p>
+                    <p className="text-xl text-white">Active WhatsApp Users</p>
+                  </div>
+                </div>
+                
+                <div className="space-y-4 mb-6">
+                  <p className="text-purple-200 text-center">Connect with genuine global WhatsApp numbers for your business and personal needs.</p>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-purple-900/20 p-3 rounded-lg border border-purple-500/20 text-center">
+                      <p className="text-white text-sm mb-1">Business Verified</p>
+                      <p className="text-lg font-bold text-green-400 live-counter">98.7%</p>
+                    </div>
+                    <div className="bg-purple-900/20 p-3 rounded-lg border border-purple-500/20 text-center">
+                      <p className="text-white text-sm mb-1">Delivery Success</p>
+                      <p className="text-lg font-bold text-green-400 live-counter">99.3%</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* VIP Access Section */}
+              <div className="mt-12 vip-access-card p-6">
+                <div className="flex items-center mb-4 justify-center">
+                  <Star className="w-8 h-8 text-yellow-400 mr-2" />
+                  <h3 className="text-2xl font-bold text-yellow-300">VIP Access Program</h3>
+                  <Lock className="w-6 h-6 text-yellow-400 ml-2" />
+                </div>
+                
+                <p className="text-white text-center mb-6">
+                  Join our exclusive VIP program for premium access to all WhatsApp numbers and receive priority verification.
+                </p>
+                
+                <div className="bg-purple-900/40 p-4 rounded-lg border border-yellow-500/30 mb-6">
+                  <h4 className="text-lg font-bold text-yellow-200 mb-2">Premium Benefits Include:</h4>
+                  <ul className="space-y-2 text-white">
+                    <li className="flex items-start">
+                      <span className="text-yellow-400 mr-2">•</span>
+                      <span>Access to all 90+ countries' WhatsApp numbers</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-yellow-400 mr-2">•</span>
+                      <span>List your own number and earn commission</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-yellow-400 mr-2">•</span>
+                      <span>Priority verification and support</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-yellow-400 mr-2">•</span>
+                      <span>Bulk discounts and special offers</span>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div className="text-center">
+                  <p className="text-yellow-200 font-bold mb-2">One-time VIP Access Fee:</p>
+                  <p className="text-3xl font-bold text-yellow-300 mb-4">₦2,000</p>
+                  <Link to="/vip-access">
+                    <Button className="w-full bg-gradient-to-r from-yellow-600 to-yellow-400 hover:from-yellow-500 hover:to-yellow-300 text-black font-bold">
+                      Join VIP Program
+                    </Button>
+                  </Link>
+                  <p className="text-xs text-yellow-200/70 mt-2">Admin verification required after payment</p>
                 </div>
               </div>
             </div>
