@@ -129,7 +129,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex font-sans antialiased">
-      <Sidebar isOpen={false} onClose={() => {}} />
+      {/* Sidebar is no longer rendered directly here */}
       
       <div className="flex-1 overflow-hidden bg-black">
         <div className="overflow-auto h-screen">

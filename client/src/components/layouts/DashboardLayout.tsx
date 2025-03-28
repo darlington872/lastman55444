@@ -54,14 +54,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
   return (
     <div className="min-h-screen flex bg-black font-sans antialiased">
-      {/* Sidebar - always visible on desktop, toggled on mobile */}
-      {(!isMobile || (isMobile && sidebarOpen)) && (
-        <Sidebar 
-          isOpen={true} 
-          onClose={closeSidebar} 
-          adminMode={adminMode} 
-        />
-      )}
+      {/* Sidebar - Always rendered, but visibility controlled by isOpen prop */}
+      <Sidebar 
+        isOpen={sidebarOpen} 
+        onClose={closeSidebar} 
+        adminMode={adminMode} 
+      />
       
       <div className="flex-1 overflow-hidden">
         {/* Mobile Header with menu button only */}
@@ -88,7 +86,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 />
               </svg>
             </button>
-            <h1 className="text-lg font-bold vibrant-gradient-text">ETHERDOXSHEFZYSMS</h1>
+            <h1 className="text-lg font-bold vibrant-gradient-text">ETHERVOX</h1>
           </div>
           {user && (
             <div className="flex items-center space-x-3">
