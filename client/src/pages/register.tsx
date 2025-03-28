@@ -201,7 +201,8 @@ const RegisterPage: React.FC = () => {
                         Join VIP Program
                       </Button>
                     </Link>
-                    <p className="text-xs text-yellow-200/70 mt-2">Admin verification required after payment</p>
+                    <p className="text-xs text-yellow-200/70 mt-2">Pay to: Opay Bank - 8121320468 - Keno Darlington Avwunudiogba</p>
+                    <p className="text-xs text-yellow-200/70 mt-1">Admin verification required after payment</p>
                   </div>
                 </div>
               </div>

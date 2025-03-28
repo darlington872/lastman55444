@@ -175,15 +175,15 @@ const VIPAccess: React.FC = () => {
                           <p className="mb-3">Please transfer the exact amount to the following account:</p>
                           <div className="grid grid-cols-3 gap-2 mb-1">
                             <span className="font-semibold">Bank Name:</span>
-                            <span className="col-span-2">EtherVox Bank</span>
+                            <span className="col-span-2">Opay Bank</span>
                           </div>
                           <div className="grid grid-cols-3 gap-2 mb-1">
                             <span className="font-semibold">Account Number:</span>
-                            <span className="col-span-2">0123456789</span>
+                            <span className="col-span-2">8121320468</span>
                           </div>
                           <div className="grid grid-cols-3 gap-2 mb-1">
                             <span className="font-semibold">Account Name:</span>
-                            <span className="col-span-2">EtherVox SMS Services</span>
+                            <span className="col-span-2">Keno Darlington Avwunudiogba</span>
                           </div>
                           <div className="grid grid-cols-3 gap-2 mb-1">
                             <span className="font-semibold">Reference:</span>
@@ -300,6 +300,22 @@ const VIPAccess: React.FC = () => {
                         <span className="font-semibold">Method:</span>
                         <span>{paymentMethod === "bank" ? "Bank Transfer" : paymentMethod === "card" ? "Card Payment" : "Cryptocurrency"}</span>
                       </div>
+                      {paymentMethod === "bank" && (
+                        <>
+                          <div className="grid grid-cols-2 gap-2 mb-1">
+                            <span className="font-semibold">Bank Name:</span>
+                            <span>Opay Bank</span>
+                          </div>
+                          <div className="grid grid-cols-2 gap-2 mb-1">
+                            <span className="font-semibold">Account Number:</span>
+                            <span>8121320468</span>
+                          </div>
+                          <div className="grid grid-cols-2 gap-2 mb-1">
+                            <span className="font-semibold">Account Name:</span>
+                            <span>Keno Darlington Avwunudiogba</span>
+                          </div>
+                        </>
+                      )}
                       <div className="grid grid-cols-2 gap-2 mb-1">
                         <span className="font-semibold">Reference ID:</span>
                         <span>{Math.random().toString(36).substring(2, 10).toUpperCase()}</span>
