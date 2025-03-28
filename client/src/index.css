@@ -71,7 +71,7 @@
     position: relative;
   }
 
-  /* 3D detailed background */
+  /* Simplified background for faster loading */
   body::before {
     content: "";
     position: fixed;
@@ -83,13 +83,12 @@
     background: 
       radial-gradient(circle at 20% 30%, rgba(120, 0, 250, 0.1) 0%, transparent 30%),
       radial-gradient(circle at 80% 30%, rgba(50, 0, 150, 0.15) 0%, transparent 40%),
-      radial-gradient(circle at 50% 80%, rgba(200, 0, 200, 0.1) 0%, transparent 30%),
-      url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h100v100H0z' fill='none'/%3E%3Cpath fill='%23330066' fill-opacity='0.1' d='M13 13v74h74V13H13zm66 66H21V21h58v58z'/%3E%3C/svg%3E");
+      radial-gradient(circle at 50% 80%, rgba(200, 0, 200, 0.1) 0%, transparent 30%);
     opacity: 0.7;
-    filter: blur(1px);
+    will-change: transform;
   }
 
-  /* 3D grid layer */
+  /* Simplified 3D grid layer with better performance */
   body::after {
     content: "";
     position: fixed;
@@ -100,22 +99,21 @@
     z-index: -2;
     background-image: 
       linear-gradient(rgba(50, 0, 150, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(50, 0, 150, 0.03) 1px, transparent 1px),
-      linear-gradient(rgba(50, 0, 150, 0.02) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(50, 0, 150, 0.02) 1px, transparent 1px);
-    background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px;
-    background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
+      linear-gradient(90deg, rgba(50, 0, 150, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px, 50px 50px;
+    background-position: -1px -1px, -1px -1px;
     transform: perspective(1000px) rotateX(60deg) scale(1.5, 1) translateY(-30%);
     transform-origin: center center;
-    animation: gridMovement 20s linear infinite;
+    animation: gridMovement 30s linear infinite;
+    will-change: background-position;
   }
 
   @keyframes gridMovement {
     0% {
-      background-position: 0 0, 0 0, 0 0, 0 0;
+      background-position: 0 0, 0 0;
     }
     100% {
-      background-position: 0 50px, 50px 0, 0 10px, 10px 0;
+      background-position: 0 50px, 50px 0;
     }
   }
 
@@ -144,12 +142,14 @@
   }
   
   .glowing-card {
-    @apply shadow-2xl border-purple-500/20 rounded-lg overflow-hidden !important;
+    @apply shadow-lg border-purple-500/20 rounded-lg overflow-hidden !important;
     background: linear-gradient(135deg, rgba(25, 0, 50, 0.9), rgba(60, 0, 120, 0.8)) !important;
-    animation: pulse 3s ease infinite;
+    animation: pulse 4s ease infinite;
     position: relative;
+    will-change: box-shadow;
   }
   
+  /* Simplified glow effect for better performance */
   .glowing-card::after {
     content: '';
     position: absolute;
@@ -158,12 +158,12 @@
     right: -2px;
     bottom: -2px;
     z-index: -1;
-    background: linear-gradient(45deg, #ff00cc, #3300ff, #8a00c2, #ff00dd);
-    background-size: 400% 400%;
+    background: linear-gradient(45deg, #ff00cc, #3300ff);
     border-radius: inherit;
-    animation: gradientBorder 10s ease infinite;
-    filter: blur(10px);
-    opacity: 0.5;
+    filter: blur(8px);
+    opacity: 0.4;
+    will-change: opacity;
+    animation: simpleGlow 4s ease-in-out infinite;
   }
   
   @keyframes gradientShift {
@@ -363,11 +363,12 @@
     50% { opacity: 1; }
   }
   
-  /* VIP Access section styling */
+  /* VIP Access section styling - optimized for performance */
   .vip-access-card {
-    @apply shadow-2xl border border-purple-600/40 rounded-lg overflow-hidden !important;
+    @apply shadow-lg border border-purple-600/40 rounded-lg overflow-hidden !important;
     background: linear-gradient(135deg, rgba(60, 0, 100, 0.9), rgba(10, 0, 30, 0.95)) !important;
     position: relative;
+    will-change: transform;
   }
   
   .vip-access-card::before {
@@ -378,17 +379,22 @@
     right: -2px;
     bottom: -2px;
     z-index: -1;
-    background: linear-gradient(45deg, #ffd700, #ff8c00, #ffd700, #ff8c00);
-    background-size: 400% 400%;
+    background: linear-gradient(45deg, #ffd700, #ff8c00);
     border-radius: inherit;
-    animation: goldBorder 10s ease infinite;
-    filter: blur(10px);
-    opacity: 0.7;
+    filter: blur(8px);
+    opacity: 0.6;
+    will-change: opacity;
+    animation: simpleGlow 5s ease-in-out infinite;
   }
   
   @keyframes goldBorder {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
+  }
+  
+  @keyframes simpleGlow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.5; }
   }
 }

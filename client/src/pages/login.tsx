@@ -47,14 +47,43 @@ const LoginPage: React.FC = () => {
     { label: "New Signups (24h)", value: "294", initialValue: 294, trend: "+15.8%" },
   ]);
 
-  // Update stats at regular intervals
+  // WhatsApp active users counter
+  const [whatsappUsers, setWhatsappUsers] = useState(1_200_000);
+  
+  // Update WhatsApp users counter separately (with faster updates)
   useEffect(() => {
-    const updateStats = () => {
-      // Update platform stats
-      setStats(prevStats => 
-        prevStats.map(stat => {
-          // Random increment between 1-5
-          const increment = Math.floor(Math.random() * 5) + 1;
+    const whatsappIntervalId = setInterval(() => {
+      setWhatsappUsers(prevCount => {
+        // Random increment between 50-350
+        const increment = Math.floor(Math.random() * 300) + 50;
+        return prevCount + increment;
+      });
+    }, 3500); // Update a bit faster than other stats for attention-grabbing effect
+    
+    return () => clearInterval(whatsappIntervalId);
+  }, []);
+  
+  // Update stats at regular intervals - optimized for performance
+  useEffect(() => {
+    // Initial update after a slight delay to improve perceived performance
+    const initialUpdateTimeout = setTimeout(() => {
+      updateStats();
+    }, 1500);
+    
+    // Update every 5 seconds to reduce load
+    const intervalId = setInterval(updateStats, 5000);
+    
+    // Function to update stats in order (like a graph progression)
+    function updateStats() {
+      // First update platform stats in a progressive manner
+      setStats(prevStats => {
+        // Sort by initialValue and increment proportionally
+        const sortedStats = [...prevStats].sort((a, b) => a.initialValue - b.initialValue);
+        
+        return prevStats.map(stat => {
+          // Smaller values get incremented more to catch up to larger values - simulating trending graph data
+          const multiplier = Math.max(0.5, Math.min(1.5, 100000 / stat.initialValue));
+          const increment = Math.floor(Math.random() * 3 * multiplier) + 1;
           const newValue = stat.initialValue + increment;
           
           return {
@@ -62,10 +91,10 @@ const LoginPage: React.FC = () => {
             initialValue: newValue,
             value: new Intl.NumberFormat('en-US').format(newValue)
           };
-        })
-      );
+        });
+      });
 
-      // Update market stats
+      // Then update market stats
       setMarketStats(prevStats => 
         prevStats.map((stat, index) => {
           let newValue;
@@ -73,12 +102,12 @@ const LoginPage: React.FC = () => {
           
           if (index === 1 || index === 2) {
             // For currency values (in millions)
-            const increment = (Math.random() * 0.03).toFixed(2);
+            const increment = (Math.random() * 0.02).toFixed(2);
             newValue = parseFloat((stat.initialValue + parseFloat(increment)).toFixed(2));
             formattedValue = `₦${newValue}M`;
           } else {
-            // For count values
-            const increment = Math.floor(Math.random() * 3) + 1;
+            // For count values - more predictable progression
+            const increment = Math.floor(Math.random() * 2) + 1;
             newValue = stat.initialValue + increment;
             formattedValue = new Intl.NumberFormat('en-US').format(newValue);
           }
@@ -91,11 +120,11 @@ const LoginPage: React.FC = () => {
         })
       );
     };
-
-    // Update every 3 seconds
-    const intervalId = setInterval(updateStats, 3000);
     
-    return () => clearInterval(intervalId);
+    return () => {
+      clearTimeout(initialUpdateTimeout);
+      clearInterval(intervalId);
+    };
   }, []);
 
   return (
@@ -126,7 +155,7 @@ const LoginPage: React.FC = () => {
                       <span className="text-gray-300 text-xs sm:text-sm">{stat.label}</span>
                       <span className="text-green-400 text-xs font-semibold">{stat.trend}</span>
                     </div>
-                    <p className="text-lg sm:text-xl font-bold vibrant-gradient-text live-counter">{stat.value}</p>
+                    <p className="text-lg sm:text-xl font-bold vibrant-gradient-text live-counter" style={{ minWidth: '60px', display: 'inline-block' }}>{stat.value}</p>
                   </div>
                 ))}
               </div>
@@ -165,7 +194,7 @@ const LoginPage: React.FC = () => {
                           <stat.icon className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                         </div>
                       </div>
-                      <h3 className="text-white font-bold stats-value text-lg live-counter">{stat.value}</h3>
+                      <h3 className="text-white font-bold stats-value text-lg live-counter" style={{ minWidth: '75px', display: 'inline-block' }}>{stat.value}</h3>
                       <p className="text-purple-300 text-xs">{stat.label}</p>
                     </div>
                   ))}
@@ -196,7 +225,9 @@ const LoginPage: React.FC = () => {
                   <MessageCircle className="w-10 h-10 sm:w-12 sm:h-12 text-green-500 mb-2 sm:mb-0 sm:mr-3" />
                   <div className="text-center">
                     <p className="text-lg sm:text-xl text-white mb-1">Gain Access to Over</p>
-                    <p className="text-2xl sm:text-3xl font-bold vibrant-gradient-text live-counter">1,200,000+</p>
+                    <p className="text-2xl sm:text-3xl font-bold vibrant-gradient-text live-counter" style={{ minWidth: '175px', display: 'inline-block' }}>
+                      {new Intl.NumberFormat('en-US').format(whatsappUsers)}+
+                    </p>
                     <p className="text-lg sm:text-xl text-white">Active WhatsApp Users</p>
                   </div>
                 </div>

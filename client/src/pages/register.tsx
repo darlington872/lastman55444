@@ -40,12 +40,72 @@ const RegisterPage: React.FC = () => {
     { title: "24/7 Support", description: "Get help anytime with our ETHERVOX AI assistant", icon: Headphones },
   ];
 
-  // Platform stats for trust signals
-  const stats = [
-    { label: "Active Users", value: "12,451+", icon: Users },
-    { label: "Global Reach", value: "90+ Countries", icon: Globe2 },
-    { label: "Success Rate", value: "98%", icon: BadgeCheck },
-  ];
+  // Platform stats for trust signals with progressive graph-like increments
+  const [stats, setStats] = React.useState([
+    { label: "Active Users", value: "12,451+", initialValue: 12451, icon: Users },
+    { label: "Global Reach", value: "90+ Countries", initialValue: 90, icon: Globe2 },
+    { label: "Success Rate", value: "98%", initialValue: 98, icon: BadgeCheck },
+  ]);
+  
+  // Update stats in a progressive graph-like pattern - optimized for performance
+  React.useEffect(() => {
+    // Initial update after slight delay to improve perceived performance
+    const initialUpdateTimeout = setTimeout(() => {
+      updateStats();
+    }, 2000);
+    
+    // Update less frequently on register page
+    const intervalId = setInterval(updateStats, 7000);
+    
+    function updateStats() {
+      setStats(prevStats => {
+        return prevStats.map(stat => {
+          // For users - increase more (to show growth)
+          if (stat.label === "Active Users") {
+            const increment = Math.floor(Math.random() * 5) + 1;
+            const newValue = stat.initialValue + increment;
+            return {
+              ...stat,
+              initialValue: newValue,
+              value: `${new Intl.NumberFormat('en-US').format(newValue)}+`
+            };
+          }
+          // For countries - small chance to increase (new market expansion)
+          else if (stat.label === "Global Reach") {
+            // Only 10% chance to add a new country
+            if (Math.random() < 0.1) {
+              const newValue = stat.initialValue + 1;
+              return {
+                ...stat,
+                initialValue: newValue,
+                value: `${newValue}+ Countries`
+              };
+            }
+            return stat;
+          }
+          // For success rate - even smaller change within upper bound (98.5% max)
+          else if (stat.label === "Success Rate") {
+            // Only 5% chance to increase success rate
+            if (Math.random() < 0.05 && stat.initialValue < 98.5) {
+              const newValue = Math.min(98.5, stat.initialValue + 0.1);
+              return {
+                ...stat,
+                initialValue: newValue,
+                value: `${newValue.toFixed(1)}%`
+              };
+            }
+            return stat;
+          }
+          return stat;
+        });
+      });
+    }
+    
+    return () => {
+      clearTimeout(initialUpdateTimeout);
+      clearInterval(intervalId);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen flex font-sans antialiased">
@@ -71,12 +131,18 @@ const RegisterPage: React.FC = () => {
               <div className="flex flex-wrap justify-center gap-6 mb-4">
                 {stats.map((stat, index) => (
                   <div key={index} className="text-center">
-                    <div className="stats-circle-vibrant w-20 h-20 mx-auto mb-2" style={{ "--percentage": "95%" } as React.CSSProperties}>
+                    <div 
+                      className="stats-circle-vibrant w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2" 
+                      style={{ 
+                        "--percentage": stat.label === "Active Users" ? "85%" : 
+                                        stat.label === "Global Reach" ? "90%" : "95%"
+                      } as React.CSSProperties}
+                    >
                       <div className="absolute inset-2 rounded-full bg-gray-900 flex items-center justify-center">
-                        <stat.icon className="h-6 w-6 text-white" />
+                        <stat.icon className="h-5 w-5 text-white" />
                       </div>
                     </div>
-                    <h3 className="text-white font-bold stats-value text-lg">{stat.value}</h3>
+                    <h3 className="text-white font-bold stats-value text-lg live-counter">{stat.value}</h3>
                     <p className="text-purple-300 text-sm">{stat.label}</p>
                   </div>
                 ))}
@@ -138,12 +204,12 @@ const RegisterPage: React.FC = () => {
                   <h3 className="text-2xl font-bold mb-4 text-center">
                     <span className="neon-text">Premium WhatsApp Access</span>
                   </h3>
-                  <div className="flex items-center justify-center mb-6">
-                    <MessageCircle className="w-12 h-12 text-green-500 mr-3" />
+                  <div className="flex flex-col sm:flex-row items-center justify-center mb-6 text-center">
+                    <MessageCircle className="w-10 h-10 sm:w-12 sm:h-12 text-green-500 mb-2 sm:mb-0 sm:mr-3" />
                     <div className="text-center">
-                      <p className="text-xl text-white mb-1">Gain Access to Over</p>
-                      <p className="text-3xl font-bold vibrant-gradient-text live-counter">1,200,000+</p>
-                      <p className="text-xl text-white">Active WhatsApp Users</p>
+                      <p className="text-lg sm:text-xl text-white mb-1">Gain Access to Over</p>
+                      <p className="text-2xl sm:text-3xl font-bold vibrant-gradient-text live-counter" style={{ minWidth: '115px', display: 'inline-block' }}>1,200,000+</p>
+                      <p className="text-lg sm:text-xl text-white">Active WhatsApp Users</p>
                     </div>
                   </div>
                   
