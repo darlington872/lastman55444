@@ -56,10 +56,13 @@ const RegisterPage: React.FC = () => {
           <div className="container mx-auto px-4 py-6">
             {/* Site Name - First Element */}
             <div className="text-center mb-8">
-              <h1 className="text-5xl lg:text-6xl font-extrabold mb-4 vibrant-gradient-text">
-                ETHERVOXSMS
-              </h1>
-              <p className="text-xl text-purple-300 mb-4">Premium virtual number marketplace with integrated rewards system</p>
+              <div className="logo-container">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-0 vibrant-gradient-text leading-tight">
+                  ETHERVOX
+                </h1>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-purple-400 mb-4">SMS</h2>
+              </div>
+              <p className="text-lg sm:text-xl text-purple-300 mb-4">Premium virtual number marketplace with integrated rewards system</p>
             </div>
             
             {/* Trust Signals - Second Element */}

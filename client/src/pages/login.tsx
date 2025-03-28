@@ -107,23 +107,26 @@ const LoginPage: React.FC = () => {
           <div className="container mx-auto px-4 py-6">
             {/* Site Name and Stats - First Elements */}
             <div className="text-center mb-8">
-              <h1 className="text-5xl lg:text-6xl font-extrabold mb-4 vibrant-gradient-text">
-                ETHERVOXSMS
-              </h1>
-              <p className="text-xl text-purple-300 mb-4">The premium virtual number marketplace with integrated rewards system</p>
+              <div className="logo-container">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-0 vibrant-gradient-text leading-tight">
+                  ETHERVOX
+                </h1>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-purple-400 mb-4">SMS</h2>
+              </div>
+              <p className="text-lg sm:text-xl text-purple-300 mb-4">Premium virtual number marketplace with integrated rewards system</p>
             </div>
             
             {/* Market Stats - Second Element */}
             <div className="glowing-card p-4 mb-10 max-w-4xl mx-auto">
-              <h3 className="text-xl font-bold mb-3 rainbow-text text-center">Real-Time Market Stats</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <h3 className="text-lg sm:text-xl font-bold mb-3 rainbow-text text-center">Real-Time Market Stats</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
                 {marketStats.map((stat, index) => (
-                  <div key={index} className="bg-purple-900/20 p-3 rounded-lg border border-purple-500/20">
-                    <div className="flex justify-between">
-                      <span className="text-gray-300 text-sm">{stat.label}</span>
+                  <div key={index} className="bg-purple-900/20 p-2 sm:p-3 rounded-lg border border-purple-500/20">
+                    <div className="flex flex-col sm:flex-row sm:justify-between">
+                      <span className="text-gray-300 text-xs sm:text-sm">{stat.label}</span>
                       <span className="text-green-400 text-xs font-semibold">{stat.trend}</span>
                     </div>
-                    <p className="text-xl font-bold vibrant-gradient-text live-counter">{stat.value}</p>
+                    <p className="text-lg sm:text-xl font-bold vibrant-gradient-text live-counter">{stat.value}</p>
                   </div>
                 ))}
               </div>
@@ -148,18 +151,18 @@ const LoginPage: React.FC = () => {
                 </div>
                 
                 {/* Circular Stats */}
-                <div className="grid grid-cols-2 gap-4 mb-8">
+                <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-4 mb-8">
                   {stats.map((stat, index) => (
                     <div key={index} className="text-center">
                       <div 
-                        className="stats-circle-vibrant w-20 h-20 mx-auto mb-2"
+                        className="stats-circle-vibrant w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2"
                         style={{ 
                           "--percentage": `${stat.percent}%`,
                           "--percentage-double": `${stat.percent * 2}%`
                         } as React.CSSProperties}
                       >
                         <div className="absolute inset-2 rounded-full bg-gray-900 flex items-center justify-center">
-                          <stat.icon className="h-5 w-5 text-white" />
+                          <stat.icon className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                         </div>
                       </div>
                       <h3 className="text-white font-bold stats-value text-lg live-counter">{stat.value}</h3>
@@ -185,49 +188,49 @@ const LoginPage: React.FC = () => {
                 </div>
               </div>
               {/* WhatsApp Contact Gain Section */}
-              <div className="mt-12 glowing-card p-6">
-                <h3 className="text-2xl font-bold mb-4 text-center">
+              <div className="mt-12 glowing-card p-4 sm:p-6">
+                <h3 className="text-xl sm:text-2xl font-bold mb-4 text-center">
                   <span className="neon-text">Premium WhatsApp Access</span>
                 </h3>
-                <div className="flex items-center justify-center mb-6">
-                  <MessageCircle className="w-12 h-12 text-green-500 mr-3" />
+                <div className="flex flex-col sm:flex-row items-center justify-center mb-6 text-center">
+                  <MessageCircle className="w-10 h-10 sm:w-12 sm:h-12 text-green-500 mb-2 sm:mb-0 sm:mr-3" />
                   <div className="text-center">
-                    <p className="text-xl text-white mb-1">Gain Access to Over</p>
-                    <p className="text-3xl font-bold vibrant-gradient-text live-counter">1,200,000+</p>
-                    <p className="text-xl text-white">Active WhatsApp Users</p>
+                    <p className="text-lg sm:text-xl text-white mb-1">Gain Access to Over</p>
+                    <p className="text-2xl sm:text-3xl font-bold vibrant-gradient-text live-counter">1,200,000+</p>
+                    <p className="text-lg sm:text-xl text-white">Active WhatsApp Users</p>
                   </div>
                 </div>
                 
                 <div className="space-y-4 mb-6">
-                  <p className="text-purple-200 text-center">Connect with genuine global WhatsApp numbers for your business and personal needs.</p>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-purple-900/20 p-3 rounded-lg border border-purple-500/20 text-center">
-                      <p className="text-white text-sm mb-1">Business Verified</p>
-                      <p className="text-lg font-bold text-green-400 live-counter">98.7%</p>
+                  <p className="text-purple-200 text-center text-sm sm:text-base">Connect with genuine global WhatsApp numbers for your business and personal needs.</p>
+                  <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                    <div className="bg-purple-900/20 p-2 sm:p-3 rounded-lg border border-purple-500/20 text-center">
+                      <p className="text-white text-xs sm:text-sm mb-1">Business Verified</p>
+                      <p className="text-base sm:text-lg font-bold text-green-400 live-counter">98.7%</p>
                     </div>
-                    <div className="bg-purple-900/20 p-3 rounded-lg border border-purple-500/20 text-center">
-                      <p className="text-white text-sm mb-1">Delivery Success</p>
-                      <p className="text-lg font-bold text-green-400 live-counter">99.3%</p>
+                    <div className="bg-purple-900/20 p-2 sm:p-3 rounded-lg border border-purple-500/20 text-center">
+                      <p className="text-white text-xs sm:text-sm mb-1">Delivery Success</p>
+                      <p className="text-base sm:text-lg font-bold text-green-400 live-counter">99.3%</p>
                     </div>
                   </div>
                 </div>
               </div>
               
               {/* VIP Access Section */}
-              <div className="mt-12 vip-access-card p-6">
-                <div className="flex items-center mb-4 justify-center">
-                  <Star className="w-8 h-8 text-yellow-400 mr-2" />
-                  <h3 className="text-2xl font-bold text-yellow-300">VIP Access Program</h3>
-                  <Lock className="w-6 h-6 text-yellow-400 ml-2" />
+              <div className="mt-12 vip-access-card p-4 sm:p-6">
+                <div className="flex items-center mb-4 justify-center flex-wrap">
+                  <Star className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-400 mr-2" />
+                  <h3 className="text-xl sm:text-2xl font-bold text-yellow-300">VIP Access Program</h3>
+                  <Lock className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400 ml-2" />
                 </div>
                 
-                <p className="text-white text-center mb-6">
+                <p className="text-white text-center text-sm sm:text-base mb-4 sm:mb-6">
                   Join our exclusive VIP program for premium access to all WhatsApp numbers and receive priority verification.
                 </p>
                 
-                <div className="bg-purple-900/40 p-4 rounded-lg border border-yellow-500/30 mb-6">
-                  <h4 className="text-lg font-bold text-yellow-200 mb-2">Premium Benefits Include:</h4>
-                  <ul className="space-y-2 text-white">
+                <div className="bg-purple-900/40 p-3 sm:p-4 rounded-lg border border-yellow-500/30 mb-4 sm:mb-6">
+                  <h4 className="text-base sm:text-lg font-bold text-yellow-200 mb-2">Premium Benefits Include:</h4>
+                  <ul className="space-y-1 sm:space-y-2 text-white text-sm sm:text-base">
                     <li className="flex items-start">
                       <span className="text-yellow-400 mr-2">•</span>
                       <span>Access to all 90+ countries' WhatsApp numbers</span>
@@ -248,14 +251,15 @@ const LoginPage: React.FC = () => {
                 </div>
                 
                 <div className="text-center">
-                  <p className="text-yellow-200 font-bold mb-2">One-time VIP Access Fee:</p>
-                  <p className="text-3xl font-bold text-yellow-300 mb-4">₦2,000</p>
+                  <p className="text-yellow-200 font-bold text-sm sm:text-base mb-1 sm:mb-2">One-time VIP Access Fee:</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-yellow-300 mb-3 sm:mb-4">₦2,000</p>
                   <Link to="/vip-access">
-                    <Button className="w-full bg-gradient-to-r from-yellow-600 to-yellow-400 hover:from-yellow-500 hover:to-yellow-300 text-black font-bold">
+                    <Button className="w-full bg-gradient-to-r from-yellow-600 to-yellow-400 hover:from-yellow-500 hover:to-yellow-300 text-black font-bold text-sm sm:text-base py-2">
                       Join VIP Program
                     </Button>
                   </Link>
-                  <p className="text-xs text-yellow-200/70 mt-2">Admin verification required after payment</p>
+                  <p className="text-xs text-yellow-200/70 mt-2">Pay to: Opay Bank - 8121320468 - Keno Darlington Avwunudiogba</p>
+                  <p className="text-xs text-yellow-200/70 mt-1">Admin verification required after payment</p>
                 </div>
               </div>
             </div>
