@@ -68,12 +68,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const login = async (email: string, password: string) => {
+  const login = async (username: string, password: string) => {
     try {
       setIsLoading(true);
-      console.log("Sending login request with:", { email });
+      console.log("Sending login request with:", { username });
       
-      const response = await apiRequest("POST", "/api/auth/login", { email, password });
+      const response = await apiRequest("POST", "/api/auth/login", { username, password });
       
       if (!response.ok) {
         const errorText = await response.text();

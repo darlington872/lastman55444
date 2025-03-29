@@ -17,7 +17,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/hooks/useAuth";
 
 const loginSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email address" }),
+  username: z.string().min(3, { message: "Username must be at least 3 characters" }),
   password: z.string().min(6, { message: "Password must be at least 6 characters" }),
   rememberMe: z.boolean().optional(),
 });
@@ -31,7 +31,7 @@ const Login: React.FC = () => {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
       rememberMe: false,
     },
@@ -39,7 +39,7 @@ const Login: React.FC = () => {
 
   const onSubmit = async (values: LoginFormValues) => {
     try {
-      await login(values.email, values.password);
+      await login(values.username, values.password);
       navigate("/dashboard");
     } catch (error) {
       // Error is already handled in useAuth hook
@@ -59,12 +59,12 @@ const Login: React.FC = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
             <FormField
               control={form.control}
-              name="email"
+              name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="your@email.com" {...field} />
+                    <Input placeholder="Enter your username" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -419,20 +419,20 @@ const StorePage: React.FC = () => {
         </DialogContent>
       </Dialog>
       
-      {/* Add Funds Dialog */}
+      {/* Add Funds Dialog - Simplified version with reduced animations */}
       <Dialog 
         open={showAddFundsDialog} 
         onOpenChange={setShowAddFundsDialog}
       >
         <DialogContent className="bg-black border border-purple-800/30 text-white">
           <DialogHeader>
-            <DialogTitle className="vibrant-gradient-text text-xl">Add Funds</DialogTitle>
+            <DialogTitle className="text-xl text-purple-300 font-bold">Add Funds</DialogTitle>
             <DialogDescription className="text-purple-300">
               Add funds to your account to purchase WhatsApp numbers.
             </DialogDescription>
           </DialogHeader>
           
-          <div className="space-y-5 py-4 border-t border-purple-900/20 my-2">
+          <div className="space-y-4 py-4 border-t border-purple-900/20 my-2">
             <div className="space-y-2">
               <Label htmlFor="amount" className="text-purple-200">Amount (₦)</Label>
               <Input
@@ -443,7 +443,7 @@ const StorePage: React.FC = () => {
                 step="0.01"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="border-purple-800/30 bg-purple-900/10 text-white placeholder:text-purple-500/70 focus:ring-purple-500/50"
+                className="border-purple-800/30 bg-purple-900/10 text-white placeholder:text-purple-500/70"
               />
             </div>
             
@@ -460,9 +460,9 @@ const StorePage: React.FC = () => {
                   <SelectValue placeholder="Select payment method" />
                 </SelectTrigger>
                 <SelectContent className="bg-gray-900 border border-purple-800/30 text-white">
-                  <SelectItem value="local_transfer" className="focus:bg-purple-900/20">Local Bank Transfer</SelectItem>
-                  <SelectItem value="opay" className="focus:bg-purple-900/20">Opay</SelectItem>
-                  <SelectItem value="keno" className="focus:bg-purple-900/20">Keno</SelectItem>
+                  <SelectItem value="local_transfer">Local Bank Transfer</SelectItem>
+                  <SelectItem value="opay">Opay</SelectItem>
+                  <SelectItem value="keno">Keno</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -474,14 +474,14 @@ const StorePage: React.FC = () => {
                 placeholder="Transaction ID or reference"
                 value={paymentReference}
                 onChange={(e) => setPaymentReference(e.target.value)}
-                className="border-purple-800/30 bg-purple-900/10 text-white placeholder:text-purple-500/70 focus:ring-purple-500/50"
+                className="border-purple-800/30 bg-purple-900/10 text-white placeholder:text-purple-500/70"
               />
             </div>
             
             <div className="p-3 rounded-lg border border-purple-500/20 bg-purple-900/10">
-              <p className="text-sm text-purple-200 flex items-center gap-2">
-                <span className="font-medium neon-text">Payment Account:</span> 
-                <span className="rainbow-text font-bold">8121320468</span>
+              <p className="text-sm text-purple-200">
+                <span className="font-medium">Payment Account:</span> 
+                <span className="font-bold text-white">8121320468</span>
               </p>
               <p className="text-sm text-purple-300 mt-2">
                 <span className="text-white font-medium">Bank username:</span> Keno Darlington Avwunudiogba
@@ -503,17 +503,9 @@ const StorePage: React.FC = () => {
             <Button
               onClick={handleAddFunds}
               disabled={isPaymentPending || !amount || !paymentMethod}
-              className="bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 text-white border-none"
+              className="bg-purple-600 hover:bg-purple-700 text-white border-none"
             >
-              {isPaymentPending ? (
-                <div className="flex items-center gap-2">
-                  <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Processing...
-                </div>
-              ) : "Submit Payment"}
+              {isPaymentPending ? "Processing..." : "Submit Payment"}
             </Button>
           </DialogFooter>
         </DialogContent>
