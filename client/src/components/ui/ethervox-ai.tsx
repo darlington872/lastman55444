@@ -117,7 +117,7 @@ export function EthervoxAI() {
       <Button
         onClick={toggleChat}
         className={`fixed z-50 ${
-          isOpen ? "bottom-[390px] right-6" : "bottom-6 right-6"
+          isOpen ? "bottom-[390px] right-6" : "bottom-20 right-6"
         } rounded-full w-14 h-14 p-0 shadow-lg bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800`}
       >
         {isOpen ? <X className="h-6 w-6" /> : <Bot className="h-6 w-6" />}
@@ -128,8 +128,8 @@ export function EthervoxAI() {
         <Card
           className={`fixed z-40 ${
             isFullsize 
-              ? "top-4 left-4 right-4 bottom-4 w-auto h-auto" 
-              : "bottom-6 right-6 w-[350px] h-[380px]"
+              ? "top-4 left-4 right-4 bottom-20 w-auto h-auto" 
+              : "bottom-20 right-6 w-[350px] h-[380px]"
           } bg-gradient-to-br from-gray-900 to-purple-950 border-purple-700/50 flex flex-col overflow-hidden shadow-xl transition-all duration-200 ease-in-out`}
         >
           {/* Chat header */}

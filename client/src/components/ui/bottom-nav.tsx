@@ -29,7 +29,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ adminMode = false }) => {
   const showAdminMenu = user?.isAdmin;
 
   return (
-    <div className="fixed bottom-0 left-0 z-50 w-full h-16 bg-black border-t border-purple-600/40 backdrop-blur-md bg-opacity-80">
+    <div className="fixed bottom-0 left-0 z-40 w-full h-16 bg-black border-t border-purple-600/40 backdrop-blur-md bg-opacity-90">
       <div className="grid h-full grid-cols-5 mx-auto max-w-lg">
         {/* Dashboard */}
         <button

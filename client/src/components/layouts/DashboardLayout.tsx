@@ -31,7 +31,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       </div>
 
       {/* Content Area - Added padding at bottom to prevent content from being hidden behind bottom nav */}
-      <div className="flex-1 overflow-y-auto px-3 md:px-6 bg-black text-white pb-20">
+      <div className="flex-1 overflow-y-auto px-3 md:px-6 bg-black text-white pb-24">
         <div className="py-4">
           <div className="flex flex-wrap justify-between items-center mb-6">
             <h1 className="text-xl md:text-2xl font-bold vibrant-gradient-text my-2">{title}</h1>
@@ -41,7 +41,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               </span>
             )}
           </div>
-          <div className="space-y-6">
+          <div className="space-y-6 mb-6">
             {children}
           </div>
         </div>
