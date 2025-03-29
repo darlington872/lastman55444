@@ -71,16 +71,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, password: string) => {
     try {
       setIsLoading(true);
+      console.log("Sending login request with:", { email });
+      
       const response = await apiRequest("POST", "/api/auth/login", { email, password });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Login failed");
+      }
+      
       const data = await response.json();
+      console.log("Login response:", data);
       
-      localStorage.setItem("token", data.token);
-      setUser(data.user);
-      
-      toast({
-        title: "Logged in successfully",
-        description: `Welcome back, ${data.user.fullName}!`,
-      });
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        setUser(data.user);
+        
+        toast({
+          title: "Logged in successfully",
+          description: `Welcome back, ${data.user.fullName}!`,
+        });
+      } else {
+        throw new Error("No authentication token received from server");
+      }
     } catch (error) {
       console.error("Login error:", error);
       toast({
@@ -97,16 +110,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const register = async (userData: RegisterData) => {
     try {
       setIsLoading(true);
+      console.log("Sending register request with data:", userData);
+      
       const response = await apiRequest("POST", "/api/auth/register", userData);
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Registration failed");
+      }
+      
       const data = await response.json();
+      console.log("Registration response:", data);
       
-      localStorage.setItem("token", data.token);
-      setUser(data.user);
-      
-      toast({
-        title: "Registration successful",
-        description: `Welcome, ${data.user.fullName}!`,
-      });
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        setUser(data.user);
+        
+        toast({
+          title: "Registration successful",
+          description: `Welcome, ${data.user.fullName}!`,
+        });
+      } else {
+        throw new Error("No authentication token received from server");
+      }
     } catch (error) {
       console.error("Registration error:", error);
       toast({

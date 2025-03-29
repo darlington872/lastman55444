@@ -27,7 +27,10 @@ const RegisterPage: React.FC = () => {
   // If user is already logged in, redirect to dashboard
   React.useEffect(() => {
     if (user) {
-      window.location.href = "/dashboard";
+      // Use navigation method instead of direct location change
+      setTimeout(() => {
+        window.location.href = "/dashboard";
+      }, 100);
     }
   }, [user]);
 

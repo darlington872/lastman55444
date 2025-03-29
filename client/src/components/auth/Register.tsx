@@ -55,6 +55,11 @@ const Register: React.FC = () => {
       // Remove confirmPassword and terms from the data sent to API
       const { confirmPassword, terms, ...registerData } = values;
       
+      console.log("Submitting registration data:", {
+        ...registerData,
+        referredBy: values.referralCode || undefined,
+      });
+      
       await register({
         ...registerData,
         referredBy: values.referralCode || undefined,

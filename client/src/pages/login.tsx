@@ -26,7 +26,10 @@ const LoginPage: React.FC = () => {
   // If user is already logged in, redirect to dashboard
   React.useEffect(() => {
     if (user) {
-      window.location.href = "/dashboard";
+      // Use timeout to ensure state is properly updated before navigation
+      setTimeout(() => {
+        window.location.href = "/dashboard";
+      }, 100);
     }
   }, [user]);
 
